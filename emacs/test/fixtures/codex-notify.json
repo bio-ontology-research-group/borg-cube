@@ -1,0 +1,8 @@
+{
+  "type": "agent-turn-complete",
+  "thread-id": "b3c2d1e0-9f8e-4d7c-b6a5-4c3d2e1f0a9b",
+  "turn-id": "t-7",
+  "cwd": "/home/robert/Public/software/gapsmith",
+  "input-messages": ["fix the failing tests in gapfill"],
+  "last-assistant-message": "All 12 tests pass now. The off-by-one in bounds.rs is fixed."
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Allocate the next ready research turn after the previous turn finishes
+
+[Timer]
+OnBootSec=1min
+OnUnitInactiveSec=30s
+Unit=cube-scheduler.service
+
+[Install]
+WantedBy=timers.target

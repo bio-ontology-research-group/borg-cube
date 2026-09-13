@@ -1,0 +1,1 @@
+{"file": "~/org/alex.org", "action": "todo", "diff": "--- a/alex.org\n+++ b/alex.org\n@@ -1 +1 @@\n-- [ ] item\n+- [X] item\n", "applied": false}

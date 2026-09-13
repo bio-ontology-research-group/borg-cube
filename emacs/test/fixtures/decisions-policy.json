@@ -1,0 +1,36 @@
+{
+ "dry_run": true,
+ "answered": [
+  {
+   "id": "cube-401",
+   "kind": "permission",
+   "from": "agent:ontology",
+   "title": "Approve the ontology expert resource step: run the IBEX benchmark",
+   "answered": true,
+   "answer": "yes",
+   "note": "compute inside the declared allowances and the global budget",
+   "policy": {
+    "rule": 0,
+    "by": "policy:0",
+    "kind": "permission",
+    "answer": "yes",
+    "note": "compute inside the declared allowances and the global budget"
+   },
+   "guards": []
+  }
+ ],
+ "waiting": [
+  {
+   "id": "cube-402",
+   "kind": "question",
+   "from": "agent:liaison",
+   "title": "Question from agent:liaison: which mailbox?",
+   "answered": false,
+   "policy": null,
+   "guards": [
+    "question"
+   ]
+  }
+ ],
+ "commands": []
+}

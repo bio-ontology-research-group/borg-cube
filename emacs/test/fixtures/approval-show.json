@@ -1,0 +1,15 @@
+{
+  "id": "cube-301",
+  "kind": "outbound",
+  "channel": "email",
+  "recipient": "alex-example",
+  "to": "alex.example@example.org",
+  "subject": "Proposal defense: 74 days to go",
+  "summary": "Milestone reminder: proposal defense in 74 days",
+  "draft_file": "state/drafts/cube-301.md",
+  "created": "2026-09-02T08:55:00+03:00",
+  "run_id": "r-20260902-0850-adv",
+  "bead": "cube-103",
+  "actions": ["approve", "reject", "edit"],
+  "body": "Dear Alex,\n\nyour proposal defense is due on 15 November 2026 (74 days from today). Please send me the outline of the two drafted chapters before our next meeting.\n\nBest,\nRobert\n"
+}

@@ -1,0 +1,51 @@
+# Copy to cube.local.yaml (gitignored) and fill in your hosts, checkouts and ids.
+# Everything here deep-merges over cube.yaml.
+hosts:
+  ws:
+    role: orchestration
+    ssh: ws
+    drop: /data/cube-drop
+  laptop:
+    role: personal
+    hostname: my-laptop
+    ssh: null
+    software_dirs:
+    - ~/src
+    readable:
+    - ~/Documents/papers
+    - ~/src
+    mail_read: false
+    unreadable:
+    - ~/src/private
+projects:
+  example-project:
+    path: ~/src/example-project
+    runner: codex
+    cwd: worktree
+    worktrees_dir: .cube/wt
+    budget_usd_per_day: null
+roster:
+  membership_exceptions:
+    former-member-id: former
+decisions:
+  systems:
+  - ws
+  - my-server
+  - my-service
+mattermost:
+  team: borg
+  infra_alerts_channel: <mattermost-channel-id>
+hermes:
+  profiles:
+    advisor:
+      bot: borg-advisor
+      home_channel: null
+    concierge:
+      bot: borg-concierge
+      home_channel: null
+    scribe:
+      bot: null
+      home_channel: null
+    hermes-ws:
+      bot: hermes-ws
+      home_channel: <mattermost-channel-id>

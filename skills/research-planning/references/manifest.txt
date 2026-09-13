@@ -1,0 +1,5 @@
+# distilled topics copied in by tools/skills_sync.py
+research-planning
+ml-rigor
+problem-choice
+task-decomposition

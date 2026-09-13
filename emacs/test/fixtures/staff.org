@@ -1,0 +1,25 @@
+#+title: Group
+
+* Group summer 2026
+
+** Staff
+- Carla Staff (lab manager)
+- Fin Fellow (postdoctoral researcher)
+- Gia Scientist (research scientist)
+
+** Students
+- Alex Example
+- Jem Candidate
+
+- Eve Sample (MSc student)
+
+* Research staff
+
+** Carla
+- contract end date: 30 June 2026
+
+* Students
+
+** Alex Example
+- Proposal: Nov 2026
+- Graduates: Aug 2028

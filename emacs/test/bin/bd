@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Fake `bd` (beads) for the Emacs tests. Read-only subcommands print the
+# fixtures in bd's own array shape; write subcommands only acknowledge.
+# Set CUBE_FAKE_OUT to record every invocation (one argv per line).
+set -u
+here="$(cd "$(dirname "$0")" && pwd)"
+fixtures="$here/../fixtures"
+if [ -n "${CUBE_FAKE_OUT:-}" ]; then printf 'bd %s\n' "$*" >> "$CUBE_FAKE_OUT"; fi
+sub="${1:-}"
+shift || true
+case "$sub" in
+    ready) cat "$fixtures/bd-ready.json" ;;
+    show) cat "$fixtures/bd-show.json" ;;
+    create)
+        case " $* " in
+            *" --silent "*) echo "cube-999" ;;
+            *) printf '{"id":"cube-999","title":"created"}\n' ;;
+        esac ;;
+    update|close)
+        printf '{"ok":true,"id":"%s"}\n' "${1:-?}" ;;
+    *)
+        printf 'unknown bd subcommand %s\n' "$sub" >&2; exit 2 ;;
+esac

@@ -1,0 +1,43 @@
+#+TITLE: Semester evaluation template (Robert only, privacy local-only)
+#+STARTUP: overview
+
+# Fill one copy per student per semester. Everything in this file is
+# Robert's assessment for his own records and for the KAUST progress form;
+# nothing is sent to the student by borg-cube. Grades, GPA, contract, visa
+# and health details never go here.
+
+* Semester evaluation, <D Month YYYY>, <student name>
+- period: <Fall|Spring YYYY>, <start date> to <end date>
+- programme: <PhD-CS | PhD-Bioeng | MS-CS | MS-Bioeng>, started <date>
+- evidence report: <path to runs/<id>/report.md from rubric_report.py>
+- milestones this period: <milestone> due <date>, artefact <exists | missing>
+- next milestone: <milestone> due <date> (phd-milestones output, rule id)
+
+** Evidence summary
+- git: <evidence ids and one line>
+- drafts: <evidence ids and one line>
+- meetings: <number of dated entries, open action items>
+- talks, posters, courses, service: <what and where; source>
+
+** Assessment by dimension (evidence ids in brackets)
+- research question and plan: <1 to 5 or no evidence> [ids]
+- evidence velocity: <score> [ids]
+- methodological rigor: <score> [ids]
+- writing progress: <score> [ids]
+- milestone standing: <score> [ids]
+- communication: <score> [ids]
+- independence: <score> [ids]
+
+** Strengths shown by the evidence
+- <one line each, with the evidence id>
+
+** Concerns and what would resolve them
+- <concern> ; evidence [id] ; what the student said about it, if anything ; check by <date>
+
+** Plan for next semester (agreed with the student in the 1:1)
+- [ ] <artefact> by <YYYY-MM-DD>
+- [ ] <artefact> by <YYYY-MM-DD>
+- [ ] compact or IDP revisited on <date>
+
+** Form status
+- KAUST progress form: <not started | drafted | submitted on date>; source of the rating text: this file

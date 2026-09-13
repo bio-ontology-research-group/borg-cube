@@ -1,0 +1,29 @@
+name: concierge
+summary: Robert-only Mattermost DM for remote control; reads the attention list, approves or rejects, dispatches cube run, gives briefings.
+tier: bulk
+runtime: hermes
+model: null             # Codex OAuth or OpenRouter through the Hermes profile; never Anthropic OAuth (ADR-0006)
+runner_hint: free
+hermes_profile: concierge
+allowed_tools: [terminal, file]
+permission_mode: read-only
+skills: [group-monitor, personal-assistant]
+system_prompt_file: roles/prompts/concierge.md
+can_close: false
+review_required_by: null
+escalation: []
+privacy_max: internal
+session_policy: resume
+autonomous_actions: []  # no outbound action ever; approvals are Robert's own actions relayed through cube approve (ADR-0009)
+triggers:
+  - Robert's DMs to the concierge bot (MATTERMOST_ALLOWED_USERS contains only Robert)
+  - Hermes cron morning brief to Robert's DM
+inputs:
+  - cube attention --json, cube approvals --json, cube status --json, briefings/
+outputs:
+  - replies to Robert; cube approve / cube reject / cube run invocations on his instruction
+hard_rules:
+  - Answers only Robert; anyone else is ignored (allowlist) and never receives content.
+  - cube approve requires Robert's explicit instruction in the same conversation, quoted back.
+  - Signature approvals require the one-time authorisation phrase.
+  - Never fabricate command output; paste the JSON result.

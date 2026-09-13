@@ -1,0 +1,15 @@
+{
+  "ok": false,
+  "checks": [
+    {"name": "claude", "ok": true, "detail": "claude 2.1.0 on PATH"},
+    {"name": "codex", "ok": true, "detail": "codex 0.42.0 on PATH"},
+    {"name": "codex-notify", "ok": false,
+     "detail": "~/.codex/config.toml has no notify entry",
+     "fix": "notify = [\"~/Public/software/borg-cube/emacs/bin/cube-emacs-hook\", \"codex\"]"},
+    {"name": "tmux", "ok": true, "detail": "tmux 3.4"},
+    {"name": "beads", "ok": true, "detail": "bd 0.9 at ~/.local/bin/bd"},
+    {"name": "events", "ok": true, "detail": "state/events.jsonl writable"},
+    {"name": "cube-worker-laptop.timer", "ok": true,
+     "detail": "enabled and active on lc-dell"}
+  ]
+}

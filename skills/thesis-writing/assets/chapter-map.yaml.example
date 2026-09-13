@@ -1,0 +1,54 @@
+# Copy this file into a Robert-approved, local-only planning location.
+# A chapter may synthesize more than one paper, but state why it belongs in the
+# thesis argument instead of only listing the papers.
+thesis:
+  working_title: "A defensible working title"
+  central_contribution: "One sentence stating what the thesis establishes."
+  intended_defense: "YYYY-MM-DD"
+chapters:
+  - number: 1
+    title: "Introduction and thesis contribution"
+    type: introduction
+    papers: []
+    status: outline
+    claim: "The thesis addresses a defined gap and establishes a stated contribution."
+    evidence: ["problem framing", "contribution map"]
+    next_review: "Confirm scope with Robert."
+  - number: 2
+    title: "Related work and conceptual framework"
+    type: synthesis
+    papers: []
+    status: outline
+    claim: "Prior work leaves the specific gap that the thesis addresses."
+    evidence: ["positioned literature synthesis"]
+    next_review: "Check that this chapter compares and positions, not lists."
+  - number: 3
+    title: "First research contribution"
+    type: results
+    papers:
+      - citation_key: "paper-one"
+        status: published  # planned|drafting|submitted|under-review|accepted|published
+        thesis_role: "Supplies the first line of evidence for the central contribution."
+    status: drafting
+    claim: "State the result this chapter establishes."
+    evidence: ["figure:main-result", "table:comparison"]
+    next_review: "Complete an evidence-first chapter draft."
+  - number: 4
+    title: "Second research contribution"
+    type: results
+    papers:
+      - citation_key: "paper-two"
+        status: drafting
+        thesis_role: "Tests the generality or limitation of the first contribution."
+    status: planned
+    claim: "State the result this chapter establishes."
+    evidence: ["registered analysis", "ablation or validation"]
+    next_review: "Agree the minimum defensible result with Robert."
+  - number: 5
+    title: "Synthesis, limitations, and future work"
+    type: conclusion
+    papers: []
+    status: planned
+    claim: "The combined evidence supports the stated contribution within clear limits."
+    evidence: ["cross-chapter synthesis", "limitations"]
+    next_review: "Check that conclusions do not exceed the evidence."

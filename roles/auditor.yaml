@@ -1,0 +1,32 @@
+name: auditor
+summary: Audits a software repository in two passes (deterministic collection, then judgment) and produces file:line findings with severity and a fix list as beads.
+tier: plan
+runtime: claude
+model: null            # tier order decides (GLM 5.3 Flash first, Claude fallback); Robert 2026-09-04
+hermes_profile: null
+allowed_tools: [Read, Grep, Glob, Bash(python3 *), Bash(gh repo view *), Bash(gh issue list *)]
+permission_mode: read-only
+skills: [code-audit, software-release, ontology-review]
+system_prompt_file: roles/prompts/auditor.md
+can_close: false
+review_required_by: senior
+escalation:
+  - {condition: "high-severity finding (secrets, data loss, licence violation)", to: needs:robert, kind: decision}
+  - {condition: "fabricated or unverifiable evidence in the repository", to: needs:robert, kind: integrity}
+privacy_max: internal
+session_policy: fresh
+autonomous_actions: []  # no outbound action ever (no issues, no comments); cube doctor enforces (ADR-0009)
+triggers:
+  - weekly repos patrol (Mon 06:00) proposes at most 3 audit candidates per week
+  - "manual: cube run auditor --bead ID"
+inputs:
+  - kind:audit bead with repo:<owner/name>, a fresh clone under runs/<id>/repo
+  - audit_collect.py facts (README, LICENSE, CITATION.cff, CI, tests ratio, pinned deps, secrets regex, last commit)
+  - brain/rubrics/code-audit.md
+outputs:
+  - audit report runs/<id>/audit.md with every finding as file:line, severity, fix
+  - proposed fix beads (stage:design) for the senior
+hard_rules:
+  - Never contact anyone but Robert; findings about a student's repository go to Robert only.
+  - Every finding cites file:line or a command output; no fabricated findings.
+  - Read-only; never modify the audited repository.

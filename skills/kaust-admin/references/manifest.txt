@@ -1,0 +1,2 @@
+# distilled topics copied in by tools/skills_sync.py
+kaust-admin

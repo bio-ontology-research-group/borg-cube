@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.infra_hygiene ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol infra-hygiene timer (daily 04:00, certs, disks, backups, tunnels, upgrades, SLURM, vLLM endpoint)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*-*-* 04:00:00
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@infra-hygiene.service
+
+[Install]
+WantedBy=timers.target

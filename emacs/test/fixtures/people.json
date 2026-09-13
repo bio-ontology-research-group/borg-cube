@@ -1,0 +1,29 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "people": [
+    {"slug": "alex-example", "name": "Alex Example", "role": "phd",
+     "org_file": "~/org/alex.org", "program": "cube-100",
+     "goals": ["cube-400"],
+     "owed": [{"bead": "cube-404", "title": "Bring the reassembly benchmark", "due": "2026-09-12"}],
+     "next_meeting_agenda": ["Bring the reassembly benchmark (due 2026-09-12)", "Proposal defense outline"],
+     "next_milestone": {"name": "proposal defense", "due": "2026-11-15", "days": 74},
+     "contact": {"mattermost_dm": false, "email": false, "dossier_read": false},
+     "attention": 1, "last_meeting": "2026-08-28"},
+    {"slug": "gus-student", "name": "Gus Student", "role": "phd",
+     "org_file": "~/org/gus.org", "program": "cube-110",
+     "goals": ["cube-400"],
+     "owed": [],
+     "next_meeting_agenda": ["Confirm ontology mappings"],
+     "next_milestone": {"name": "proposal", "due": "2026-10-01", "days": 29},
+     "contact": {"mattermost_dm": false, "email": false, "dossier_read": false},
+     "attention": 1, "last_meeting": "2026-07-30"},
+    {"slug": "fin-fellow", "name": "Fin Fellow", "role": "postdoc",
+     "org_file": "~/org/fin.org", "program": null,
+     "goals": [],
+     "owed": [{"bead": "cube-405", "title": "Review the protein evidence", "due": null}],
+     "next_meeting_agenda": ["Review the protein evidence"],
+     "next_milestone": null,
+     "contact": {"mattermost_dm": true, "email": false, "dossier_read": false},
+     "attention": 0, "last_meeting": "2026-09-01"}
+  ]
+}

@@ -1,0 +1,14 @@
+# Approved messages to people wait for contact hours (cube.yaml contact.hours); this timer
+# sends the deferred ones once the window is open. ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol deliveries timer (hourly, deferred messages inside contact hours)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@deliveries.service
+
+[Install]
+WantedBy=timers.target

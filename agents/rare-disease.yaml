@@ -1,0 +1,28 @@
+name: rare-disease
+kind: expert
+title: Rare Disease expert
+charter: agents/rare-disease/charter.md
+topics:
+- rare-disease-diagnostic-support
+- phenotype-informatics
+role: senior
+skills:
+- literature-review
+- research-planning
+runtime: claude
+tier: plan
+host: ws
+privacy_default: internal
+memory_dir: agents/rare-disease/memory
+resources:
+  node005_gpu_hours_per_day: 2.0
+  ws_cpu: true
+  ibex: approval
+  spend_usd_per_day: 0.0
+  outbound: none
+workday:
+  cron: hourly  # 24/7: every tick checks inbox and assigned beads; Robert 2026-09-04
+  max_minutes: 30
+  max_runs: 24
+  max_runs_per_tick: 1
+reports: weekly

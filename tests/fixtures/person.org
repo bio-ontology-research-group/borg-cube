@@ -1,0 +1,24 @@
+* Todo 4 Nov 2024
+- [ ] write algorithm down formally
+- [X] evaluation / benchmark on 70 taxa
+
+* Projects
+
+** Pathway analysis
+- [ ] cross-feeding tools
+
+* Notes
+
+** Discussion 6 November 2023
+- group is good at knowledge graphs
+
+** Meeting 20 November 2023
+- discussed proposal
+
+* 16 April 2026
+- proposal outline
+
+* 9 April
+- no year here, must be ignored
+
+** TODO Start work on paper

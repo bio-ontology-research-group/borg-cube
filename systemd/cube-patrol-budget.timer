@@ -1,0 +1,13 @@
+# Schedule from cube.yaml budget settings; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube proactive budget patrol timer (every 15 minutes)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@budget.service
+
+[Install]
+WantedBy=timers.target

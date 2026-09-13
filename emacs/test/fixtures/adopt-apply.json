@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "session": "cube/kobayashi-marust-codex",
+  "runner": "codex",
+  "resume_id": "0198e1c0-kobayashi-session",
+  "cwd": "~/Public/software/kobayashi-marust",
+  "project": "kobayashi-marust",
+  "bead": "cube-142",
+  "role": "programmer",
+  "adopted": true,
+  "dry_run": false,
+  "renamed_from": "kobayashi-codex",
+  "message": "Codex session adopted."
+}

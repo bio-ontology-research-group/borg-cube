@@ -1,0 +1,16 @@
+name: student-reviewer
+summary: Independent senior scientific review of local-only twin research and drafts.
+tier: local
+runtime: hermes
+hermes_profile: cube-student-local
+allowed_tools: [Read, Grep, Glob, WebFetch, WebSearch, Bash, Edit, Write]
+permission_mode: workspace-write
+skills: [research-planning, literature-review, thesis-writing, code-audit]
+system_prompt_file: roles/prompts/student-reviewer.md
+can_close: true
+review_required_by: null
+privacy_max: local-only
+session_policy: fresh
+autonomous_actions: []
+timeout_minutes: 20
+max_turns: 12

@@ -1,0 +1,34 @@
+* Group summer 2026
+
+** Students
+- Alex Example
+- Bea Sample
+
+* Research staff
+
+** Carla
+- contract end date: 30 June 2026
+
+* Students
+
+** Alex
+- start PhD: 1 Jan 2025
+- Preproposal: Jan 2026
+- Proposal: Dec 2026
+- Graduates: Dec 2028
+
+** Bea Sample
+- PhD Proposal completed May 2025
+- Graduates: May 2027
+
+** Dan
+- Graduates (MSc): May 2026
+- move to PhD from June 2026
+
+** Eve
+- started MSc Spring 2026
+
+* Alumni
+
+** Fay
+- Graduates: May 2025

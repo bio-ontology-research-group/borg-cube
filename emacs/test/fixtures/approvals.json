@@ -1,0 +1,15 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "approvals": [
+    {"id": "cube-301", "kind": "outbound", "channel": "email", "recipient": "alex-example",
+     "summary": "Milestone reminder: proposal defense in 74 days",
+     "draft_file": "state/drafts/cube-301.md", "created": "2026-09-02T08:55:00+03:00",
+     "run_id": "r-20260902-0850-adv", "bead": "cube-103",
+     "actions": ["approve", "reject", "edit"]},
+    {"id": "cube-302", "kind": "write", "channel": "git", "recipient": null,
+     "summary": "Push meeting note to ~/org/gus.org",
+     "draft_file": "state/drafts/cube-302.diff", "created": "2026-09-02T09:01:00+03:00",
+     "run_id": "r-20260902-0900-scr", "bead": "cube-240",
+     "actions": ["approve", "reject"]}
+  ]
+}

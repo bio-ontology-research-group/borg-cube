@@ -1,0 +1,10 @@
+people:
+  alex-example: {name: Alex Example, role: student, program: PhD-Bioeng, start: 2025-01-01, org_file: alex.org, source: fixture}
+  bea-sample:   {name: Bea Sample, role: student, program: PhD-Bioeng, org_file: bea.org, source: fixture}
+  dan-doe:      {name: Dan Doe, role: student, program: PhD-CS, start: 2026-06-01, source: fixture}
+  eve-sample:   {name: Eve Sample, role: student, program: MS-CS, start: 2026-01-15, source: fixture}
+  vic-visitor:  {name: Vic Visitor, role: student, program: visiting, source: fixture}
+  carla-staff:  {name: Carla Staff, role: research-scientist, source: fixture}
+  robert-hoehndorf: {name: Robert Hoehndorf, role: pi, source: fixture}
+conflicts:
+  - {person: bea-sample, field: status, a: "staff.org Alumni", b: "roster.md current PhD", noted: 2026-09-02}

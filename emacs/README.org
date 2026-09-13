@@ -1,0 +1,533 @@
+#+title: borg-cube Emacs cockpit
+#+options: toc:nil
+
+Thin Emacs client for the borg-cube orchestration suite: a rolodex of
+agent terminals (Claude Code, Codex, Hermes, shells, =cube run= jobs)
+that live in tmux on the orchestration host, notifications from the
+agents' hooks, the =*cube*= dashboard (v1), and the beads, org and
+review modules (v2). Every backend call is =cube <command> --json=;
+the contract is in =INTERFACE.md= and the fixtures in =test/fixtures/=.
+
+* Install
+
+1. Install a terminal backend. eat is the default (NonGNU ELPA):
+   #+begin_src emacs-lisp
+   M-x package-install RET eat RET
+   #+end_src
+   vterm works as well when it is already built; set
+   =cube-terminal-backend= to =vterm=.
+
+2. Three lines in =~/.emacs=:
+   #+begin_src emacs-lisp
+   (add-to-list 'load-path "~/Public/software/borg-cube/emacs")
+   (require 'borg-cube)
+   (cube-mode 1)
+   #+end_src
+
+3. Optional: =(repeat-mode 1)= so =C-c b n n n= keeps flipping through
+   the ring.
+
+=cube-mode= binds =cube-command-map= under =C-c b= (=cube-prefix-key=),
+adds =⚠N ●M= to the mode line (sessions needing attention plus backend
+attention items, and running sessions), starts the Emacs server as
+=cube= and begins tailing the event log.
+
+* Remote versus local mode
+
+- Remote (default, =cube-remote-host= is ="ws"=): backend calls are
+  =ssh ws -- cube ... --json=; sessions are =ssh -t ws -- tmux
+  new-session -A -s cube/<name> '<cmd>'= inside a terminal buffer;
+  files open through TRAMP; events arrive from =ssh ws tail -F
+  state/events.jsonl= (reconnects with backoff). Closing the laptop
+  never kills a session; =C-c b L= lists the =cube/*= tmux sessions on
+  the host and re-attaches.
+- Local (=(setq cube-remote-host nil)=): commands run directly (=uv run
+  cube= when =cube= is not on =PATH=), events come from inotify on
+  =state/events.jsonl=, and agent hooks can call the cockpit directly
+  through =bin/cube-emacs-hook= and =emacsclient -s cube=.
+
+Claude sessions always start as =claude --settings
+<root>/emacs/claude-hooks.json=, which adds the =cube notify --hook=
+hooks without touching =~/.claude/settings.json=. Set =cube-claude-tui=
+to =inline= or =fullscreen= to force a TUI mode; =inherit= (default)
+leaves the user's settings in charge. For Codex add to
+=~/.codex/config.toml= on the machine that runs Codex:
+#+begin_src toml
+notify = ["/home/USER/Public/software/borg-cube/emacs/bin/cube-emacs-hook", "codex"]
+#+end_src
+(on the host: point it at =cube notify --hook= through a two-line wrapper
+that pipes =$1= to stdin; =cube doctor= checks this).
+
+* Two hosts
+
+=ws= is the orchestration host. It runs the shared work ledger, ordinary
+agents, tmux sessions, and the dashboard's usual backend calls. The laptop
+runs Robert's personal-context liaison, the local Emacs cockpit, mail tools,
+and the private =~/pa= and =~/org= material. An agent row records its host:
+talking to or telling a =ws= agent uses ssh, while the liaison is always
+started and messaged locally even when =cube-remote-host= is ="ws"=.
+
+Mail never leaves the laptop. The liaison may read the local mail index and
+Gnus context, but it does not send mail and does not put mail bodies,
+addresses, or attachments into Beads. Its answer is a short, provenance-led
+summary. Personal material such as grades, contracts, visas, personnel, and
+health remains local-only.
+
+A request starts with =C-c b ,=: Robert enters text and the cockpit tells the
+coordinator. When the coordinator needs laptop-only context, it creates a
+=kind:request= bead for =agent:liaison host:laptop=. The laptop timer runs
+=cube worker --once --host laptop=, the liaison answers and closes the bead,
+and relay plus the shared Beads remote returns the result to the coordinator.
+Agent buffers show these request beads in a Requests group; an answered return
+is marked =↩= on the coordinator row until it is opened.
+
+The dashboard header reports peer health, commit identity, and sync lag. If a
+peer is unreachable, work is still retained in Beads for the next sync. Run
+=C-c b D=, or click the header, to inspect the cockpit doctor report; then
+restore the peer or wait for sync before relying on immediate relay. The Cube
+menu's Control submenu also shows the laptop timer state and can run one local
+laptop worker pass manually.
+
+* Keymap (=C-c b=)
+
+| Key   | Command                   | What it does                                    |
+|-------+---------------------------+-------------------------------------------------|
+| d     | cube-dashboard            | =*cube*= dashboard                              |
+| T     | cube-tier-menu            | inspect and change tier routing                 |
+| C     | cube-cockpit              | arrange fleet, session and dashboard panes      |
+| E     | cube-rolodex-adopt        | guarded adoption of an existing tmux session   |
+| !     | cube-attention            | open the loudest attention item                 |
+| 1 2 3 | cube-attention-N          | open the Nth loudest item                       |
+| n     | cube-rolodex-next         | flip forward through the ring (repeatable)      |
+| N     | cube-rolodex-prev         | flip backward through the ring                  |
+| p     | cube-roster               | compare the group roster sources                |
+| j     | cube-rolodex-jump         | pick a session by name                          |
+| l     | cube-fleet-list           | =*cube-fleet*= tabulated list                   |
+| L     | cube-rolodex-list-remote  | tmux sessions on the host, attach to one        |
+| e     | cube-project-list          | =*cube-projects*= cached project list           |
+| b     | cube-rolodex-toggle       | toggle between session and previous buffer      |
+| c x h $ | new claude / codex / hermes / shell session                               |
+| r     | cube-run-role             | =cube run <role> [--bead ID] --attach= session  |
+| a     | cube-beads-assign         | assign a bead through the dry-run gate          |
+| o     | cube-org-edit             | open the org editing transient                  |
+| s     | cube-student-session      | advisor session =advisor/<slug>=                |
+| S     | cube-student-dossier      | dossier in =*cube-student: <slug>*=             |
+| m     | cube-org-meeting-note     | dated heading for today in the person's org file|
+| M     | cube-org-pull-notes       | advisor notes as =** Agent notes :draft:=       |
+| P p   | cube-papers               | =*cube-papers*= list                            |
+| A     | cube-org-papers-sync      | papers.org keywords versus =cube papers= states |
+| w     | cube-beads-ready          | =*cube-beads*= ready list                       |
+| W     | cube-beads-create         | create via =cube create= and the dry-run gate  |
+| q     | cube-beads-claim-current  | claim the bead at point                         |
+| Q     | cube-beads-close-current  | close the bead at point                         |
+| i     | cube-beads-from-heading   | bead from the org heading at point              |
+| v     | cube-review-queue         | =*cube-review*= approval queue                  |
+| O     | cube-goals                | =*cube-goals*= cached goals                     |
+| G     | cube-goal-new             | create a goal through a guarded transient       |
+| P n   | cube-pipeline-new         | preview a new research pipeline                  |
+| P l   | cube-pipeline-list        | =*cube-pipelines*= status list                  |
+| P s   | cube-pipeline-show        | choose a focused pipeline status buffer          |
+| P a   | cube-pipeline-advance     | apply one confirmed pipeline transition          |
+| P r   | cube-pipeline-rehearse    | visible offline rehearsal shell session          |
+| @     | cube-agent-talk           | talk to the coordinator, or choose one with C-u |
+| .     | cube-agent-tell           | send a durable inbox message to an agent        |
+| u     | cube-people               | =*cube-people*= operational people board        |
+| k     | cube-rolodex-kill         | close the buffer (tmux session survives)        |
+| R     | cube-rolodex-restart      | restart; with =C-u= ask for a resume id         |
+| t     | cube-rolodex-toggle-pin   | pin the session to the front of its group       |
+| y     | cube-send                 | send region or =@file:line= to a session        |
+| g     | cube-refresh              | poll =cube attention=                           |
+| B     | cube-brief                | request =cube brief= (backend not yet present)  |
+| D     | cube-doctor               | =cube doctor --json= in =*cube-doctor*=         |
+| U     | cube-budget               | show tier and runner budget                     |
+| K     | cube-kill-switch-toggle   | intended kill toggle; backend rejects its JSON |
+| ?     | cube-menu                 | transient menu                                  |
+
+Ring order: attention (and error) first, then idle, then running;
+pinned sessions first inside each group; otherwise stable. Visiting a
+session in attention state clears the flag.
+
+* Adopting an existing session
+
+Suppose Codex is already running in tmux on =ws= for
+=kobayashi-marust=. Open the fleet with =C-c b l=, move to that session,
+and press =A=. In the adoption transient choose =kobayashi-marust= as the
+project, optionally choose the bead it is already working on, and leave the
+role as =programmer=. The cockpit shows =cube adopt ... --dry-run= and its
+JSON record first. After confirmation it applies the adoption, attaches the
+terminal, and marks the fleet row with its project and =↻= resume marker.
+
+Create the coordinating goal with =C-c b G=, decompose it with =d= in the
+goal buffer, and approve the child proposal in the review queue. Assign a
+ready child to =programmer=. Then press =r= on that child in either the goal
+or ready-bead list. The cockpit previews the effective project runner profile
+(sandbox, checkout, and pre-steps); confirming starts =cube run programmer
+--bead ... --resume --attach= when the adoption stored a resume id. The run
+appears in the rolodex and dashboard, while the project buffer lists the
+runner profile and its adopted sessions.
+
+* Menus
+
+** The Cube menu
+
+The Cube menu is the primary way to learn and use the cockpit. It is a
+real menu-bar menu supplied by =cube-mode=, so it is visible in every
+frame while the mode is enabled and works with GUI mouse menus,
+=M-`=, and =tmm-menubar= in a terminal. Its submenus are Dashboard,
+Sessions, Work, Goals, Pipelines, Agents, People, Projects, Review, Control, Configure and
+Help. Sessions, goals and projects add their cached live entries to the
+menu, and Review shows the cached approval count. Empty caches say
+"refreshing..." and never cause a menu-opening network call.
+
+Each cockpit buffer also has a mode-specific menu after Cube. Rows in
+the dashboard are clickable with mouse-1 to perform RET, and mouse-3
+opens the item actions for beads, sessions, people, papers, repositories,
+projects, agents, incidents and approvals. The mode's =?= key opens the same
+local action list without requiring which-key. =C-c b ?= and the Cube
+menu are equivalent command browsers.
+
+In session buffers (=cube-session-mode=): =<escape>= sends ESC
+(interrupts Claude Code and Codex), =<backtab>= sends S-TAB (cycles the
+agent's mode), =C-c C-o= opens the session's context (the bead when the
+session has one). =C-c b= stays free for the cockpit; eat's own
+=C-c C-e= (Emacs mode for copying) and =C-c C-c= (send C-c) keep
+working.
+
+=!= and =1-3= work on the merged attention list: the cached =cube
+attention= items first (approval opens the review queue, session the
+rolodex buffer or a tmux attach, bead the bead buffer, run the run log,
+file the file), then local sessions in attention or error state that
+the backend does not list. =cube-rolodex-attention= still jumps between
+local sessions only.
+
+* Dashboard (v1)
+
+=C-c b d= opens =*cube*=, a =magit-section= buffer with Goals (active goals
+from =cube goals=), Work (Agents and Tasks from =cube work=: one row per
+standing agent with its host, next tick, running bead, unread inbox and
+today's runs, and one row per open task, running first), Pipelines (research
+epics from =cube pipeline status=), Attention (the =cube-attention-count= loudest items), Fleet (tmux
+sessions and headless runs from =cube status=, plus local session
+buffers the host does not know), Projects (=cube projects=), Ready work
+(requests =cube ready=), Students (=cube people=), Papers and Repos. The ten
+backend calls run in
+parallel; each section redraws when its data arrives and shows its age
+in the heading, or the error when its command failed (stale data stays
+visible). The attention call also feeds the mode line and the =!= keys.
+The current backend has no =cube ready= command, so Ready work shows a
+section error; =C-c b w= remains usable because it falls back to =bd ready=.
+
+Keys: =g= refresh, =RET= / =o= open the item at point (a group heading
+toggles), =TAB= fold, =n= / =p= move, =1-3= open the Nth loudest item,
+=a= / =x= approve or reject an approval item, =s= advisor session and
+=S= dossier for a student (or the student behind a bead), =m= meeting
+note, =c= claim a bead, =k= close a bead or kill a session, =v= review
+queue, =t= tell an agent, =T= talk to it, =i= make it read its inbox now
+(=cube agent inbox NAME --now= on the agent's own host, through the dry-run
+gate), =w= run the workday of the agent at point or open the beads list, =b=
+beads list, =q= quit. Every cube buffer prints its keys under its heading
+(=cube-show-key-legend=) and =?= opens the full, grouped key transient.
+Opening a run fetches =cube runs show
+ID --json= into =*cube-run-log: ID*= (falls back to the log file); a
+repo opens in magit locally and in dired over TRAMP remotely; a paper
+jumps to its heading in papers.org or its directory.
+
+** Projects
+
+Projects are sorted by last activity. =RET= opens
+=*cube-project: <slug>*= with members, grants, topics and ready project
+beads. =a= in that buffer starts an assignment with the project
+preselected.
+
+** Incident banner
+
+When =cube status= reports a P0 or P1 incident banner, it is the first
+line below the dashboard header.  The line is coloured by severity and
+=RET= opens its bead.  The mode line starts with =P0= or =P1= while the
+banner is present.  A P0 event from the event stream also raises a
+desktop notification when its session is selected.
+
+** Token burn telemetry
+
+The dashboard header shows the plan, implement and bulk percentages from
+=status.budget=.  Percentages at 90 or above use the warning face, and
+exhausted runners include their end time.  The detailed budget section
+is opt-in:
+
+#+begin_src emacs-lisp
+(setq cube-dashboard-sections
+      (append cube-dashboard-sections '(budget)))
+#+end_src
+
+It displays a small bar for every tier and the state and end time for
+every runner.
+
+** LLM swap
+
+=C-c b T= opens =cube-tier-menu= after loading the =cube tier --json=
+table.  =d= disables a runner for a duration with a reason, =e= enables
+one, =p= prefers one within a tier, and =r= resets preferences.  Each
+write first shows the backend's =--dry-run= plan in a small buffer and
+asks for confirmation before using =--apply=.
+
+** Cockpit layout
+
+=C-c b C= arranges the selected frame with the rolodex list on the left,
+the current session in the upper-right pane and the dashboard below it.
+Repeating the command is safe.  =q= in the dashboard restores the
+window arrangement that was active before the cockpit was opened.
+
+=C-c b B= currently requests =cube brief --json=, but the backend does not
+register that command. Generate the available briefing with =cube digest
+--apply= in a host shell and read =briefings/digest-YYYY-MM-DD.md=.
+
+=C-c b E= starts guarded adoption of an existing tmux session. Use =p= for its
+project, =b= for an optional bead and =r= for its role, then =RET=. The cockpit
+shows the =cube adopt ... --dry-run= result, asks for confirmation, applies it,
+refreshes the fleet and attaches the recorded =cube/*= session.
+
+=C-c b K= asks for confirmation but currently appends =--json= to =cube kill=,
+whose parser does not accept that option. Use =cube kill on= and =cube kill
+off= in a host shell until the interface is aligned.
+
+* Goals
+
+Goals are the cockpit's coordinating loop. Set one with =C-c b G=: title,
+target date, repeatable testable success criteria, KG project, people, and
+provenance are collected in a transient. The cockpit shows the dry-run plan
+before it asks to apply it.
+
+The Goals dashboard section comes first. Each active row shows an on-track
+glyph, text progress bar, percentage, days left, blocker count, and the
+stakeholders' initials. =RET= opens =*cube-goal: ID*=. Its header records the
+target, success criteria, and a link to the project; its three groups are
+Agents, People, and Blockers. In that buffer, =d= asks the group leader for a
+decomposition proposal and opens it in the normal review queue. Approve the
+proposal with =a= there, then use =s= on a ready agent bead to preview and
+spin it. Use =m= on an owed person item to preview adding it to that person's
+next meeting agenda. =RET= on a blocker opens its bead. Editing target or
+criteria is visibly unavailable until the backend advertises =goal update=.
+
+The practical loop is: set a goal, decompose it, approve the proposal, spin
+agents, raise owed items in 1:1s, then watch progress and blockers from the
+dashboard.
+
+* Pipelines
+
+=C-c b P n= opens the research-pipeline transient. Set the title and target
+date, add every success criterion with =s=, and record the sent-mail subject
+words or recipient with =m=. Person, project and privacy are optional. =RET=
+renders the exact =cube pipeline new --dry-run --json= result in
+=*cube-pipeline-plan*=; press =a= there to apply it and open the new epic.
+
+=C-c b P l= opens =*cube-pipelines*=. Each epic section shows its stage,
+iteration, gate verdict, kill state and the backend's next-action sentence.
+=RET= opens =*cube-pipeline: EPIC*=, and =C-c b P s= chooses one directly.
+The dashboard has the same short Pipelines section between Goals and Agents.
+
+In a focused pipeline, =g= refreshes, =RET= opens a stage, experiment or gate
+bead, =d= previews =cube pipeline advance=, and =A= asks before running its
+=--apply= form. =T= and =t= talk to or tell the coordinator, while =o= opens
+=runs/pipelines/EPIC/plan-v2.yaml= over TRAMP and falls back to =plan-v1.yaml=.
+=C-c b P r= starts =cube pipeline rehearse= in a named rolodex shell session
+so the full rehearsal transcript remains visible.
+
+* Standing agents
+
+Standing agents are named coordinators and domain experts who keep their own
+charters, journals, inboxes and resource allowances. The coordinator is the
+usual conversation partner and can propose decompositions and assignments;
+experts can work on their declared topics. Robert keeps the final say over
+major resources, outbound contact, and every proposal that asks for restricted
+resources.
+
+The Agents section follows Goals in =*cube*=. Each row shows the =◎= coordinator
+or =●= expert glyph, title, state, pending proposals, unread inbox, journal
+age, and today's resource use. =RET= opens =*cube-agent: <name>*=. Its Charter
+section starts folded. Inbox rows are unread first; =t= tells the agent. Open a
+proposal with =RET= and use =a= to route it to the normal review queue. Journal
+rows open the host journal file over TRAMP. Resources show the declared
+allowance beside today's used amount and a small bar. The Session group shows
+the state; =RET= or =T= attaches to it.
+
+From any cockpit buffer, =C-c b @= talks to the coordinator. Use =C-u C-c b @=
+to choose an agent with completion. The session is added to the rolodex with
+the =agent:<name>= tag, and its header line includes the agent title and
+topics. =C-c b .= prompts for an agent, defaulting to the coordinator, and
+text, sends =cube agent tell=, then refreshes that agent's inbox.
+
+In an agent buffer, =w= previews and confirms a workday run, =p= previews and
+confirms pausing or resuming, =r= shows the weekly report, and =e= opens the
+charter for editing over TRAMP. The Cube menu has the same actions and an
+Agents submenu whose cached entries attach directly. New agents are created
+through its guarded transient; =C-c b ?= and the mode's =?= show the
+command-table actions.
+
+Autonomy stops at the declared charter and resources: the backend checks
+allowances, queues restricted work as a proposal, and does not send outbound
+messages without the existing contact grant and approval rules. The cockpit
+never silently approves proposals or applies workday, pause, resume, or new
+agent changes; each write displays its dry-run plan and asks before applying.
+
+* Beads (v2)
+
+=C-c b w= lists the ready beads (=cube ready --json=, falling back to
+=bd ready --json= on the host) in =*cube-beads*=: =RET= shows the bead,
+=c= claims it, =k= closes it, =+= creates one, =s= opens the student's
+org file. =cube-beads-show ID= renders =bd show ID --json= (through
+=cube beads show= when the backend has it) as org text in =*cube-bead:
+ID*= with =bead:= links for parent and dependencies; =c= / =k= / =g=
+work there too.
+
+Write actions ask for confirmation (=cube-beads-confirm-writes=) and
+run =bd update ID --claim=, =bd close ID --reason TEXT= and =bd create
+TITLE -t TYPE -p PRIO -l LABELS --parent P -d DESC --silent= on the
+host. The org link type =bead:ID= follows into the bead buffer, is
+stored from it with =org-store-link= and exports as plain text.
+=cube-mode= installs the org-capture template =b= (target
+=cube-beads-inbox-file=, default =~/org/inbox.org=): the heading is
+captured with =:BEAD: pending= and, when the capture is finalised, the
+bead is created and the property rewritten with the real id. =C-c b i=
+does the same for an existing heading (tags and =:LABELS:= become
+labels, =:PARENT:= the parent, the body the description).
+
+** Assignment
+
+=C-c b a= picks a ready bead, or uses the bead at point, and opens an
+assignment transient. =r=, =p=, =P=, =d= and =n= select a role, person,
+project, deadline and note. =RET= shows =cube assign ... --dry-run --json=
+and asks before =--apply=; =x= includes =--run=. =C-c b W= uses the same
+gate for =cube create= and requires acceptance and provenance fields.
+
+* Org (v2)
+
+People come from =cube people --json= (cached; =cube-org-people=) with
+a fallback that parses the Staff and Students lists of =staff.org=.
+=cube-org-open-person= opens =~/org/<file>= locally or
+=/ssh:HOST:~/org/<file>= in remote mode.
+
+=C-c b m= inserts today's heading (=cube-org-meeting-heading-format=,
+"2 September 2026") where the file keeps its notes: before the first
+dated heading when the file is newest-first, after the last one when it
+is oldest-first, after a Notes heading when there are none yet. Dates
+like =27 January 2025=, =20 November 2023=, =4 Nov 2024= and =16 April
+2026= are recognised, also with words in front and a missing year.
+
+=C-c b M= pulls the latest advisor notes of a student (=advisor_run= of
+=cube student=, read through =cube runs show= or the host file), converts
+the markdown to org and inserts them as =** Agent notes :draft:= with a
+=:RUN:= property under today's heading. Nothing in a =:draft:= subtree
+is authoritative until Robert edits it.
+
+=C-c b o= opens the org editing transient. =m= routes meeting notes
+through =cube org append=; =t= toggles a todo item; =s= sets a property;
+and =S= reads =cube org status=. Write commands show their dry-run diff
+in =*cube-org-diff*= and ask before applying. If local mode cannot reach
+the backend, the write commands use a clearly labelled direct-buffer
+fallback.
+
+=C-c b P p= lists the papers; =C-c b A= (or =s= in the list) shows where
+=cube papers= states and the keywords in =papers.org= disagree. =a=
+applies one, =A= all, through =org-todo=, so the file's own =#+TODO=
+sequence stays in charge and is never rewritten. =C-c b S= renders the
+dossier (=cube student <slug>=) as org in =*cube-student: <slug>*=.
+
+* Roster
+
+=C-c b p= shows =cube roster --json= as a source table. Check marks show
+which sources contain each person, with status and conflict counts. =RET=
+on a conflict shows each field value by source. =s= previews the
+=people.yaml= diff from =cube roster sync=; =S= asks before applying it.
+
+=C-c b u= opens =*cube-people*=, the operational People board. It has one
+row per current member with role, active-goal count, owed-item count, age of
+the last meeting, and next milestone. =RET= opens the existing dossier with
+the owed items and the next-meeting agenda included. Mouse-3 opens the
+command-table context menu for the row.
+
+* Review queue (v2)
+
+=C-c b v= shows =cube approvals --json= in =*cube-review*=. =RET= loads
+the body (=cube approvals show ID --json= when available, else the
+draft file through TRAMP) and fontifies it as markdown or as a diff
+(=.diff=, =.patch=, channel =git=). =a= approves, =x= / =r= rejects
+with a reason, =e= edits the body in =*cube-review-edit: ID*= where
+=C-c C-c= writes it to =state/drafts/ID.edited.md= on the host and
+approves with =--body-file=, =j= jumps to the run's session, =o= opens
+the bead or the recipient's org file, =n= / =p= / =g= / =q= as usual.
+
+=cube approve= is the only approval command issued by the cockpit. It records
+the decision but does not send or submit an ordinary approval; delivery is a
+separate =cube deliver ID --apply= command with no cockpit key. Goal
+decomposition is the special case where approval applies the reviewed plan.
+For an email approval the body is written to =cube-review-local-draft-directory=
+and handed to the Gnus Emacs with =(server-eval-at "gnus"
+'(claude-email-compose TO SUBJECT FILE))=, which opens a message buffer
+for Robert to read and send; the approval is recorded only after that
+succeeded. A test greps every source file for send commands (=hermes
+send=, =gog gmail send=, =curl -X POST=, =message-send=, ...) and checks
+that only cube-review.el calls =cube approve=.
+
+* Files
+
+- =borg-cube.el= entry point: keymap, =cube-mode=, mode line, =cube-menu=.
+- =cube-core.el= settings, ssh wrapper and shell quoting, JSON helpers,
+  host file access, the attention cache.
+- =cube-term.el= eat/vterm facade.
+- =cube-rolodex.el= sessions, ordering, fleet list, =cube-session-mode=.
+- =cube-server.el= Emacs server, =cube-notify=, hook payload mapping,
+  event tail and inotify watcher.
+- =cube-dashboard.el= the =*cube*= buffer, attention commands, brief.
+- =cube-beads.el= beads list and buffer, write actions, =bead:= links,
+  capture template.
+- =cube-org.el= people, meeting notes, agent notes, papers sync, dossier.
+- =cube-project.el= project rows, project buffers and project beads.
+- =cube-roster.el= roster table, conflicts and guarded sync.
+- =cube-people.el= operational people board and its dossier actions.
+- =cube-review.el= approval queue and the Gnus hand-off.
+- =cube-goals.el= cached goals and goal actions.
+- =cube-agents.el= standing-agent cache, dashboard rows, detail buffers and guarded actions.
+- =cube-pipeline.el= research-pipeline transient, status buffers and rehearsal session.
+- =cube-menu.el= the command table, Cube menu, mode menus and mouse context menus.
+- =claude-hooks.json=, =bin/cube-emacs-hook=, =INTERFACE.md= (the JSON
+  contract), =test/= (ert suites, fixtures, fake =cube= and fake =bd=).
+
+* Development
+
+#+begin_src sh
+make -C emacs check          # byte-compile (warnings are errors) + ert
+make -C emacs transient-version
+#+end_src
+
+The Makefile puts the installed =transient-20231103= (0.4.3, needed by
+the 2023 magit), =magit-section=, =dash=, =compat= and =markdown-mode=
+on the load path so =cube-menu= stays within the 0.4 API. Tests run in
+local mode against =test/bin/cube= and =test/bin/bd=, which print the
+fixtures and record their argv in =$CUBE_FAKE_OUT=; the review tests
+point =cube-review-gnus-server= at a nonexistent server so they can
+never reach the real Gnus.
+
+* Spike checklist: eat versus vterm with fullscreen agents
+
+Run once on the laptop with a real session on ws; record the outcome in
+=doc/plan.md=.
+
+1. =C-c b c= with =cube-claude-tui= =fullscreen=: the Claude Code TUI
+   redraws correctly after =C-l=, after resizing the frame, and after
+   =M-x cube-term-copy-mode= and back.
+2. Same with =inline=: scrollback stays in the Emacs buffer, prompts do
+   not duplicate, =<escape>= interrupts a running turn.
+3. =C-c b x= (Codex): S-TAB via =<backtab>= cycles approval mode; the
+   approval prompt is readable; arrow keys select.
+4. Long output (=cat= a 5 MB log) does not freeze Emacs for more than a
+   second; the buffer stays responsive to =C-c b n=.
+5. Colours and box drawing (Claude's diff view, Codex's tables) render
+   with =TERM=xterm-256color=; no stray escape sequences.
+6. Disconnect the network for a minute: the eat buffer shows the ssh
+   error, =C-c b R= re-attaches to the same tmux session with the
+   conversation intact.
+7. Repeat 1 to 6 with =(setq cube-terminal-backend 'vterm)= if vterm is
+   built; note which backend handles fullscreen redraws better.
+8. Hooks: after a =Stop= the mode line shows =○= for the session within
+   two seconds (event tail alive); a permission prompt turns it =⚠= and
+   raises a desktop notification only when another buffer is selected.

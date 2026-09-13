@@ -1,0 +1,26 @@
+name: student-supervisor
+kind: functional
+title: Student research supervisor
+charter: agents/student-supervisor/charter.md
+topics:
+- student-research
+role: student-reviewer
+skills: []
+runtime: hermes
+tier: local
+host: ws
+privacy_default: local-only
+memory_dir: agents/student-supervisor/memory
+resources:
+  node005_gpu_hours_per_day: 0.0
+  ws_cpu: true
+  ibex: approval
+  spend_usd_per_day: 0.0
+  outbound: none
+workday:
+  cron: hourly
+  max_minutes: 30
+  max_runs: 24
+  max_runs_per_tick: 1
+reports: weekly
+runner: hermes@local

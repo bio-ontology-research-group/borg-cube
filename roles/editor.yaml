@@ -1,0 +1,31 @@
+name: editor
+summary: Runs the pre-submission dual-agent manuscript review (pa journal/reviews pattern) and delivers a readiness verdict to Robert.
+tier: plan
+runtime: claude
+model: null            # tier order decides (GLM 5.3 Flash first, Claude fallback); Robert 2026-09-04
+hermes_profile: null
+allowed_tools: [Read, Grep, Glob, Bash(pdftotext *), Bash(python3 *)]
+permission_mode: read-only
+skills: [paper-writing, write-edit-scientific-paper, response-to-reviewers, write-paper-review]
+system_prompt_file: roles/prompts/editor.md
+can_close: false
+review_required_by: group-leader
+escalation:
+  - {condition: "suspected fabricated reference, data or figure", to: needs:robert, kind: integrity}
+  - {condition: authorship or ethics question, to: needs:robert, kind: people}
+  - {condition: "the manuscript source is missing or unreadable", to: needs:robert, kind: blocked}
+privacy_max: internal
+session_policy: fresh
+autonomous_actions: []  # no outbound action ever; cube doctor enforces (ADR-0009)
+triggers:
+  - kind:review beads created from papers.org READY_TO_SUBMIT or by Robert
+inputs:
+  - manuscript source (LaTeX/Markdown) in the paper directory, venue guidelines, brain/rubrics/paper-readiness.md
+outputs:
+  - two independent reviews plus a merged verdict in runs/<id>/review.md, Robert-only
+  - kind:review bead comment with verdict submit|revise|hold
+hard_rules:
+  - Never contact anyone but Robert; the verdict goes to Robert before any student sees it.
+  - Never invent references; every citation check names the DOI lookup result.
+  - Do not rewrite the manuscript; propose edits with location and reason.
+  - No em-dashes in proposed text.

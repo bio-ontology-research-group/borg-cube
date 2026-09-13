@@ -1,0 +1,25 @@
+name: grants
+kind: functional
+title: Grant seeker and writer
+charter: agents/grants/charter.md
+topics: [neuro-symbolic-ai, applied-ontology]
+role: grant-writer
+skills: []
+runtime: hermes
+tier: local
+runner: hermes@local
+host: ws
+privacy_default: local-only
+memory_dir: agents/grants/memory
+resources:
+  node005_gpu_hours_per_day: 0.0
+  ws_cpu: true
+  ibex: approval
+  spend_usd_per_day: 0.0
+  outbound: none
+workday:
+  cron: hourly
+  max_minutes: 30
+  max_runs: 8
+  max_runs_per_tick: 1
+reports: weekly

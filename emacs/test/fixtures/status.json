@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "generated": "2026-09-02T09:15:00+03:00",
+  "host": "ws",
+  "peers": [
+    {"name": "ws", "reachable": true, "sha": "d5d5270", "lag_commits": 0},
+    {"name": "laptop", "reachable": true, "lag_commits": 3}
+  ],
+  "version": "0.1.0",
+  "counts": {"attention": 2, "ready": 4, "running": 1, "approvals": 1},
+  "budget": {"plan": 42, "implement": 80, "bulk": 3, "local": null,
+              "exhausted": ["codex"]},
+  "incidents": {"count": 1, "highest": "p0",
+                 "banner": {"severity": "p0", "text": "Codex runner exhausted",
+                             "count": 1, "bead": "cube-410"}},
+  "runs": [
+    {"run_id": "r-20260902-0912-a1", "role": "programmer", "bead": "cube-142",
+     "runner": "codex", "model": "gpt-5-codex", "state": "running",
+     "started": "2026-09-02T09:12:04+03:00", "tmux": null}
+  ],
+  "sessions": [
+    {"name": "alex-plan", "tmux": "cube/alex-plan", "kind": "claude",
+     "started": "2026-09-02T08:40:00+03:00", "last_event": "stop",
+     "last_event_ts": "2026-09-02T09:10:30+03:00", "resume_id": "8f1c2a7e-3b1d-4c55-9c1e-1d2f3a4b5c6d"}
+  ],
+  "beads": {"open": 37, "ready": 4, "blocked": 6, "needs_robert": 2},
+  "patrols": {
+    "milestones": {"last_run": "2026-09-02T07:00:12+03:00", "ok": true},
+    "leases": {"last_run": "2026-09-02T09:00:01+03:00", "ok": true}
+  }
+}

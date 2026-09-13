@@ -1,0 +1,13 @@
+# Placeholder. Notifications ws -> cockpit need no daemon: the Emacs cockpit runs
+#   ssh ws tail -F ~/Public/software/borg-cube/state/events.jsonl
+# itself (60 s poll fallback), and Claude/Codex hooks plus patrols append through `cube notify`.
+# This unit exists so `cube systemd install` has a stable name if a local relay (for example a
+# desktop notify-send bridge when running in local mode) is ever wanted. Not enabled by default.
+[Unit]
+Description=borg-cube events relay (placeholder, not enabled)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Service]
+Environment=PATH=%h/.local/bin:%h/.cargo/bin:/usr/local/bin:/usr/bin:/bin
+Type=oneshot
+ExecStart=/bin/true

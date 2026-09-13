@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.papers ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol papers timer (daily 07:10, papers.org vs paper directories)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*-*-* 07:10:00
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@papers.service
+
+[Install]
+WantedBy=timers.target

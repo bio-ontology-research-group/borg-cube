@@ -1,0 +1,34 @@
+name: liaison
+summary: Answers laptop requests through guarded research/org lookups and Gnus mail; additional paths require scoped Mattermost approval (ADR-0028).
+tier: plan
+runtime: claude
+model: null            # the agent pins the local model, preserving the protected harness
+hermes_profile: null
+# Only the fixed dispatcher is exposed, not direct Read, shell or legacy lookup.
+allowed_tools: [Bash(cube boundary *)]  # parsed and granted by the fixed role hook
+read_roots: host
+permission_mode: read-only
+skills: []  # the role prompt documents the guarded dispatcher completely
+system_prompt_file: roles/prompts/liaison.md
+can_close: true        # a request closes on its answer (ADR-0023, findings close on result)
+review_required_by: null
+escalation:
+  - {condition: the answer needs a path outside the standing readable roots or a new tool capability, to: needs:robert, kind: permission}
+  - {condition: the request names a person's grades, contract, visa, health or HR material, to: needs:robert, kind: people}
+privacy_max: local-only
+session_policy: fresh
+autonomous_actions: []  # no outbound action ever; cube doctor enforces (ADR-0009)
+timeout_minutes: 15
+max_turns: 40
+triggers:
+  - kind:request agent:liaison beads within standing mail/path grants or an approved scoped read
+inputs:
+  - the request bead's Question line
+  - files through cube boundary lookups and mail through the fixed Gnus dispatcher
+outputs:
+  - an `answer:` comment on the request bead with path:line or commit provenance, then the close
+  - privacy-screened inline artifacts saved only in the run directory
+hard_rules:
+  - Use only cube boundary tools; mail through Gnus and configured org/calendar reads have standing permission; credentials never do.
+  - Every statement in the answer cites a path and line or a commit; nothing is inferred from memory.
+  - A path outside the readable directories is refused, said so on the bead, and left for Robert's approval.

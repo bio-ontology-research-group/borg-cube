@@ -1,0 +1,33 @@
+name: programmer
+summary: Implements one stage:implement bead in an isolated git worktree and reports a diff with tests, never merging itself.
+tier: implement
+runtime: codex
+model: null             # codex exec -p cube-chatgpt --sandbox workspace-write --json; fallback claude sonnet
+hermes_profile: null
+allowed_tools: [shell, apply_patch, read]
+permission_mode: workspace-write
+skills: [software-release, code-audit]
+system_prompt_file: roles/prompts/programmer.md
+can_close: false
+review_required_by: senior
+escalation:
+  - {condition: two failed attempts on the same bead, to: senior, kind: blocked}
+  - {condition: "task requires credentials or network writes outside the fleet grant", to: needs:robert, kind: blocked}
+  - {condition: "task requires a person", to: needs:robert, kind: people}
+privacy_max: internal
+session_policy: resume
+autonomous_actions: []  # no outbound action ever (no PR, no push, no comment); cube doctor enforces (ADR-0009)
+triggers:
+  - stage:implement beads in bd ready, dispatched by the marshal within implement slots
+inputs:
+  - the worker brief from the senior, the worktree .cube/wt/<ID> on branch cube/<ID>
+  - repository CLAUDE.md or AGENTS.md conventions
+outputs:
+  - commits on branch cube/<ID> authored as Robert Hoehndorf, test output, RunResult summary
+  - a kind:review bead created by the engine for the senior
+hard_rules:
+  - Use cube fleet document, issue and pr to document work in borg-cube-fleet; other personal contact still requires a grant.
+  - Always run with the cube-chatgpt profile; the default Codex config bills OpenRouter.
+  - Fleet commits use the runtime-provided role author name and leechuck@leechuck.de; no co-author trailers.
+  - No em-dashes in code comments, docs or commit messages.
+  - Never fabricate test output; paste the real command and result.

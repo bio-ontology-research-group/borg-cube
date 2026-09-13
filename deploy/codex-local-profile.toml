@@ -1,0 +1,23 @@
+# borg-cube worker profile for Codex on the group's own endpoint (ADR-0021), saved
+# as ~/.codex/cube-local.config.toml on ws and the laptop. borg-cube passes
+# `-p cube-local` and pins the model from the cube.yaml tier entry (`-c model=...`).
+# The key comes from VLLM_API_KEY in the process environment (borg-cube loads
+# .env; the value is Robert's own key from ~/.config/borg-llm/api-key); nothing
+# secret lives here. Robert, 2026-09-07.
+
+model = "qwen3.8-27b"
+model_provider = "local"
+approval_policy = "never"        # headless; the sandbox and the cube review gate are the controls
+sandbox_mode = "workspace-write" # the runner overrides with --sandbox read-only for audits
+web_search = "disabled"          # the endpoint has no server-side web search tool
+model_reasoning_effort = "medium"
+
+[model_providers.local]
+name = "BORG Qwen on unimatrix01"
+base_url = "http://localhost:8000/v1"   # the group endpoint; set to your vLLM host
+env_key = "VLLM_API_KEY"
+wire_api = "responses"           # the endpoint serves /v1/responses; this Codex version wants it
+
+[sandbox_workspace_write]
+network_access = false           # implement runs work offline inside the worktree
+writable_roots = ["~/.cache/uv"] # `uv run` needs its cache even in the sandbox

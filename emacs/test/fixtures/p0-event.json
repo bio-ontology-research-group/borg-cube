@@ -1,0 +1,5 @@
+{"ts": "2026-09-02T09:17:00+03:00", "seq": 1046, "source": "cube",
+ "session": "fix-tests", "event": "attention", "severity": "error",
+ "title": "P0: Codex runner exhausted", "body_file": null, "run_id": null,
+ "bead": "cube-410", "resume_id": null,
+ "data": {"incident_severity": "p0", "service": "codex"}}

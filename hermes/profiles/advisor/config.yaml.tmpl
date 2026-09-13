@@ -1,0 +1,56 @@
+# Hermes config.yaml template for profile {{PROFILE}} (student-facing advisor bot @borg-advisor).
+# Rendered by `cube hermes render advisor` into ~/.hermes/profiles/{{PROFILE}}/config.yaml on ws.
+# Placeholders: {{PROFILE}} {{CUBE_ROOT}} {{VLLM_BASE_URL}} {{MATTERMOST_URL}} {{MATTERMOST_ALLOWED_USERS}} {{MATTERMOST_HOME_CHANNEL}}
+# Key names follow the Hermes version pinned on ws; run `hermes config validate` after rendering (Hermes churn is a known risk).
+# Secrets are never in this file: tokens come from ~/.hermes/profiles/{{PROFILE}}/.env (see env.example).
+
+model:
+  default: z-ai/glm-5.3-flash        # same OpenRouter model hermes-ws uses; never an Anthropic OAuth model (ADR-0006)
+  provider: openrouter
+
+providers:
+  openrouter:
+    api_key_env: OPENROUTER_API_KEY
+  local:
+    type: openai
+    base_url: {{VLLM_BASE_URL}}       # vLLM on unimatrix node005, OpenAI-compatible; required for privacy:local-only material (ADR-0007)
+    api_key_env: VLLM_API_KEY         # vLLM accepts any token when started without --api-key; keep the env var set to a dummy value
+    model: local                      # cube local status reports the served model id
+
+fallback_providers:
+  - local
+
+group_sessions_per_user: true         # one session per DM user (ADR-0003)
+
+gateway:
+  platforms:
+    mattermost:
+      enabled: true
+      url_env: MATTERMOST_URL                # {{MATTERMOST_URL}}
+      token_env: MATTERMOST_TOKEN            # bot token for @borg-advisor
+      allowed_users: "{{MATTERMOST_ALLOWED_USERS}}"   # generated from contacts.yaml grants ONLY; empty means the bot answers nobody
+      home_channel: "{{MATTERMOST_HOME_CHANNEL}}"     # Robert-only channel for status lines; never a student channel
+      require_mention: false                 # DMs only; group channels are not joined
+  require_mention: true
+
+hooks:
+  pre_prompt:
+    - {{CUBE_ROOT}}/hermes/hooks/pre_prompt_student_context.sh   # injects the DM user's rendered context (cube student context)
+
+skills:
+  dirs:
+    - ~/.hermes/profiles/{{PROFILE}}/skills   # deployed by `just deploy-skills` (category advising: phd-milestones, mentoring-session agenda-only)
+  disabled:
+    - email
+    - google-workspace                        # this bot has no mail or calendar access
+
+cron:
+  timezone: Asia/Riyadh
+  jobs:
+    - name: advisor-weekly-checkin
+      schedule: "0 10 * * 3"                  # Wed 10:00, granted students only (ADR-0004: judgment delivered through the bot identity)
+      script: {{CUBE_ROOT}}/.venv/bin/cube student checkin --granted-only --via hermes
+      enabled: false                          # enabled by cube contact grant when the first weekly-checkin grant exists
+
+logging:
+  transcripts: ~/.hermes/profiles/{{PROFILE}}/transcripts   # privacy:local-only; never copied off ws

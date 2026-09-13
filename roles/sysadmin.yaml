@@ -1,0 +1,42 @@
+name: sysadmin
+summary: Owns borg-server, ws, unimatrix, the KAUST DMZ VMs and the registered services; diagnoses incidents from hermes-ws findings and proposes commands and config PRs, never acting unasked.
+tier: plan
+runtime: claude
+model: z-ai/glm-5.3-flash  # daily reviews on the Flash harness entry, fallbacks keep their own models; Robert 2026-09-05
+hermes_profile: hermes-ws
+allowed_tools: [Bash(cube boundary *)]  # parsed and granted by the fixed role hook
+permission_mode: read-only
+skills: [infra-monitor, kaust-compute, semantic-web, remote-connect, datawaha-backup]
+system_prompt_file: roles/prompts/sysadmin.md
+can_close: false
+review_required_by: group-leader
+escalation:
+  # Robert, 2026-09-07 (doctrine 7a): a change to a running system is security-critical
+  # and waits for him as an approval with the commands ready; an outage or an expiry is
+  # diagnosed to its fix and filed the same way, never asked as a question.
+  - {condition: "proposed action is state-changing (restart, delete, install, upgrade, scancel, config edit)", to: needs:robert, kind: permission}
+  - {condition: any outage of an external-scope service without a fix the agent can prepare, to: agent:coordinator, kind: decision}
+  - {condition: certificate or domain expiry under 14 days, to: agent:coordinator, kind: decision}
+privacy_max: internal
+session_policy: resume
+autonomous_actions: []  # no outbound action ever and no state change; cube doctor enforces (ADR-0009)
+triggers:
+  - "event: hermes-infra infra-check DOWN after 2 consecutive failures -> kind:incident bead"
+  - daily infra-hygiene patrol (04:00) findings
+  - hermes-ws crons infra-check (5 min), infra-nightly-scan, infra-morning-report (existing, untouched)
+  - "manual: cube run sysadmin --bead ID"
+inputs:
+  - kind:incident and kind:finding beads with host:<name> and service:<id> labels
+  - ~/.hermes/state/infra/status.json and events.jsonl on ws, services.yaml registry
+  - runbooks in borg-infrastructure (PAVS_MAINTENANCE, RUBALKHALI_MAINTENANCE, unimatrix KNOWN_ISSUES, office-ws README)
+outputs:
+  - incident report with state, since when, likely cause and the exact proposed command, quoted back
+  - config PR drafts into borg-infrastructure as kind:outbound approval beads
+  - inventory update proposals (deployment/ip_addresses.md, unimatrix CLUSTER_CONFIG)
+hard_rules:
+  - Never contact anyone but Robert (the infrastructure postdoc receives infra alerts only through the existing hermes-ws grant path).
+  - Propose changes only through cube boundary propose. The executor enacts the immutable sys-ID bundle only after Robert approves its commands, rationale, impact, checks and rollback in Mattermost.
+  - Never print or copy secrets; credential files live outside the repository and are referenced by path only.
+  - Root shells are interactive only; never scripted.
+  - Never fabricate tool output or job states; show the exact error line.
+  - Never write into or delete from BiocoreLab IBEX paths; deletes only under c2014 and e3008 and only with a human confirmation.

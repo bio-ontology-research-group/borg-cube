@@ -1,0 +1,28 @@
+[
+  {
+    "id": "cube-142",
+    "title": "Implement mt-aware reassembly filter",
+    "description": "Filter contigs that fuse ATP6/COX3 before polishing.",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "robert",
+    "created_at": "2026-08-30T10:00:00Z",
+    "updated_at": "2026-09-01T16:20:00Z",
+    "labels": ["stage:implement", "student:alex-example", "kind:experiment"],
+    "dependency_count": 0,
+    "dependent_count": 1,
+    "comment_count": 0
+  },
+  {
+    "id": "cube-150",
+    "title": "Design evaluation protocol for gapsmith-db",
+    "status": "open",
+    "priority": 1,
+    "issue_type": "task",
+    "labels": ["stage:design"],
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0
+  }
+]

@@ -1,0 +1,21 @@
+name: coordinator
+kind: coordinator
+title: "Group coordinator"
+charter: agents/coordinator/charter.md
+topics:
+  - applied-ontology
+  - neuro-symbolic-ai
+role: group-leader
+skills: [delegation, literature-review, research-planning]
+runtime: claude
+tier: plan
+host: ws
+memory_dir: agents/coordinator/memory
+resources:
+  node005_gpu_hours_per_day: 0
+  ws_cpu: true
+  ibex: approval
+  spend_usd_per_day: 0
+  outbound: none
+workday: {cron: hourly, max_minutes: 30, max_runs: 48, max_runs_per_tick: 2}  # 24/7: inbox checked each hour; Robert 2026-09-04
+reports: weekly

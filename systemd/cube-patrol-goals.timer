@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.goals ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol goals timer (every 15 minutes, tell Robert when a goal is complete)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@goals.service
+
+[Install]
+WantedBy=timers.target

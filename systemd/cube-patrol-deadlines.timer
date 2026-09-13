@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.deadlines ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol deadlines timer (daily 07:20, 7/30-day horizon from deadlines.md)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*-*-* 07:20:00
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@deadlines.service
+
+[Install]
+WantedBy=timers.target

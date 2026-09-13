@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.milestones ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol milestones timer (daily 07:00, 180/90/30-day milestone warnings)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*-*-* 07:00:00
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@milestones.service
+
+[Install]
+WantedBy=timers.target

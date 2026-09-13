@@ -1,0 +1,24 @@
+# borg-cube worker profile for Codex on OpenRouter, saved as
+# ~/.codex/cube-openrouter.config.toml on ws. Codex reads a profile from this
+# sibling file; borg-cube passes `-p cube-openrouter` and pins the model from the
+# cube.yaml tier entry (`-c model=...`). The key comes from OPENROUTER_API_KEY in
+# the process environment (borg-cube loads .env); nothing secret lives here.
+# Verified 2026-09-05 with codex-cli 0.153.3 and z-ai/glm-5.3-flash:
+#   codex exec -p cube-openrouter --sandbox read-only --skip-git-repo-check 'say ok'
+
+model = "z-ai/glm-5.3-flash"
+model_provider = "openrouter"
+approval_policy = "never"        # headless; the sandbox and the cube review gate are the controls
+sandbox_mode = "workspace-write" # the runner overrides with --sandbox read-only for audits
+web_search = "disabled"          # OpenRouter rejects Codex's server-side web search tool
+model_reasoning_effort = "medium" # GLM endpoints refuse requests that disable reasoning
+
+[model_providers.openrouter]
+name = "OpenRouter"
+base_url = "https://openrouter.ai/api/v1"
+env_key = "OPENROUTER_API_KEY"
+wire_api = "responses"           # this Codex version no longer accepts "chat"
+
+[sandbox_workspace_write]
+network_access = false           # implement runs work offline inside the worktree
+writable_roots = ["~/.cache/uv"] # `uv run` needs its cache even in the sandbox

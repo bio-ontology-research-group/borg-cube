@@ -1,0 +1,2049 @@
+# Grounding sources for borg-cube skills. Schema per entry:
+#   id            lowercase, stable, cited as [id] in distilled files and Sources blocks
+#   type          article | book | report | web | institutional | spec
+#   citation      human-readable reference (title included; corpus_verify matches it)
+#   doi, url      optional; never invented, null when unknown
+#   license       SPDX-like label or "proprietary"
+#   oa            true (downloadable), false (cite only), "web" (HTML page, store locally)
+#   excerpt_ok    true | false | quote-rules-only (KAUST pages: quote rules short, never republish)
+#   topics        distilled-topic tags used by corpus_fetch --topic
+#   verified_by   web-search | fetch | robert | memory   (memory: corpus_verify must confirm)
+#   fetched       ISO date written by corpus_fetch; sha256 of the raw file
+#   notes         optional; for books the path of Robert's own notes under corpus/notes/
+#
+# corpus_fetch rewrites only the fetched/sha256 (and corpus_verify --mark-verified the
+# verified_by) lines in place, so comments in this file survive.
+sources:
+
+  # ---------------------------------------------------------------- KAUST institutional
+  - id: kaust-cemse-milestones
+    type: institutional
+    citation: "KAUST CEMSE Division, PhD and MS programme milestones page"
+    doi: null
+    url: https://cemse.kaust.edu.sa/
+    license: proprietary
+    oa: web
+    excerpt_ok: quote-rules-only
+    topics: [kaust-cemse-milestones, doctoral-process]
+    verified_by: robert
+    fetched: '2026-09-02'
+    sha256: 3ac736b7ac7bff15d4ed8b27f31947c9d69378575f3ba6e4a5e5bd77944f34b0
+    notes: "Exact page path to be confirmed by Robert; domain root recorded only. Store the page locally, quote rules short, never republish."
+  - id: kaust-registrar-program-guide
+    type: institutional
+    citation: "KAUST Office of the Registrar, Program guide (CS PhD and MS degree requirements)"
+    doi: null
+    url: https://registrar.kaust.edu.sa/
+    license: proprietary
+    oa: web
+    excerpt_ok: quote-rules-only
+    topics: [kaust-cemse-milestones, doctoral-process, course-design]
+    verified_by: robert
+    fetched: '2026-09-02'
+    sha256: 9667a9288f7656cd0bbe8e12018d7de2ba9c31793c1f1963e55e363bf58a5b47
+    notes: "Exact guide URL and academic year to be confirmed by Robert."
+  - id: kaust-graduate-affairs-thesis-policy
+    type: institutional
+    citation: "KAUST Graduate Affairs, Thesis and dissertation policy and formatting guidelines (with LaTeX template)"
+    doi: null
+    url: null
+    license: proprietary
+    oa: false
+    excerpt_ok: quote-rules-only
+    topics: [kaust-cemse-milestones, thesis-writing]
+    verified_by: robert
+    fetched: null
+    sha256: null
+    notes: "URL to be supplied by Robert; may live behind the KAUST portal."
+  - id: kaust-proposal-format
+    type: institutional
+    citation: "KAUST PhD research proposal format (10-page proposal and defense rules)"
+    doi: null
+    url: null
+    license: proprietary
+    oa: false
+    excerpt_ok: quote-rules-only
+    topics: [kaust-cemse-milestones, research-planning]
+    verified_by: robert
+    fetched: null
+    sha256: null
+  - id: kaust-internal-calls
+    type: institutional
+    citation: "KAUST internal funding calls (CRG, Impact Acceleration) programme pages"
+    doi: null
+    url: null
+    license: proprietary
+    oa: false
+    excerpt_ok: quote-rules-only
+    topics: [grant-writing]
+    verified_by: robert
+    fetched: null
+    sha256: null
+
+  # ---------------------------------------------------------------- doctoral process
+  - id: marino2014
+    type: article
+    citation: "Marino J, Stefan MI, Blackford S (2014) Ten simple rules for finishing your PhD. PLoS Comput Biol 10(12): e1003954"
+    doi: 10.1371/journal.pcbi.1003954
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [doctoral-process, thesis-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 84e38305b3f058473fc1f3d5908eec946226a578335f4901acb709f59762698a
+  - id: gu2007
+    type: article
+    citation: "Gu J, Bourne PE (2007) Ten simple rules for graduate students. PLoS Comput Biol 3(11): e229"
+    doi: 10.1371/journal.pcbi.0030229
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [doctoral-process]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: ec58b317184a8b2af500582bb0f699906d65e968e6e396a011e6f70931701c82
+  - id: pcbi-2025-msc-thesis
+    type: article
+    citation: 'Saccenti E, Furlan C (2025) Ten simple rules to complete successfully a computational
+  MSc thesis project. PLOS Comput Biol 21(1): e1012756'
+    doi: 10.1371/journal.pcbi.1012756
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [doctoral-process, thesis-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: cef4c96a00e2989d3252ddc2ce9746da8aa5568a128bbda28f10553a6b577680
+    notes: "Title and authors from memory, low confidence; article number from doc/plan.md."
+  - id: pcbi-2021-interdisciplinary-phd
+    type: article
+    citation: 'Islam S, Wells C (2021) Ten simple rules for navigating the computational aspect
+  of an interdisciplinary PhD. PLOS Comput Biol 17(2): e1008554'
+    doi: 10.1371/journal.pcbi.1008554
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [doctoral-process]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: af8b3122f5f85e877f423e7cff5fbeb4019593945c9c6ad21de56d03cc6f228e
+    notes: "Title and authors from memory, low confidence; article number from doc/plan.md."
+  - id: nap2018-graduate-stem
+    type: report
+    citation: "National Academies of Sciences, Engineering, and Medicine (2018) Graduate STEM Education for the 21st Century. Washington, DC: The National Academies Press"
+    doi: 10.17226/25038
+    url: https://nap.nationalacademies.org/catalog/25038
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [doctoral-process, mentoring]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "Free-to-read PDF, manual download click; summarise only. DOI from memory, medium confidence."
+  - id: phillips-pugh-how-to-get-a-phd
+    type: book
+    citation: "Phillips EM, Pugh DS. How to Get a PhD: A Handbook for Students and Their Supervisors. Open University Press (6th ed. 2015)"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [doctoral-process, supervision-and-wellbeing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/phillips-pugh-how-to-get-a-phd.md
+  - id: lovitts2001
+    type: book
+    citation: "Lovitts BE (2001) Leaving the Ivory Tower: The Causes and Consequences of Departure from Doctoral Study. Rowman & Littlefield"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [doctoral-process]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/lovitts2001.md
+
+  # ---------------------------------------------------------------- mentoring
+  - id: nap2019-mentorship
+    type: report
+    citation: "National Academies of Sciences, Engineering, and Medicine (2019) The Science of Effective Mentorship in STEMM. Washington, DC: The National Academies Press"
+    doi: 10.17226/25568
+    url: https://nap.nationalacademies.org/catalog/25568
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [mentoring, progress-assessment]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "Free-to-read PDF, manual download click; summarise only."
+  - id: masters2017
+    type: article
+    citation: "Masters KS, Kreeger PK (2017) Ten simple rules for developing a mentor-mentee expectations document. PLoS Comput Biol 13(9): e1005709"
+    doi: 10.1371/journal.pcbi.1005709
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [mentoring]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 155baa4b69459ea8b2cd8a022c4facec56f993eb6c99d6ee0e8015fc7652c8d2
+  - id: quynn2026
+    type: article
+    citation: "Quynn K et al. (2026) Ten simple rules for a productive mentor-mentee writing partnership. PLoS Comput Biol 22: e1014250"
+    doi: 10.1371/journal.pcbi.1014250
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [mentoring, paper-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 8f66c1aaa2dcecb3ab6305a47e6ce5e5d1cbe3ebaa4f123689a04435672722f5
+    notes: "Title from memory, low confidence; article number from doc/plan.md."
+  - id: pcbi-2022-mentorship-programme
+    type: article
+    citation: 'Treasure AM, Hall SM, Lesko I, Moore D, Sharan M, et al. (2022) Ten simple rules
+  for establishing a mentorship programme. PLOS Comput Biol 18(5): e1010015'
+    doi: 10.1371/journal.pcbi.1010015
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [mentoring]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 0e94f9ec766e687a392a581c5250868f9def171324494b9e2e2ba3c66d45568c
+    notes: "Title from memory, low confidence; article number from doc/plan.md."
+  - id: hhmi-bwf-making-the-right-moves
+    type: report
+    citation: "Howard Hughes Medical Institute and Burroughs Wellcome Fund (2006) Making the Right Moves: A Practical Guide to Scientific Management for Postdocs and New Faculty, 2nd ed."
+    doi: null
+    url: https://www.hhmi.org/science-education/programs/making-right-moves
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [mentoring, lab-management, grant-writing, task-decomposition]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: "Freely downloadable PDF; URL from memory, medium confidence. Summarise only."
+  - id: myidp
+    type: web
+    citation: "Science Careers, myIDP: Individual Development Plan for science PhDs and postdocs"
+    url: https://myidp.sciencecareers.org/
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [mentoring]
+    verified_by: memory
+    fetched: null
+    sha256: null
+  - id: vitae-rdf
+    type: web
+    citation: "Vitae (2010) Researcher Development Framework, domains A to D"
+    url: https://www.vitae.ac.uk/researchers-professional-development/about-the-vitae-researcher-development-framework
+    license: CC-BY-NC-ND
+    oa: web
+    excerpt_ok: false
+    topics: [mentoring, progress-assessment]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: a208db12fadce2c1b2ee399eff0c3d9da3b933a0184e9daa33cd6d95c57943a4
+  - id: cimer-entering-mentoring
+    type: web
+    citation: "Center for the Improvement of Mentored Experiences in Research (CIMER), Entering Mentoring curriculum themes"
+    url: https://cimerproject.org/
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [mentoring]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 3381a19d8cd53a9af29f1b308f62ac380ede78cb0f40bd1ac558a1c065ca6f87
+  - id: handelsman2005
+    type: book
+    citation: "Handelsman J, Pfund C, Lauffer SM, Pribbenow CM (2005) Entering Mentoring: A Seminar to Train a New Generation of Scientists. University of Wisconsin Press"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [mentoring]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/handelsman2005.md
+  - id: lee2007-nature-mentors
+    type: article
+    citation: "Lee A, Dennis C, Campbell P (2007) Nature's guide for mentors. Nature 447: 791-797"
+    doi: 10.1038/447791a
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [mentoring]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: pfund2006
+    type: article
+    citation: "Pfund C, Pribbenow CM, Branchaw J, Lauffer SM, Handelsman J (2006) The merits of training mentors. Science 311: 473-474"
+    doi: 10.1126/science.1123806
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [mentoring]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+
+  # ---------------------------------------------------------------- supervision and wellbeing
+  - id: crossley2025
+    type: article
+    citation: 'Crossley RM, Maini PK (2025) Ten simple rules for early-career researchers supervising
+  short-term student projects. PLOS Comput Biol 21(11): e1013690'
+    doi: 10.1371/journal.pcbi.1013690
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [supervision-and-wellbeing, task-decomposition]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 08b09719e482743de616dced0239dfdd52efcd5973f58091ae55f12b63f54c12
+    notes: "Title from memory, low confidence; article number from doc/plan.md."
+  - id: jabre2021
+    type: article
+    citation: "Jabre L, Bannister C, McCallum ES, Tremblay E (2021) Ten simple rules for choosing a PhD supervisor. PLoS Comput Biol 17(9): e1009330"
+    doi: 10.1371/journal.pcbi.1009330
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [supervision-and-wellbeing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 5928f87a66e685069579eb01a74792c3de197780ee854ed8c7e6b15d3baacd9f
+  - id: maestre2019
+    type: article
+    citation: "Maestre FT (2019) Ten simple rules towards healthier research labs. PLoS Comput Biol 15(4): e1006914"
+    doi: 10.1371/journal.pcbi.1006914
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [supervision-and-wellbeing, lab-management]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: dccd1d0dddd87b03fc157eddaef412190ae39256f096d179a63ddbfede5de6bf
+  - id: evans2018
+    type: article
+    citation: "Evans TM, Bira L, Gastelum JB, Weiss LT, Vanderford NL (2018) Evidence for a mental health crisis in graduate education. Nature Biotechnology 36: 282-284"
+    doi: 10.1038/nbt.4089
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [supervision-and-wellbeing]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: woolston2019
+    type: article
+    citation: "Woolston C (2019) PhDs: the tortuous truth. Nature 575: 403-406"
+    doi: 10.1038/d41586-019-03459-7
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [supervision-and-wellbeing]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: lee2008-supervision
+    type: article
+    citation: "Lee A (2008) How are doctoral students supervised? Concepts of doctoral research supervision. Studies in Higher Education 33(3): 267-281"
+    doi: 10.1080/03075070802049202
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [supervision-and-wellbeing]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: delamont-supervising-the-doctorate
+    type: book
+    citation: "Delamont S, Atkinson P, Parry O. Supervising the Doctorate: A Guide to Success, 2nd ed. Open University Press (2004)"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [supervision-and-wellbeing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/delamont-supervising-the-doctorate.md
+  - id: wisker-good-supervisor
+    type: book
+    citation: "Wisker G. The Good Supervisor: Supervising Postgraduate and Undergraduate Research for Doctoral Theses and Dissertations, 2nd ed. Palgrave Macmillan (2012)"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [supervision-and-wellbeing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/wisker-good-supervisor.md
+
+  # ---------------------------------------------------------------- progress assessment and research practice
+  - id: schwab2022
+    type: article
+    citation: "Schwab S, Janiaud P, Dayan M, et al. (2022) Ten simple rules for good research practice. PLoS Comput Biol 18(6): e1010139"
+    doi: 10.1371/journal.pcbi.1010139
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [progress-assessment, research-planning, lab-management]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 4588713574299621ba7aa41d457c20e0d8008f4792b97a5a629baf65edc20e6f
+  - id: wilson2017
+    type: article
+    citation: "Wilson G, Bryan J, Cranston K, Kitzes J, Nederbragt L, Teal TK (2017) Good enough practices in scientific computing. PLoS Comput Biol 13(6): e1005510"
+    doi: 10.1371/journal.pcbi.1005510
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [progress-assessment, research-software-practice, data-management]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: ed60d4b71c36d650757c7adfe1d52afb5b6b125b7b747f74f79d5ad80e94c017
+  - id: schnell2015
+    type: article
+    citation: "Schnell S (2015) Ten simple rules for a computational biologist's laboratory notebook. PLoS Comput Biol 11(9): e1004385"
+    doi: 10.1371/journal.pcbi.1004385
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [progress-assessment, experiment-tracking]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 24ebd796f1315d61a0a1c9291041ef3e3e1b27ef81daf1a4022801967ebc56c7
+  - id: sutherland2013
+    type: article
+    citation: "Sutherland WJ, Spiegelhalter D, Burgman M (2013) Policy: Twenty tips for interpreting scientific claims. Nature 503: 335-337"
+    doi: 10.1038/503335a
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [progress-assessment, research-planning]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: anderson-krathwohl2001
+    type: book
+    citation: "Anderson LW, Krathwohl DR (eds) (2001) A Taxonomy for Learning, Teaching, and Assessing: A Revision of Bloom's Taxonomy of Educational Objectives. Longman"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [progress-assessment, learning-science, course-design]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/anderson-krathwohl2001.md
+
+  # ---------------------------------------------------------------- thesis and paper writing
+  - id: zhang2014
+    type: article
+    citation: "Zhang W (2014) Ten simple rules for writing research papers. PLoS Comput Biol 10(1): e1003453"
+    doi: 10.1371/journal.pcbi.1003453
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [paper-writing, thesis-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: a2ed9f27147179cb086396e54f191300dc28318e2952b3cc9e9f5ee4475d735b
+  - id: mensh2017
+    type: article
+    citation: "Mensh B, Kording K (2017) Ten simple rules for structuring papers. PLoS Comput Biol 13(9): e1005619"
+    doi: 10.1371/journal.pcbi.1005619
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [paper-writing, thesis-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: f02a2c14c630369f2058403a448f94e7aaeafb3c1cc681c9d6862812590b7b6c
+  - id: bourne2007-oral
+    type: article
+    citation: "Bourne PE (2007) Ten simple rules for making good oral presentations. PLoS Comput Biol 3(4): e77"
+    doi: 10.1371/journal.pcbi.0030077
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [talk-design, thesis-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 6362ef644270ba0b0e2f28042dbd143a05300751d14b7349c2e932ce16ea22cd
+  - id: naegle2021
+    type: article
+    citation: "Naegle KM (2021) Ten simple rules for effective presentation slides. PLoS Comput Biol 17(12): e1009554"
+    doi: 10.1371/journal.pcbi.1009554
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [talk-design, thesis-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: d91d08c0062815ba753175cb8dbd3f9ffe2b3c5c8edd0372cd4c6dae6e4b3e0c
+  - id: dunleavy2003
+    type: book
+    citation: "Dunleavy P (2003) Authoring a PhD: How to Plan, Draft, Write and Finish a Doctoral Thesis or Dissertation. Palgrave Macmillan"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [thesis-writing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: null   # reading notes pending; Robert adds corpus/notes/dunleavy2003.md
+  - id: evans-gruba-zobel-better-thesis
+    type: book
+    citation: "Evans D, Gruba P, Zobel J (2014) How to Write a Better Thesis, 3rd ed. Springer"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [thesis-writing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: null   # reading notes pending; Robert adds corpus/notes/evans-gruba-zobel-better-thesis.md
+  - id: zobel-writing-for-computer-science
+    type: book
+    citation: "Zobel J (2014) Writing for Computer Science, 3rd ed. Springer"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [thesis-writing, paper-writing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/zobel-writing-for-computer-science.md
+  - id: bourne2005
+    type: article
+    citation: "Bourne PE (2005) Ten simple rules for getting published. PLoS Comput Biol 1(5): e57"
+    doi: 10.1371/journal.pcbi.0010057
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [paper-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 2e59f988f388e04eea06273ce51615e40a6a9df8df588702ba9726255c6706a1
+  - id: frassl2018
+    type: article
+    citation: "Frassl MA, Hamilton DP, Denfeld BA, et al. (2018) Ten simple rules for collaboratively writing a multi-authored paper. PLoS Comput Biol 14(11): e1006508"
+    doi: 10.1371/journal.pcbi.1006508
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [paper-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: ae64e526caa2ad528ba03e16efc14f0cabddcd5c53e53d51d2986980881bf6f1
+  - id: romano2020
+    type: article
+    citation: "Romano JD, Moore JH (2020) Ten simple rules for writing a paper about scientific software. PLoS Comput Biol 16(11): e1008390"
+    doi: 10.1371/journal.pcbi.1008390
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [paper-writing, research-software-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 8282569ef0ab66b8d46347237ae6b8228440e244cca422a60245e2713e2d4e71
+    notes: "doc/plan.md names 'Romano & Nolte'; author list from memory, verify."
+  - id: gopen-swan1990
+    type: web
+    citation: "Gopen GD, Swan JA (1990) The science of scientific writing. American Scientist 78(6): 550-558"
+    url: https://www.americanscientist.org/blog/the-long-view/the-science-of-scientific-writing
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [paper-writing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+  - id: plaxco2010
+    type: article
+    citation: "Plaxco KW (2010) The art of writing science. Protein Science 19(12): 2261-2266"
+    doi: 10.1002/pro.514
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [paper-writing]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: rougier2014
+    type: article
+    citation: "Rougier NP, Droettboom M, Bourne PE (2014) Ten simple rules for better figures. PLoS Comput Biol 10(9): e1003833"
+    doi: 10.1371/journal.pcbi.1003833
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [paper-writing, figures]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 95b6714aa1ce1e058475c9a807fa85e058bdaa5c3261e792dc5e8dfd9ae83ad6
+  - id: weissgerber2015
+    type: article
+    citation: "Weissgerber TL, Milic NM, Winham SJ, Garovic VD (2015) Beyond bar and line graphs: time for a new data presentation paradigm. PLoS Biol 13(4): e1002128"
+    doi: 10.1371/journal.pbio.1002128
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [figures, paper-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 7207d698b755ec973540b869e750e57e3f3f8caea3b2f64a0f8714a229d1ae76
+  - id: icmje
+    type: web
+    citation: "International Committee of Medical Journal Editors, Recommendations for the Conduct, Reporting, Editing, and Publication of Scholarly Work in Medical Journals"
+    url: https://www.icmje.org/recommendations/
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [paper-writing, reporting-standards]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 0adb72d827ccd66c066698f6c3bc31c3a7f8f3fe7be6fa6e287d36ea3d83f73d
+  - id: credit
+    type: spec
+    citation: "NISO, CRediT: Contributor Roles Taxonomy (ANSI/NISO Z39.104-2022)"
+    url: https://credit.niso.org/
+    license: CC-BY-4.0
+    oa: web
+    excerpt_ok: true
+    topics: [paper-writing, reporting-standards]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: d8b1fa09e15a5a098ae32a2c14e1f01579209d634d7497f965744c6269d4dccb
+  - id: miro2018
+    type: article
+    citation: "Matentzoglu N, Malone J, Mungall C, Stevens R (2018) MIRO: guidelines for minimum information for the reporting of an ontology. Journal of Biomedical Semantics 9: 6"
+    doi: 10.1186/s13326-017-0172-7
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [reporting-standards, ontology-engineering]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 32ed63159c77e21ee19ca1b9aa3213ccf0218eb59539560b132a8e68ef0e18ea
+    notes: "DOI from memory, medium confidence."
+  - id: neurips-checklist
+    type: web
+    citation: "NeurIPS Paper Checklist (reproducibility, limitations, ethics)"
+    url: https://neurips.cc/public/guides/PaperChecklist
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [reporting-standards, ml-rigor]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 48aeb742c608d4ad5f9e5cab2914939a9db7115af125fb19bae1d3cac439fd94
+  - id: whitesides2004
+    type: article
+    citation: "Whitesides GM (2004) Whitesides' group: writing a paper. Advanced Materials 16(15): 1375-1377"
+    doi: 10.1002/adma.200400767
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [paper-writing]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: schimel-writing-science
+    type: book
+    citation: "Schimel J (2012) Writing Science: How to Write Papers That Get Cited and Proposals That Get Funded. Oxford University Press"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [paper-writing, grant-writing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: null   # reading notes pending; Robert adds corpus/notes/schimel-writing-science.md
+  - id: heard-scientists-guide-to-writing
+    type: book
+    citation: "Heard SB (2016) The Scientist's Guide to Writing. Princeton University Press"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [paper-writing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: null   # reading notes pending; Robert adds corpus/notes/heard-scientists-guide-to-writing.md
+  - id: tufte-visual-display
+    type: book
+    citation: "Tufte ER (2001) The Visual Display of Quantitative Information, 2nd ed. Graphics Press"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [figures, talk-design]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/tufte-visual-display.md
+
+  # ---------------------------------------------------------------- peer review
+  - id: noble2017
+    type: article
+    citation: "Noble WS (2017) Ten simple rules for writing a response to reviewers. PLoS Comput Biol 13(10): e1005730"
+    doi: 10.1371/journal.pcbi.1005730
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [peer-review]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 7a9dca63168f30698b05742a99f61d5b3b87cf33a01e374b702c8fc22dbfbfbf
+  - id: bourne-korngreen2006
+    type: article
+    citation: "Bourne PE, Korngreen A (2006) Ten simple rules for reviewers. PLoS Comput Biol 2(9): e110"
+    doi: 10.1371/journal.pcbi.0020110
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [peer-review]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 95c8274242875b530f49e1911dc2def433d1951326569cf69b39542051a1d0ab
+
+  # ---------------------------------------------------------------- research planning and rigor
+  - id: alon2009
+    type: article
+    citation: "Alon U (2009) How to choose a good scientific problem. Molecular Cell 35(6): 726-728"
+    doi: 10.1016/j.molcel.2009.09.013
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [research-planning]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: hamming1986
+    type: web
+    citation: "Hamming RW (1986) You and your research. Transcript of the Bell Communications Research Colloquium Seminar, 7 March 1986"
+    url: https://www.cs.virginia.edu/~robins/YouAndYourResearch.html
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [research-planning]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 7700c07e3f027676192f76052dfd471e254e35dc28458ce3d4595be6a2d5d6b0
+  - id: heilmeier-catechism
+    type: web
+    citation: "DARPA, The Heilmeier Catechism"
+    url: https://www.darpa.mil/work-with-us/heilmeier-catechism
+    license: public-domain
+    oa: web
+    excerpt_ok: true
+    topics: [research-planning, grant-writing]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 1ac50a26cce633ff60d2ee06138fb7d434a56157c68cd4369996661bcbb74193
+  - id: kass2016
+    type: article
+    citation: "Kass RE, Caffo BS, Davidian M, Meng XL, Yu B, Reid N (2016) Ten simple rules for effective statistical practice. PLoS Comput Biol 12(6): e1004961"
+    doi: 10.1371/journal.pcbi.1004961
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [research-planning, ml-rigor]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 527fc8f7054f80b2a2fd277afb9a1ea7ada2f96659140764729adf12a78d00ad
+  - id: osborne2014
+    type: article
+    citation: "Osborne JM, Bernabeu MO, Bruna M, et al. (2014) Ten simple rules for effective computational research. PLoS Comput Biol 10(3): e1003506"
+    doi: 10.1371/journal.pcbi.1003506
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [research-planning, research-software-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: f54a6dce5405a98f80667d4483643f77c2c1e76934bd83bc1acf38c83c6238b1
+  - id: ioannidis2005
+    type: article
+    citation: "Ioannidis JPA (2005) Why most published research findings are false. PLoS Med 2(8): e124"
+    doi: 10.1371/journal.pmed.0020124
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [research-planning, ml-rigor]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: ffc1005680cb620eec4c913437dfabbf311b535cfe16cbaeb2faec1f92afc362
+  - id: kapoor-narayanan2023
+    type: article
+    citation: "Kapoor S, Narayanan A (2023) Leakage and the reproducibility crisis in machine-learning-based science. Patterns 4(9): 100804"
+    doi: 10.1016/j.patter.2023.100804
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [ml-rigor, reproducibility]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 3d005e9bde861aaad58dcc9983815107cca2aaa3b9fad8eb748a205ca9489c25
+    notes: "DOI from memory, medium confidence."
+  - id: reforms2024
+    type: article
+    citation: "Kapoor S, Cantrell EM, Peng K, et al. (2024) REFORMS: Consensus-based recommendations for machine-learning-based science. Science Advances 10(18): eadk3452"
+    doi: 10.1126/sciadv.adk3452
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [ml-rigor, reporting-standards]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: dome2021
+    type: article
+    citation: "Walsh I, Fishman D, Garcia-Gasulla D, et al. (2021) DOME: recommendations for supervised machine learning validation in biology. Nature Methods 18: 1122-1127"
+    doi: 10.1038/s41592-021-01205-4
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [ml-rigor, reporting-standards]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: chicco2017
+    type: article
+    citation: "Chicco D (2017) Ten quick tips for machine learning in computational biology. BioData Mining 10: 35"
+    doi: 10.1186/s13040-017-0155-3
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [ml-rigor]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 32ed63159c77e21ee19ca1b9aa3213ccf0218eb59539560b132a8e68ef0e18ea
+    notes: "DOI from memory, medium confidence."
+  - id: platt1964
+    type: article
+    citation: 'Platt JR (1964) Strong Inference: Certain systematic methods of scientific thinking
+  may produce much more rapid progress than others. Science 146(3642): 347-353'
+    doi: 10.1126/science.146.3642.347
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [research-planning]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: booth-craft-of-research
+    type: book
+    citation: "Booth WC, Colomb GG, Williams JM, Bizup J, FitzGerald WT (2016) The Craft of Research, 4th ed. University of Chicago Press"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [research-planning, literature-review]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: null   # reading notes pending; Robert adds corpus/notes/booth-craft-of-research.md
+
+  # ---------------------------------------------------------------- literature review
+  - id: pautasso2013
+    type: article
+    citation: "Pautasso M (2013) Ten simple rules for writing a literature review. PLoS Comput Biol 9(7): e1003149"
+    doi: 10.1371/journal.pcbi.1003149
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [literature-review]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: c8b15037bfc77e25368ee210837f321eceb4869f12c1774ed139215167746b59
+  - id: carey2020
+    type: article
+    citation: "Carey MA, Steiner KL, Petri WA (2020) Ten simple rules for reading a scientific paper. PLoS Comput Biol 16(7): e1008032"
+    doi: 10.1371/journal.pcbi.1008032
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [literature-review]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 902729a94a310a65bfa86a48dcab464b3847cb541d1432778abe3d5370fb6ba1
+  - id: keshav2007
+    type: article
+    citation: "Keshav S (2007) How to read a paper. ACM SIGCOMM Computer Communication Review 37(3): 83-84"
+    doi: 10.1145/1273445.1273458
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [literature-review]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence; the author also hosts a free PDF."
+  - id: prisma2020
+    type: article
+    citation: "Page MJ, McKenzie JE, Bossuyt PM, et al. (2021) The PRISMA 2020 statement: an updated guideline for reporting systematic reviews. BMJ 372: n71"
+    doi: 10.1136/bmj.n71
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [literature-review, reporting-standards]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+  - id: grant-booth2009
+    type: article
+    citation: "Grant MJ, Booth A (2009) A typology of reviews: an analysis of 14 review types and associated methodologies. Health Information and Libraries Journal 26(2): 91-108"
+    doi: 10.1111/j.1471-1842.2009.00848.x
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [literature-review]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: kitchenham-charters2007
+    type: report
+    citation: "Kitchenham B, Charters S (2007) Guidelines for performing systematic literature reviews in software engineering. EBSE Technical Report EBSE-2007-01, Keele University and Durham University"
+    doi: null
+    url: null
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [literature-review]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: "Widely mirrored PDF; no canonical URL recorded."
+  - id: booth-sutton-papaioannou
+    type: book
+    citation: "Booth A, Sutton A, Papaioannou D (2016) Systematic Approaches to a Successful Literature Review, 2nd ed. SAGE"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [literature-review]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/booth-sutton-papaioannou.md
+  - id: webster-watson2002
+    type: article
+    citation: "Webster J, Watson RT (2002) Analyzing the past to prepare for the future: writing a literature review. MIS Quarterly 26(2): xiii-xxiii"
+    doi: null
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [literature-review]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: "No DOI recorded; cite by volume and issue."
+
+  # ---------------------------------------------------------------- experiment tracking and data
+  - id: sandve2013
+    type: article
+    citation: "Sandve GK, Nekrutenko A, Taylor J, Hovig E (2013) Ten simple rules for reproducible computational research. PLoS Comput Biol 9(10): e1003285"
+    doi: 10.1371/journal.pcbi.1003285
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [experiment-tracking, reproducibility]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 35648a3880bdd8bf30e8212a3847b7bd35f504ee5ccbd1ad3856d206acd181db
+  - id: rule2019
+    type: article
+    citation: "Rule A, Birmingham A, Zuniga C, et al. (2019) Ten simple rules for writing and sharing computational analyses in Jupyter Notebooks. PLoS Comput Biol 15(7): e1007007"
+    doi: 10.1371/journal.pcbi.1007007
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [experiment-tracking, reproducibility]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 30af1629e0fe31b51a82c8f01c901a0ecc6d13bb61bc601861aeb3d260397910
+  - id: hart2016
+    type: article
+    citation: "Hart EM, Barmby P, LeBauer D, et al. (2016) Ten simple rules for digital data storage. PLoS Comput Biol 12(10): e1005097"
+    doi: 10.1371/journal.pcbi.1005097
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [data-management, experiment-tracking]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 3bba052eb7cef3da829a03a789c5118e9993b401739c8cd6d2001a03dcfa778f
+    notes: "Article number from memory, medium confidence."
+  - id: michener2015
+    type: article
+    citation: "Michener WK (2015) Ten simple rules for creating a good data management plan. PLoS Comput Biol 11(10): e1004525"
+    doi: 10.1371/journal.pcbi.1004525
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [data-management]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 82a91413484b780432304d30330738b28a1d5d8fdbc1d4bfae69b62b0756b34d
+    notes: "Article number from memory, medium confidence."
+  - id: goodman2014
+    type: article
+    citation: "Goodman A, Pepe A, Blocker AW, et al. (2014) Ten simple rules for the care and feeding of scientific data. PLoS Comput Biol 10(4): e1003542"
+    doi: 10.1371/journal.pcbi.1003542
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [data-management]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: b8f0641374b4c516c2b043ea4df8d9ad7c4c1fea237e3ea8509d00f5b55fb2a0
+    notes: "Article number from memory, medium confidence."
+  - id: dodge2019
+    type: article
+    citation: "Dodge J, Gururangan S, Card D, Schwartz R, Smith NA (2019) Show your work: improved reporting of experimental results. Proceedings of EMNLP-IJCNLP 2019: 2185-2194"
+    doi: 10.18653/v1/D19-1224
+    url: https://arxiv.org/abs/1909.03004
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [experiment-tracking, ml-rigor]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 5cac75c527c93689e95509c01ae68721ac96ea5ec1f41aad7a5cd6b330326ce7
+    notes: "DOI from memory, medium confidence."
+  - id: pineau2021
+    type: article
+    citation: "Pineau J, Vincent-Lamarre P, Sinha K, et al. (2021) Improving reproducibility in machine learning research (a report from the NeurIPS 2019 reproducibility program). Journal of Machine Learning Research 22(164): 1-20"
+    doi: null
+    url: https://arxiv.org/abs/2003.12206
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [experiment-tracking, ml-rigor, reproducibility]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 0ea62d8ae3eede31d18faedf4246d59f9c07346df59b4ca99407ef4323d2307f
+  - id: mitchell2019-model-cards
+    type: article
+    citation: "Mitchell M, Wu S, Zaldivar A, et al. (2019) Model cards for model reporting. Proceedings of FAT* 2019: 220-229"
+    doi: 10.1145/3287560.3287596
+    url: https://arxiv.org/abs/1810.03993
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [experiment-tracking, reporting-standards]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: a4049cdc78c3d635bdfb5165e495b0672d85690d66ccd6f149079d6e11e64aa1
+    notes: "arXiv preprint is the OA copy; DOI from memory, medium confidence."
+  - id: gebru2021-datasheets
+    type: article
+    citation: "Gebru T, Morgenstern J, Vecchione B, et al. (2021) Datasheets for datasets. Communications of the ACM 64(12): 86-92"
+    doi: 10.1145/3458723
+    url: https://arxiv.org/abs/1803.09010
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [experiment-tracking, reporting-standards, data-management]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: c7f595988ee2c109631d5173fdae37ff1774c68ec17add51bd012f2a6e8792d0
+    notes: "arXiv preprint is the OA copy; DOI from memory, medium confidence."
+  - id: heil2021
+    type: article
+    citation: "Heil BJ, Hoffman MM, Markowetz F, Lee SI, Greene CS, Hicks SC (2021) Reproducibility standards for machine learning in the life sciences. Nature Methods 18: 1132-1135"
+    doi: 10.1038/s41592-021-01256-7
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [ml-rigor, reproducibility]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+
+  # ---------------------------------------------------------------- reproducibility
+  - id: peng2011
+    type: article
+    citation: "Peng RD (2011) Reproducible research in computational science. Science 334(6060): 1226-1227"
+    doi: 10.1126/science.1213847
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [reproducibility]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: stodden2016
+    type: article
+    citation: "Stodden V, McNutt M, Bailey DH, et al. (2016) Enhancing reproducibility for computational methods. Science 354(6317): 1240-1241"
+    doi: 10.1126/science.aah6168
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [reproducibility]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: nap2019-reproducibility
+    type: report
+    citation: "National Academies of Sciences, Engineering, and Medicine (2019) Reproducibility and Replicability in Science. Washington, DC: The National Academies Press"
+    doi: 10.17226/25303
+    url: https://nap.nationalacademies.org/catalog/25303
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [reproducibility]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "Free-to-read PDF, manual download click; summarise only."
+  - id: acm-badging
+    type: spec
+    citation: "ACM, Artifact Review and Badging, version 1.1 (2020)"
+    url: https://www.acm.org/publications/policies/artifact-review-and-badging-current
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [reproducibility]
+    verified_by: memory
+    fetched: null
+    sha256: null
+  - id: turing-way
+    type: web
+    citation: "The Turing Way Community, The Turing Way: A handbook for reproducible, ethical and collaborative research"
+    url: https://book.the-turing-way.org/
+    license: CC-BY-4.0
+    oa: web
+    excerpt_ok: true
+    topics: [reproducibility, research-software-practice, data-management]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 6952ea4385b7ddc89c2cbff917f32233baec2bd59b967a746b78ecef3173c8ae
+  - id: gruning2018
+    type: article
+    citation: "Gruning B, Chilton J, Koster J, et al. (2018) Practical computational reproducibility in the life sciences. Cell Systems 6(6): 631-635"
+    doi: 10.1016/j.cels.2018.03.014
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [reproducibility]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 2119a23d8e497af9d95c05203bf5168d8a389da7211e49a08874d788bc10a011
+    notes: "DOI from memory, medium confidence."
+  - id: nust2020
+    type: article
+    citation: "Nust D, Sochat V, Marwick B, et al. (2020) Ten simple rules for writing Dockerfiles for reproducible data science. PLoS Comput Biol 16(11): e1008316"
+    doi: 10.1371/journal.pcbi.1008316
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [reproducibility, research-software-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: ba692d421e5949dc0fea2a9afd029a8e300ba9dbc32a7dd85883381b4b924316
+
+  # ---------------------------------------------------------------- grants
+  - id: bourne-chalupa2006
+    type: article
+    citation: "Bourne PE, Chalupa LM (2006) Ten simple rules for getting grants. PLoS Comput Biol 2(2): e12"
+    doi: 10.1371/journal.pcbi.0020012
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [grant-writing]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 167cf91a7d994971c1f4876dfb49a314dfa7f850f5d1005ecaf1470baa30477c
+  - id: nih-application-guide
+    type: web
+    citation: "National Institutes of Health, How to Apply: Application Guide"
+    url: https://grants.nih.gov/grants/how-to-apply-application-guide.html
+    license: public-domain
+    oa: web
+    excerpt_ok: true
+    topics: [grant-writing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+  - id: erc-evaluation-criteria
+    type: web
+    citation: "European Research Council, Evaluation criteria and panels for frontier research grants"
+    url: https://erc.europa.eu/apply-grant
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [grant-writing]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: ab9b897aab2f1a7c140cc3f61abb9cb446d95e970483e0d9f14f850a03f66ec4
+
+  # ---------------------------------------------------------------- talks and posters
+  - id: alley-assertion-evidence
+    type: web
+    citation: "Alley M, Assertion-Evidence approach: resources and templates for scientific presentations"
+    url: https://www.assertion-evidence.com/
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [talk-design]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: af1e2404efef31932e9aedda8358a99c26950057c3f949dc65658027251f145e
+  - id: erren-bourne2007
+    type: article
+    citation: "Erren TC, Bourne PE (2007) Ten simple rules for a good poster presentation. PLoS Comput Biol 3(5): e102"
+    doi: 10.1371/journal.pcbi.0030102
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [talk-design]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 68869f2dd799b6571040b3b440534b9e63d264c546b156ee3355b65b7294996f
+  - id: alley-craft-of-scientific-presentations
+    type: book
+    citation: "Alley M (2013) The Craft of Scientific Presentations, 2nd ed. Springer"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [talk-design]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/alley-craft-of-scientific-presentations.md
+  - id: garner-alley2013
+    type: article
+    citation: "Garner JK, Alley M (2013) How the design of presentation slides affects audience comprehension: a case for the assertion-evidence approach. International Journal of Engineering Education 29(6): 1564-1579"
+    doi: null
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [talk-design]
+    verified_by: memory
+    fetched: null
+    sha256: null
+  - id: doumont-trees-maps-theorems
+    type: book
+    citation: "Doumont JL (2009) Trees, Maps, and Theorems: Effective Communication for Rational Minds. Principiae"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [talk-design, paper-writing]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/doumont-trees-maps-theorems.md
+  - id: tufte-cognitive-style-powerpoint
+    type: book
+    citation: "Tufte ER (2006) The Cognitive Style of PowerPoint: Pitching Out Corrupts Within, 2nd ed. Graphics Press"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [talk-design]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/tufte-cognitive-style-powerpoint.md
+  - id: mayer-multimedia-learning
+    type: book
+    citation: "Mayer RE (2020) Multimedia Learning, 3rd ed. Cambridge University Press"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [talk-design, learning-science]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/mayer-multimedia-learning.md
+  - id: mayer-moreno2003
+    type: article
+    citation: "Mayer RE, Moreno R (2003) Nine ways to reduce cognitive load in multimedia learning. Educational Psychologist 38(1): 43-52"
+    doi: 10.1207/S15326985EP3801_6
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [talk-design, learning-science]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+
+  # ---------------------------------------------------------------- learning science and teaching
+  - id: nap2018-how-people-learn-ii
+    type: report
+    citation: "National Academies of Sciences, Engineering, and Medicine (2018) How People Learn II: Learners, Contexts, and Cultures. Washington, DC: The National Academies Press"
+    doi: 10.17226/24783
+    url: https://nap.nationalacademies.org/catalog/24783
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [learning-science]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "Free-to-read PDF, manual download click; summarise only. DOI from memory, medium confidence."
+  - id: dunlosky2013
+    type: article
+    citation: "Dunlosky J, Rawson KA, Marsh EJ, Nathan MJ, Willingham DT (2013) Improving students' learning with effective learning techniques: promising directions from cognitive and educational psychology. Psychological Science in the Public Interest 14(1): 4-58"
+    doi: 10.1177/1529100612453266
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [learning-science]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: freeman2014
+    type: article
+    citation: "Freeman S, Eddy SL, McDonough M, et al. (2014) Active learning increases student performance in science, engineering, and mathematics. PNAS 111(23): 8410-8415"
+    doi: 10.1073/pnas.1319030111
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [learning-science, teaching-practice]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "Free to read at PNAS; DOI from memory, medium confidence."
+  - id: deslauriers2019
+    type: article
+    citation: "Deslauriers L, McCarty LS, Miller K, Callaghan K, Kestin G (2019) Measuring actual learning versus feeling of learning in response to being actively engaged in the classroom. PNAS 116(39): 19251-19257"
+    doi: 10.1073/pnas.1821936116
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [learning-science, teaching-practice]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "Free to read at PNAS; DOI from memory, medium confidence."
+  - id: theobald2020
+    type: article
+    citation: "Theobald EJ, Hill MJ, Tran E, et al. (2020) Active learning narrows achievement gaps for underrepresented students in undergraduate science, technology, engineering, and math. PNAS 117(12): 6476-6483"
+    doi: 10.1073/pnas.1916903117
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [learning-science, teaching-practice]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "Free to read at PNAS; DOI from memory, medium confidence."
+  - id: wieman2014
+    type: article
+    citation: "Wieman CE (2014) Large-scale comparison of science teaching methods sends clear message. PNAS 111(23): 8319-8320"
+    doi: 10.1073/pnas.1407304111
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [learning-science, teaching-practice]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: carpentries-instructor-training
+    type: web
+    citation: "The Carpentries, Instructor Training curriculum"
+    url: https://carpentries.github.io/instructor-training/
+    license: CC-BY-4.0
+    oa: web
+    excerpt_ok: true
+    topics: [teaching-practice, learning-science]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 1985b2d085a29a61038b27d183690f20529e6930f6805e21353692a3990edf51
+  - id: wilson-teaching-tech-together
+    type: web
+    citation: "Wilson G (2019) Teaching Tech Together: How to Make Your Lessons Work and Build a Teaching Community around Them"
+    url: https://teachtogether.tech/
+    license: CC-BY-NC-4.0
+    oa: web
+    excerpt_ok: false
+    topics: [teaching-practice, course-design]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: edcb72cb64dc57807d6142e75795d88950ece44430cf7a0771245de1f68efb2c
+  - id: brown-wilson2018
+    type: article
+    citation: "Brown NCC, Wilson G (2018) Ten quick tips for teaching programming. PLoS Comput Biol 14(4): e1006023"
+    doi: 10.1371/journal.pcbi.1006023
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [teaching-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 0cc03e5973738e6261f8a10ef00a9825afe54cf0382f26debee3c6f9e3018687
+  - id: ambrose-how-learning-works
+    type: book
+    citation: "Ambrose SA, Bridges MW, DiPietro M, Lovett MC, Norman MK (2010) How Learning Works: Seven Research-Based Principles for Smart Teaching. Jossey-Bass"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [learning-science]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: null   # reading notes pending; Robert adds corpus/notes/ambrose-how-learning-works.md
+  - id: make-it-stick
+    type: book
+    citation: "Brown PC, Roediger HL, McDaniel MA (2014) Make It Stick: The Science of Successful Learning. Harvard University Press"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [learning-science]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: null   # reading notes pending; Robert adds corpus/notes/make-it-stick.md
+  - id: nilson-teaching-at-its-best
+    type: book
+    citation: "Nilson LB (2016) Teaching at Its Best: A Research-Based Resource for College Instructors, 4th ed. Jossey-Bass"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [teaching-practice, course-design]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: null   # reading notes pending; Robert adds corpus/notes/nilson-teaching-at-its-best.md
+  - id: crouch-mazur2001
+    type: article
+    citation: "Crouch CH, Mazur E (2001) Peer instruction: ten years of experience and results. American Journal of Physics 69(9): 970-977"
+    doi: 10.1119/1.1374249
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [teaching-practice]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+
+  # ---------------------------------------------------------------- course design
+  - id: fink2003-self-directed-guide
+    type: web
+    citation: "Fink LD (2003) A Self-Directed Guide to Designing Courses for Significant Learning"
+    url: https://www.deefinkandassociates.com/GuidetoCourseDesignAug05.pdf
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [course-design]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: ac5407951d7e43dbdfb2187512ff99562f341a5a84b661cc498ee75c9d8cbe76
+    notes: "URL from memory, medium confidence."
+  - id: nap2012-dber
+    type: report
+    citation: "National Research Council (2012) Discipline-Based Education Research: Understanding and Improving Learning in Undergraduate Science and Engineering. Washington, DC: The National Academies Press"
+    doi: 10.17226/13362
+    url: https://nap.nationalacademies.org/catalog/13362
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [course-design, learning-science]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "Free-to-read PDF, manual download click. DOI from memory, medium confidence."
+  - id: nap2015-reaching-students
+    type: report
+    citation: "National Research Council (2015) Reaching Students: What Research Says About Effective Instruction in Undergraduate Science and Engineering. Washington, DC: The National Academies Press"
+    doi: 10.17226/18687
+    url: https://nap.nationalacademies.org/catalog/18687
+    license: proprietary
+    oa: true
+    excerpt_ok: false
+    topics: [course-design, teaching-practice]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "Free-to-read PDF, manual download click. DOI from memory, medium confidence."
+  - id: garcia2020
+    type: article
+    citation: "Garcia L, Batut B, Burke ML, et al. (2020) Ten simple rules for making training materials FAIR. PLoS Comput Biol 16(5): e1007854"
+    doi: 10.1371/journal.pcbi.1007854
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [course-design]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 9c223576b2330f67f536469d57b47411d5c10e381ff4c0adbe0a1d28f4f39449
+  - id: via2011
+    type: article
+    citation: "Via A, De Las Rivas J, Attwood TK, et al. (2011) Ten simple rules for developing a short bioinformatics training course. PLoS Comput Biol 7(10): e1002245"
+    doi: 10.1371/journal.pcbi.1002245
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [course-design]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: dd894f3434c0fa4a3a6d0a7844f63a8187aabe2d05af0b9adf8c1857266312a1
+  - id: pavelin2014
+    type: article
+    citation: "Pavelin K, Pundir S, Cham JA (2014) Ten simple rules for running interactive workshops. PLoS Comput Biol 10(2): e1003485"
+    doi: 10.1371/journal.pcbi.1003485
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [course-design, teaching-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 9abe7ef926ff785b85f02e90cf3f268fe085db882dcff1c70fc974f03bee4973
+  - id: cast-udl
+    type: web
+    citation: "CAST (2018) Universal Design for Learning Guidelines version 2.2"
+    url: https://udlguidelines.cast.org/
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [course-design]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: ef3aa771e11a0d18e70d3bf1dcf2ac7c85df7aeeae5cd577147a2ebb4d5f5ae0
+  - id: wiggins-mctighe-ubd
+    type: book
+    citation: "Wiggins G, McTighe J (2005) Understanding by Design, expanded 2nd ed. ASCD"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [course-design]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/wiggins-mctighe-ubd.md
+  - id: fink2013
+    type: book
+    citation: "Fink LD (2013) Creating Significant Learning Experiences: An Integrated Approach to Designing College Courses, revised ed. Jossey-Bass"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [course-design]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/fink2013.md
+  - id: biggs1996
+    type: article
+    citation: "Biggs J (1996) Enhancing teaching through constructive alignment. Higher Education 32(3): 347-364"
+    doi: 10.1007/BF00138871
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [course-design]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+    notes: "DOI from memory, medium confidence."
+  - id: biggs-tang-teaching-for-quality-learning
+    type: book
+    citation: "Biggs J, Tang C (2011) Teaching for Quality Learning at University, 4th ed. Open University Press"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [course-design]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/biggs-tang-teaching-for-quality-learning.md
+  - id: nilson-specifications-grading
+    type: book
+    citation: "Nilson LB (2015) Specifications Grading: Restoring Rigor, Motivating Students, and Saving Faculty Time. Stylus"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [course-design]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/nilson-specifications-grading.md
+  - id: angelo-cross-classroom-assessment
+    type: book
+    citation: "Angelo TA, Cross KP (1993) Classroom Assessment Techniques: A Handbook for College Teachers, 2nd ed. Jossey-Bass"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [course-design, teaching-practice]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: null   # reading notes pending; Robert adds corpus/notes/angelo-cross-classroom-assessment.md
+
+  # ---------------------------------------------------------------- research software practice
+  - id: wilson2014
+    type: article
+    citation: "Wilson G, Aruliah DA, Brown CT, et al. (2014) Best practices for scientific computing. PLoS Biol 12(1): e1001745"
+    doi: 10.1371/journal.pbio.1001745
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [research-software-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 8e85cf1b7bc9738f152e16709105b8951cecbe8621b55933d17ecdf63f75ea47
+  - id: taschuk-wilson2017
+    type: article
+    citation: "Taschuk M, Wilson G (2017) Ten simple rules for making research software more robust. PLoS Comput Biol 13(4): e1005412"
+    doi: 10.1371/journal.pcbi.1005412
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [research-software-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 002081be65fbd42c0356d3e49ac7f49fa6202f566f50341481ead22d3cce78b2
+  - id: hunter-zinck2021
+    type: article
+    citation: "Hunter-Zinck H, de Siqueira AF, Vasquez VN, Barnes R, Martinez CC (2021) Ten simple rules on writing clean and reliable open-source scientific software. PLoS Comput Biol 17(11): e1009481"
+    doi: 10.1371/journal.pcbi.1009481
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [research-software-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: e852fd4e5109b4cc7caa39fbcaacb80bf09eb03a3c646914d1083952b51cdabf
+  - id: list2017
+    type: article
+    citation: "List M, Ebert P, Albrecht F (2017) Ten simple rules for developing usable software in computational biology. PLoS Comput Biol 13(1): e1005265"
+    doi: 10.1371/journal.pcbi.1005265
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [research-software-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: b66165881d1e1cff759fb1ad7aab701f4053f1a8e911073690df5b6022337858
+  - id: balaban2021
+    type: article
+    citation: "Balaban G, Grytten I, Rand KD, Scheffer L, Sandve GK (2021) Ten simple rules for quick and dirty scientific programming. PLoS Comput Biol 17(3): e1008549"
+    doi: 10.1371/journal.pcbi.1008549
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [research-software-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: a24ae7b80d690f03c1b23483e4e0028dafa72c22965d071964bd0fd20e4a67e7
+  - id: fair4rs2022
+    type: report
+    citation: "Chue Hong NP, Katz DS, Barker M, et al. (2022) FAIR Principles for Research Software (FAIR4RS Principles). Research Data Alliance"
+    doi: 10.15497/RDA00068
+    doi_registry: datacite
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [fair4rs-and-joss, research-software-practice]
+    verified_by: web-search
+    fetched: '2026-09-02'
+    sha256: e393641417798eebca6492090f4d7dc18db5c501816da50a2338f417c852ca92
+  - id: joss-review-checklist
+    type: web
+    citation: "Journal of Open Source Software, Reviewer checklist"
+    url: https://joss.readthedocs.io/en/latest/review_checklist.html
+    license: CC-BY-4.0
+    oa: web
+    excerpt_ok: true
+    topics: [fair4rs-and-joss, software-release]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 470dff50e804956883e54d4563083b4201b8bfb896989a1b619e9abb477ed92f
+  - id: joss-review-criteria
+    type: web
+    citation: "Journal of Open Source Software, Review criteria and submission requirements"
+    url: https://joss.readthedocs.io/en/latest/review_criteria.html
+    license: CC-BY-4.0
+    oa: web
+    excerpt_ok: true
+    topics: [fair4rs-and-joss, software-release]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: aa6aaee8aa3d77075e921c2d652d7e00854b7e7090b71a0b122f7616a3a1aa36
+  - id: jimenez2017
+    type: article
+    citation: "Jimenez RC, Kuzak M, Alhamdoosh M, et al. (2017) Four simple recommendations to encourage best practices in research software. F1000Research 6: 876"
+    doi: 10.12688/f1000research.11407.1
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [fair4rs-and-joss, research-software-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: d29763e48508e6bfb977a13f9165c48b32cb69d1fb15dc5bffad9c9847c88d70
+    notes: "DOI from memory, medium confidence."
+  - id: lee2018-documenting
+    type: article
+    citation: "Lee BD (2018) Ten simple rules for documenting scientific software. PLoS Comput Biol 14(12): e1006561"
+    doi: 10.1371/journal.pcbi.1006561
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [research-software-practice, software-release]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: c2b50ad022577a957672622dec9ae0ad7ab746ef38a04ab051f007814fb76e7d
+  - id: smith2016-software-citation
+    type: article
+    citation: "Smith AM, Katz DS, Niemeyer KE, FORCE11 Software Citation Working Group (2016) Software citation principles. PeerJ Computer Science 2: e86"
+    doi: 10.7717/peerj-cs.86
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [fair4rs-and-joss, software-release]
+    verified_by: fetch
+    fetched: null
+    sha256: null
+  - id: google-code-review
+    type: web
+    citation: "Google Engineering Practices, Code Review Developer Guide"
+    url: https://google.github.io/eng-practices/review/
+    license: CC-BY-3.0
+    oa: web
+    excerpt_ok: true
+    topics: [code-review, research-software-practice]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: d56978528baf45dcc1b9ed38094a4933f2dc1f88b1797c26c039182806d8e004
+  - id: google-small-cls
+    type: web
+    citation: "Google Engineering Practices, Small CLs"
+    url: https://google.github.io/eng-practices/review/developer/small-cls.html
+    license: CC-BY-3.0
+    oa: web
+    excerpt_ok: true
+    topics: [code-review, task-decomposition]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 0637b70bbb8235a8a3dfe86041e206bd91db35b4b8a4c34cb938f4d8fd6bf5c3
+  - id: sholler2019
+    type: article
+    citation: "Sholler D, Steinmacher I, Ford D, Averick M, Hoye M, Wilson G (2019) Ten simple rules for helping newcomers become contributors to open projects. PLoS Comput Biol 15(9): e1007296"
+    doi: 10.1371/journal.pcbi.1007296
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [research-software-practice, lab-management]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 7dd26786e89ae0a679b47000f6c8c0cec17a0e64795fd8098b7e3ffe92d7b5a4
+  - id: owasp-top-ten
+    type: web
+    citation: "OWASP Foundation, OWASP Top Ten Web Application Security Risks"
+    url: https://owasp.org/www-project-top-ten/
+    license: CC-BY-SA-4.0
+    oa: web
+    excerpt_ok: true
+    topics: [security-basics]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: cc81c34d606857c7ffd721895f6ac3dc752403a7d03b96a7ad634f5a44c10841
+  - id: cwe-top25
+    type: web
+    citation: "MITRE, CWE Top 25 Most Dangerous Software Weaknesses"
+    url: https://cwe.mitre.org/top25/
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [security-basics]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 1ab8fc01b1630d552ae7f6a8df5cc8ff3356e71c47cb194618fda715772c3304
+  - id: openssf-scorecard
+    type: web
+    citation: "Open Source Security Foundation, OpenSSF Scorecard checks documentation"
+    url: https://github.com/ossf/scorecard
+    license: Apache-2.0
+    oa: web
+    excerpt_ok: true
+    topics: [security-basics, research-software-practice]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 352ce2e338a3d1ec3d093977ad6b3ca8b0f0c82c7a48d4d6fa6978a86524f190
+  - id: obo-foundry-principles
+    type: web
+    citation: "OBO Foundry, Principles for ontology development (summary page)"
+    url: https://obofoundry.org/principles/fp-000-summary.html
+    license: CC-BY-4.0
+    oa: web
+    excerpt_ok: true
+    topics: [ontology-engineering]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: f0cc3407b083683b8313983154bec3fd9117ced8d015524eda0366093a701215
+  - id: robot-report
+    type: web
+    citation: "ROBOT: a tool for ontology development, report command documentation (Jackson et al. 2019, BMC Bioinformatics 20: 407)"
+    url: http://robot.obolibrary.org/report
+    license: BSD-3-Clause
+    oa: web
+    excerpt_ok: true
+    topics: [ontology-engineering]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 828707ff06eb50e42f816b15fe568fc604dee5e7fb714179d54bf456d891d3fe
+  - id: malone2016
+    type: article
+    citation: "Malone J, Stevens R, Jupp S, Hancocks T, Parkinson H, Brooksbank C (2016) Ten simple rules for selecting a bio-ontology. PLoS Comput Biol 12(2): e1004743"
+    doi: 10.1371/journal.pcbi.1004743
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [ontology-engineering]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: a2232d6ea77de4ff813313fc86b23e21bb39dbb3be3ca2975ab13de201801770
+
+  # ---------------------------------------------------------------- software release
+  - id: semver2
+    type: spec
+    citation: "Preston-Werner T, Semantic Versioning 2.0.0"
+    url: https://semver.org/spec/v2.0.0.html
+    license: CC-BY-3.0
+    oa: web
+    excerpt_ok: true
+    topics: [software-release]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: f9d4b8b1a5e9a0de6621dbbc70d69fdf05310b7a737509317b94a7bddfb9409e
+  - id: keep-a-changelog
+    type: spec
+    citation: "Lacasse O, Keep a Changelog 1.1.0"
+    url: https://keepachangelog.com/en/1.1.0/
+    license: MIT
+    oa: web
+    excerpt_ok: true
+    topics: [software-release]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 1fa308fcf1509b4729134faab498e126315138aa3c35939ad847c8390e4a058e
+  - id: citation-file-format
+    type: spec
+    citation: "Druskat S, Spaaks JH, Chue Hong N, et al. Citation File Format (CFF) specification"
+    url: https://citation-file-format.github.io/
+    license: CC-BY-4.0
+    oa: web
+    excerpt_ok: true
+    topics: [software-release, fair4rs-and-joss]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 64deb2e9e43dc45e673cd58e20d5f30857dc0e5730baf76bdbea93bc3bfb981d
+  - id: python-packaging-guide
+    type: web
+    citation: "Python Packaging Authority, Python Packaging User Guide"
+    url: https://packaging.python.org/
+    license: CC-BY-SA-3.0
+    oa: web
+    excerpt_ok: true
+    topics: [software-release]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 6d9a2455abeb1206bda50ee6a8008e7cab28520da55a84526d735858622c49e9
+  - id: bioconda-guide
+    type: web
+    citation: "Bioconda, Contributor guide"
+    url: https://bioconda.github.io/contributor/index.html
+    license: MIT
+    oa: web
+    excerpt_ok: true
+    topics: [software-release]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: ba3e818b39eba19eb89feed202e2e0bad3e8d06bb78638ac4a731a788d095aee
+  - id: brack2022
+    type: article
+    citation: "Brack P, Crowther P, Soiland-Reyes S, et al. (2022) Ten simple rules for making a software tool workflow-ready. PLoS Comput Biol 18(3): e1009823"
+    doi: 10.1371/journal.pcbi.1009823
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [software-release, research-software-practice]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 7abf40579d385907192b37a2732fa2ced5bd7bfeaaa6824750271eee17ccfae6
+  - id: joss-docs
+    type: web
+    citation: "Journal of Open Source Software, Documentation (submission, paper format, review process)"
+    url: https://joss.readthedocs.io/
+    license: CC-BY-4.0
+    oa: web
+    excerpt_ok: true
+    topics: [fair4rs-and-joss, software-release]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 43e914b9f6aefba04772d95c60552efb5a0a6dc3a51645772d9040f48804b022
+
+  # ---------------------------------------------------------------- agents, orchestration, skill authoring
+  - id: anthropic-building-effective-agents
+    type: web
+    citation: "Anthropic (2024) Building effective agents. Engineering blog"
+    url: https://www.anthropic.com/engineering/building-effective-agents
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [agent-orchestration, skill-authoring]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 20dcd68a6bba78bfa89405e23caa5c9ecb6f05476e3bb66392065c08fdc41b12
+  - id: anthropic-multi-agent-research
+    type: web
+    citation: "Anthropic (2025) How we built our multi-agent research system. Engineering blog"
+    url: https://www.anthropic.com/engineering/multi-agent-research-system
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [agent-orchestration, task-decomposition]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 8125ccd53c59981d9b76b4185eadea99b993aaa954e8158372e70d5d70cc4228
+  - id: anthropic-writing-tools
+    type: web
+    citation: "Anthropic (2025) Writing effective tools for agents, with agents. Engineering blog"
+    url: https://www.anthropic.com/engineering/writing-tools-for-agents
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [agent-orchestration, skill-authoring]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: ed747dd85b03c96cd35a7ff5f39bd8c554b0bd9637d0da56874f11f0d78c8641
+  - id: anthropic-context-engineering
+    type: web
+    citation: "Anthropic (2025) Effective context engineering for AI agents. Engineering blog"
+    url: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [agent-orchestration, skill-authoring]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 4690e6df0bbfe500fdb77f43274f460d091b0c323b1dfc3bf2a4c4bbebbc6bbd
+  - id: agentskills-spec
+    type: spec
+    citation: "Agent Skills specification (agentskills.io): SKILL.md format, frontmatter fields, progressive disclosure"
+    url: https://agentskills.io/specification
+    license: proprietary
+    oa: web
+    excerpt_ok: true
+    topics: [skill-authoring, agent-orchestration]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 5a07d8e9920d1dfe32b5fcbe7df4fec325de039fb1aee89b45e3f9056cba16dc
+  - id: scrum-guide2020
+    type: web
+    citation: "Schwaber K, Sutherland J (2020) The Scrum Guide"
+    url: https://scrumguides.org/scrum-guide.html
+    license: CC-BY-SA-4.0
+    oa: web
+    excerpt_ok: true
+    topics: [task-decomposition]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 64aade688c3f2bceb1051268310e1cdcf503ac424e052a07414f60cabea8bcc0
+  - id: invest-wake2003
+    type: web
+    citation: "Wake B (2003) INVEST in good stories, and SMART tasks"
+    url: https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/
+    license: proprietary
+    oa: web
+    excerpt_ok: false
+    topics: [task-decomposition]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: dc3f3160cf0411d3e456a1ed58a86569a171a156c42a2c57494091a929a0f2e5
+  - id: grove-high-output-management
+    type: book
+    citation: "Grove AS (1995) High Output Management, 2nd ed. Vintage"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [task-decomposition, lab-management]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/grove-high-output-management.md
+
+  # ---------------------------------------------------------------- lab management and org format
+  - id: org-manual
+    type: web
+    citation: "Dominik C et al., The Org Manual (Org mode for Emacs)"
+    url: https://orgmode.org/manual/
+    license: GFDL-1.3
+    oa: web
+    excerpt_ok: true
+    topics: [org-format]
+    verified_by: memory
+    fetched: '2026-09-02'
+    sha256: 9ec6a2c6c70b5d6f371ee43d80ddbee11f9362d358b617c6b76c3883738dc21c
+  - id: org-conventions-local
+    type: institutional
+    citation: "Robert Hoehndorf, ~/org/CLAUDE.md: org file conventions for meeting notes, todo items and deadlines"
+    url: null
+    license: proprietary
+    oa: false
+    excerpt_ok: quote-rules-only
+    topics: [org-format, lab-management]
+    verified_by: robert
+    fetched: null
+    sha256: null
+    notes: "Local file, never copied into the repo; summarise in corpus/distilled/org-format.md."
+  - id: pcbi-2021-lab-meetings
+    type: article
+    citation: "Ten simple rules for productive lab meetings (2021). PLoS Comput Biol 17"
+    doi: null
+    license: CC-BY-4.0
+    oa: false
+    excerpt_ok: true
+    topics: [lab-management, task-decomposition]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: "doc/plan.md says 'verify DOI'; DOI unknown, left null so the fetcher skips it until found. Set oa: true once the DOI is confirmed."
+  - id: pcbi-2023-lab-information
+    type: article
+    citation: "Ten simple rules for managing laboratory information (2023). PLoS Comput Biol 19: e1011652"
+    doi: 10.1371/journal.pcbi.1011652
+    license: CC-BY-4.0
+    oa: true
+    excerpt_ok: true
+    topics: [lab-management, data-management]
+    verified_by: fetch
+    fetched: '2026-09-02'
+    sha256: 2dc9f6f74051db7c04e54216ee068cb0e23c7159da0eecca9226727518728263
+    notes: "Title from memory, low confidence; article number from doc/plan.md."
+  - id: barker-at-the-helm
+    type: book
+    citation: "Barker K (2010) At the Helm: Leading Your Laboratory, 2nd ed. Cold Spring Harbor Laboratory Press"
+    license: proprietary
+    oa: false
+    excerpt_ok: false
+    topics: [lab-management]
+    verified_by: memory
+    fetched: null
+    sha256: null
+    notes: corpus/notes/barker-at-the-helm.md

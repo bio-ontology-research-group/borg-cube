@@ -1,0 +1,20 @@
+{
+  "messages": [{"status": "ok", "count": 3, "total": 3}],
+  "collection": [
+    {"doi": "10.1101/2026.09.03.611222", "title": "A protein function benchmark for metagenome-assembled genomes",
+     "authors": "Fellow, F.; Former, Z.", "author_corresponding": "F Fellow",
+     "date": "2026-09-04", "version": "1", "type": "new results", "category": "bioinformatics",
+     "abstract": "We release a benchmark pairing metagenome-assembled genomes with curated protein function annotations and evaluate several predictors.",
+     "published": "NA"},
+    {"doi": "10.1101/2026.09.02.610111", "title": "Cardiac organoid culture under variable oxygen",
+     "authors": "Someone, A.", "author_corresponding": "A Someone",
+     "date": "2026-09-03", "version": "1", "type": "new results", "category": "cell biology",
+     "abstract": "Oxygen tension changes organoid morphology. Out of scope for the configured categories.",
+     "published": "NA"},
+    {"doi": "10.1101/2026.09.03.611999", "title": "Sequencing depth effects in plant genomes",
+     "authors": "Another, B.", "author_corresponding": "B Another",
+     "date": "2026-09-04", "version": "2", "type": "new results", "category": "genomics",
+     "abstract": "A depth study with no term the group watches for.",
+     "published": "NA"}
+  ]
+}

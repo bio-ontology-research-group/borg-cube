@@ -1,0 +1,24 @@
+# Hermes gateway for the advisor profile (@borg-advisor). Phase 4 only; enabled by cube contact grant
+# when the first mattermost_dm grant exists, disabled again when the last one is revoked.
+# The existing hermes-ws gateway (systemctl --user hermes-gateway) is a separate unit and is not touched.
+[Unit]
+Description=borg-cube Hermes gateway, advisor profile (@borg-advisor)
+Documentation=file:%h/Public/software/borg-cube/hermes/README.md
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+ConditionPathExists=%h/.hermes/profiles/advisor/config.yaml
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Environment=PATH=%h/.local/bin:%h/.cargo/bin:/usr/local/bin:/usr/bin:/bin
+Type=simple
+WorkingDirectory=%h/.hermes/profiles/advisor
+Environment=HERMES_HOME=%h/.hermes/profiles/advisor
+EnvironmentFile=-%h/.hermes/profiles/advisor/.env
+ExecStart=%h/.hermes/hermes-agent/venv/bin/hermes -p advisor gateway run
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=default.target

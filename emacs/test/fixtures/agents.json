@@ -1,0 +1,24 @@
+[
+  {"name": "coordinator", "kind": "coordinator", "title": "Group coordinator",
+  "topics": ["group planning", "research priorities"], "runtime": "claude",
+   "tier": "plan", "host": "ws", "state": "idle", "session": "cube/agent-coordinator",
+   "last_journal": "2026-09-02T07:30:00+03:00", "pending_proposals": 1,
+   "inbox_unread": 2,
+   "requests": [
+     {"id": "cube-601", "kind": "request", "title": "Extract ideas from Robert's email",
+      "state": "answered", "age": 1800, "answer": {"summary": "Three ideas"}}
+   ],
+   "resources_used_today": {"gpu_hours": 1.5, "runs": 2, "spend_usd": 0}},
+  {"name": "literature", "kind": "expert", "title": "Literature and reading expert",
+  "topics": ["read papers", "research planning"], "runtime": "codex",
+   "tier": "bulk", "host": "ws", "state": "working", "session": null,
+   "last_journal": "2026-09-01T15:00:00+03:00", "pending_proposals": 0,
+   "inbox_unread": 1,
+   "resources_used_today": {"gpu_hours": 0.5, "runs": 1, "spend_usd": 0}},
+  {"name": "liaison", "kind": "expert", "title": "Personal-context liaison",
+   "topics": ["mail", "deadlines", "personal context"], "runtime": "claude",
+   "tier": "local", "host": "laptop", "state": "idle", "session": null,
+   "last_journal": "2026-09-02T08:30:00+03:00", "pending_proposals": 0,
+   "inbox_unread": 0,
+   "resources_used_today": {"gpu_hours": 0, "runs": 0, "spend_usd": 0}}
+]

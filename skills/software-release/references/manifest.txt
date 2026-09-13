@@ -1,0 +1,3 @@
+# distilled topics copied in by tools/skills_sync.py
+research-software-practice
+fair4rs-and-joss

@@ -1,0 +1,27 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "day": "2026-09-02",
+  "tiers": {
+    "plan": {"runs": 8, "tokens": 42000, "cost_usd": 0, "cap_runs": 20,
+             "cap_cost_usd": null, "pct": 42},
+    "implement": {"runs": 48, "tokens": 180000, "cost_usd": 12.40, "cap_runs": 60,
+                   "cap_cost_usd": null, "pct": 80},
+    "bulk": {"runs": 3, "tokens": 9000, "cost_usd": 0.70, "cap_runs": null,
+             "cap_cost_usd": 25, "pct": 3},
+    "local": {"runs": 0, "tokens": 0, "cost_usd": 0, "cap_runs": null,
+              "cap_cost_usd": null, "pct": null}
+  },
+  "runners": {
+    "claude": {"runs": 8, "tokens": 42000, "cost_usd": 0, "state": "ok",
+               "until": null, "reason": null},
+    "codex": {"runs": 60, "tokens": 220000, "cost_usd": 0, "state": "exhausted",
+              "until": "2026-09-02T21:00:00+03:00", "reason": "daily cap"},
+    "openrouter": {"runs": 3, "tokens": 9000, "cost_usd": 0.70, "state": "ok",
+                    "until": null, "reason": null},
+    "local": {"runs": 0, "tokens": 0, "cost_usd": 0, "state": "backoff",
+              "until": "2026-09-02T10:00:00+03:00", "reason": "node005 unavailable"},
+    "hermes": {"runs": 0, "tokens": 0, "cost_usd": 0, "state": "ok",
+               "until": null, "reason": null}
+  },
+  "window": {"since": "2026-09-02T00:00:00+03:00", "until": "2026-09-03T00:00:00+03:00"}
+}

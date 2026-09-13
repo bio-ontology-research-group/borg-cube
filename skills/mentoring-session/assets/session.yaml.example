@@ -1,0 +1,51 @@
+# Input for scripts/org_meeting_entry.py. Copy to runs/<student>/<date>.yaml.
+# Nothing about grades, contracts, visas, salary or health goes in this file;
+# the script refuses to write when it finds them.
+person: alex              # org file stem, <org-root>/alex.org
+date: 2026-09-03          # YYYY-MM-DD, the day of the meeting
+topic: weekly 1:1         # goes into the heading after the date
+
+summary: >-
+  Embeddings for the disease set are done and reproduce the reported numbers;
+  the evaluation split is the open question.
+
+# Each point names the evidence it came from. Built before the meeting.
+agenda:
+  - point: baseline reproduces the published numbers
+    evidence: repo borg-embed, commits 2026-08-25..2026-09-02
+  - point: methods draft stops at the evaluation section
+    evidence: drafts/methods.tex, 1400 words, last changed 2026-08-28
+  - point: action item from the last entry is still open
+    evidence: ~/org/alex.org, entry 20 August 2026
+
+# Prepared questions, tagged with what they assess (assessing-understanding.md).
+questions:
+  - "Why is the random split the right comparison here? (understand, conceptual)"
+  - "What would change if the training set were half the size? (apply, procedural)"
+  - "Which of the three results would you defend least, and why? (evaluate, metacognitive)"
+  - "What are you stuck on right now? (metacognitive)"
+
+actions:
+  - text: rerun the baseline with the grouped split
+    owner: Alex
+    due: 2026-09-10
+  - text: send comments on the methods draft
+    owner: Robert
+    due: 2026-09-08
+
+decisions:
+  - grouped split is the primary evaluation, random split reported in the appendix
+
+open:
+  - which ontology version the disease set should use
+
+skills:
+  - practised writing a methods section from a logbook
+
+notes:
+  - discussed the rejection of the workshop paper and the next venue
+
+# Reported to Robert with the observed evidence, never written to the org file
+# and never phrased as a diagnosis.
+flags:
+  - "no commits and no draft change for 14 days (repo borg-embed, drafts/methods.tex)"

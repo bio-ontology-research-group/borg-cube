@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "session": "cube/kobayashi-marust-codex",
+  "runner": "codex",
+  "resume_id": "0198e1c0-kobayashi-session",
+  "cwd": "~/Public/software/kobayashi-marust",
+  "project": "kobayashi-marust",
+  "bead": "cube-142",
+  "role": "programmer",
+  "adopted": true,
+  "dry_run": true,
+  "renamed_from": "kobayashi-codex",
+  "commands": [["tmux", "rename-session", "-t", "kobayashi-codex", "cube/kobayashi-marust-codex"]],
+  "message": "Codex session will be adopted without changing its working directory."
+}

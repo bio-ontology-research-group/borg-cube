@@ -1,0 +1,21 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "tiers": {
+    "plan": [
+      {"runner": "claude", "model": "fable", "profile": null, "state": "preferred", "until": null, "reason": null, "active": true},
+      {"runner": "claude", "model": "opus", "profile": null, "state": "ok", "until": null, "reason": null, "active": false}
+    ],
+    "implement": [
+      {"runner": "codex", "model": "gpt-5-codex", "profile": "cube-chatgpt", "state": "exhausted", "until": "2026-09-02T21:00:00+03:00", "reason": "daily cap", "active": false},
+      {"runner": "claude", "model": "sonnet", "profile": null, "state": "ok", "until": null, "reason": null, "active": true},
+      {"runner": "openrouter", "model": "qwen/qwen3-coder", "profile": null, "state": "ok", "until": null, "reason": null, "active": false}
+    ],
+    "bulk": [
+      {"runner": "openrouter", "model": "z-ai/glm-5.3-flash", "profile": null, "state": "ok", "until": null, "reason": null, "active": true},
+      {"runner": "local", "model": null, "profile": null, "state": "backoff", "until": "2026-09-02T10:00:00+03:00", "reason": "node005 unavailable", "active": false}
+    ],
+    "local": [
+      {"runner": "local", "model": null, "profile": null, "state": "backoff", "until": "2026-09-02T10:00:00+03:00", "reason": "node005 unavailable", "active": false}
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "cube-142",
+    "title": "Implement mt-aware reassembly filter",
+    "description": "Filter contigs that fuse ATP6/COX3 before polishing.",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "robert",
+    "created_at": "2026-08-30T10:00:00Z",
+    "created_by": "Robert Hoehndorf",
+    "updated_at": "2026-09-01T16:20:00Z",
+    "labels": ["stage:implement", "student:alex-example"],
+    "dependent_count": 1,
+    "dependency_count": 1,
+    "comment_count": 0
+  }
+]

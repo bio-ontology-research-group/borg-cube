@@ -1,0 +1,1 @@
+{"id":"cube-499","kind":"goal","applied":false,"commands":["bd create --type epic"],"diff":"--- /dev/null\n+++ cube-499\n+title: planned goal\n"}

@@ -1,0 +1,18 @@
+# Laptop-local liaison worker. It reads only work labelled for host:laptop.
+[Unit]
+Description=borg-cube laptop worker
+Documentation=file:%h/Public/software/borg-cube/systemd/README.md
+ConditionHost=lc-dell
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Service]
+# systemd user services have no login PATH; bd, uv, claude and codex live in ~/.local/bin.
+Environment=PATH=%h/.local/bin:%h/.cargo/bin:/usr/local/bin:/usr/bin:/bin
+Type=oneshot
+# The worker spawns cube run subprocesses and exits; they must outlive it.
+KillMode=process
+WorkingDirectory=%h/Public/software/borg-cube
+EnvironmentFile=-%h/Public/software/borg-cube/.env
+ExecStart=%h/Public/software/borg-cube/.venv/bin/cube worker --once --host laptop
+TimeoutStartSec=4min
+NoNewPrivileges=true

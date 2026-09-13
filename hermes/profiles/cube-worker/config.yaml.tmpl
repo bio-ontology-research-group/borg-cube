@@ -1,0 +1,60 @@
+# Hermes config.yaml template for profile {{PROFILE}}: the borg-cube worker (ADR-0022).
+# Rendered by `cube hermes render cube-worker` into ~/.hermes/profiles/{{PROFILE}}/config.yaml on ws.
+# Create the profile once with `hermes profile create cube-worker --no-skills --no-alias`.
+# borg-cube runs `hermes -p cube-worker chat -q <prompt> --oneshot -Q -t <toolsets>`: a
+# single-query session denies dangerous commands (approvals.single_query_mode), which is
+# the guard the role allowlists gave Claude Code. No gateway, no skills, no memory.
+# Placeholders: {{PROFILE}} {{CUBE_ROOT}} {{VLLM_BASE_URL}} {{MATTERMOST_URL}} {{MATTERMOST_ALLOWED_USERS}} {{MATTERMOST_HOME_CHANNEL}}
+
+model:
+  default: qwen3.8-27b
+  provider: local
+  # Robert, 2026-09-08: without these Hermes assumed a larger window and asked
+  # for 65536 output tokens, so every call past 65k input tokens failed with
+  # "maximum context length is 131072 tokens" (78 times in the worker log by
+  # 2026-09-08), the loop retried until the cube's 1800s deadline, and the run
+  # was logged as "no JSON object in output". The window is the endpoint's
+  # (vLLM --max-model-len 131072); the output cap leaves room for the input.
+  context_length: 131072
+  max_tokens: 8192
+
+compression:
+  # Compact at 40% of the input budget (context_length minus max_tokens) so a
+  # long workday never reaches the provider's limit; the tail stays lean.
+  enabled: true
+  threshold: 0.4
+  protect_last_n: 12
+
+providers:
+  local:
+    type: openai
+    base_url: {{VLLM_BASE_URL}}
+    api_key_env: VLLM_API_KEY
+    model: qwen3.8-27b
+
+fallback_providers: []            # the cube router falls back to OpenRouter Flash, not Hermes
+
+approvals:
+  mode: manual
+  single_query_mode: deny         # a flagged command is blocked, never auto-approved
+  cron_mode: deny
+
+# Robert, 2026-09-08: the workers' own `python3 -c` and heredoc scripts were the
+# most blocked commands (60 of 66 blocks since 2026-09-07), each a wasted turn on
+# the way to the deadline. These entries do NOT unblock them: in single-query deny
+# mode Hermes (tools/approval.py, check_all_command_guards) consults only command
+# text and globs in command_allowlist, never the dangerous-pattern keys below, so a
+# `python3 -c` is still blocked (probe 2026-09-08 09:12+03, session
+# 20260908_091219_264d67). The way through is approvals.single_query_mode: approve
+# with an approvals.deny list, which waits for Robert (bead cube-e64t).
+command_allowlist:
+  - script execution via -e/-c flag
+  - script execution via heredoc
+
+provider_routing:
+  data_collection: deny
+
+plugins:
+  enabled: []
+
+# {{CUBE_ROOT}} {{MATTERMOST_URL}} {{MATTERMOST_ALLOWED_USERS}} {{MATTERMOST_HOME_CHANNEL}}: unused, no gateway

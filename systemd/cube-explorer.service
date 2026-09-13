@@ -1,0 +1,17 @@
+[Unit]
+Description=BORG Cube private research explorer
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Public/software/borg-cube
+ExecStart=%h/Public/software/borg-cube/.venv/bin/cube --root %h/Public/software/borg-cube explorer --port 8765 --apply
+Environment=PATH=%h/Public/software/borg-cube/.venv/bin:%h/.local/bin:%h/.cargo/bin:/usr/local/bin:/usr/bin:/bin
+Environment=CUBE_HOST=ws
+Restart=on-failure
+RestartSec=5
+UMask=0077
+KillMode=control-group
+
+[Install]
+WantedBy=default.target

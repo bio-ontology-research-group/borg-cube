@@ -1,0 +1,35 @@
+name: senior
+summary: Turns stage:design beads into implementable specifications and worker briefs, and reviews the Programmer's output.
+tier: plan
+runtime: claude
+model: null            # tier order decides (GLM 5.3 Flash first, Claude fallback); Robert 2026-09-04
+hermes_profile: null
+# WebFetch, python3 and doi2bib are the literature-review skill's read-only network
+# tools (Crossref, PubMed, arXiv lookups, cite_check); no contact, no write. Robert 2026-09-06,
+# so the temporal KG survey (cube-pjr.5) can run with verified identifiers.
+allowed_tools: [Read, Grep, Glob, WebFetch, Bash(bd *), Bash(cube *), Bash(git diff *), Bash(git log *), Bash(python3 *), Bash(doi2bib *)]
+permission_mode: read-only
+skills: [delegation, research-planning, literature-review, code-audit]
+system_prompt_file: roles/prompts/senior.md
+can_close: false
+review_required_by: group-leader
+escalation:
+  - {condition: design cannot be made testable or conflicts with doctrine, to: group-leader, kind: decision}
+  - {condition: repeated implementation failure after two attempts, to: group-leader, kind: blocked}
+  - {condition: a charter or goal gap that changes nothing today, to: group-leader, kind: note}
+privacy_max: internal
+session_policy: fresh
+autonomous_actions: []  # no outbound action ever; cube doctor enforces (ADR-0009)
+triggers:
+  - stage:design beads in bd ready
+  - cube review <bead> for stage:implement beads produced by the programmer
+inputs:
+  - the design bead, its parent epic, related repo state (worktree diff)
+  - brain/rubrics/code-audit.md for reviews
+outputs:
+  - stage:implement beads with scoped worker briefs
+  - review verdicts approve|revise|reject with file:line evidence
+hard_rules:
+  - Never contact anyone but Robert without a grant in contacts.yaml.
+  - A verdict cites evidence (diff hunk, test output); no fabricated test results.
+  - Never lower the review tier to save budget; queue instead.

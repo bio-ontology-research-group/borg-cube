@@ -1,0 +1,12 @@
+[Unit]
+Description=BORG Cube queued goal handoff to local coordinator
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/Public/software/borg-cube
+Environment=PATH=%h/.local/bin:%h/.cargo/bin:/usr/local/bin:/usr/bin:/bin
+Environment=CUBE_HOST=ws
+ExecStart=%h/Public/software/borg-cube/.venv/bin/python -m cube.gateway_intake --dispatch
+TimeoutStartSec=50min
+UMask=0077

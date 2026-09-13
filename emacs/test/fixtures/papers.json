@@ -1,0 +1,15 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "papers": [
+    {"id": "cube-210", "title": "Genome-scale protein function prediction adjustment",
+     "state": "REVISION", "venue": "Bioinformatics", "deadline": "2026-09-20",
+     "lead": "fay", "path": "~/Documents/papers/fay-genomescale-paper",
+     "org_heading": "papers.org::*Genome-scale PFP", "last_activity": "2026-09-01T16:20:00+03:00",
+     "review_bead": null},
+    {"id": "cube-211", "title": "Mitochondrial genome of Scincus mitranus",
+     "state": "DRAFT", "venue": null, "deadline": null,
+     "lead": "alex-example", "path": "~/Documents/papers/alex-mt",
+     "org_heading": "papers.org::*Scincus mt", "last_activity": "2026-08-30T11:02:00+03:00",
+     "review_bead": "cube-215"}
+  ]
+}

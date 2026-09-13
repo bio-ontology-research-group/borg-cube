@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.student_digest ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol student-digest timer (Thursday 12:00, Robert-only student digests)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=Thu *-*-* 12:00:00
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@student-digest.service
+
+[Install]
+WantedBy=timers.target

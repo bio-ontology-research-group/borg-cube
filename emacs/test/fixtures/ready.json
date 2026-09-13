@@ -1,0 +1,22 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "beads": [
+    {"id": "cube-142", "title": "Implement mt-aware reassembly filter", "type": "task",
+     "kind": "experiment", "stage": "implement", "priority": 2,
+     "labels": ["stage:implement", "student:alex-example", "project:mt-assembly", "role:programmer"], "parent": "cube-100",
+     "student": "alex-example", "deadline": null, "assignee": null, "role": "programmer",
+     "resume_id": "0198e1c0-kobayashi-session"},
+    {"id": "cube-150", "title": "Design evaluation protocol for gapsmith-db", "type": "task",
+     "kind": "experiment", "stage": "design", "priority": 1,
+     "labels": ["stage:design"], "parent": "cube-120", "student": null,
+     "deadline": "2026-09-20", "assignee": null},
+    {"id": "cube-171", "title": "Audit borg-website deploy scripts", "type": "task",
+     "kind": "audit", "stage": "implement", "priority": 3,
+     "labels": ["stage:implement", "repo:borg-website"], "parent": null,
+     "student": null, "deadline": null, "assignee": null},
+    {"id": "cube-180", "title": "Lecture 3 slides: ontology embeddings", "type": "task",
+     "kind": "lecture", "stage": "design", "priority": 2,
+     "labels": ["stage:design", "course:cs-3xx", "project:ontology-kg"], "parent": "cube-160",
+     "student": null, "deadline": "2026-09-30", "assignee": null}
+  ]
+}

@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# cube-emacs-hook: forward a Claude Code hook (JSON on stdin) or a Codex
+# notify call (JSON as the last argument) to the cockpit Emacs as a
+# (cube-notify ...) call through `emacsclient -s cube`.
+#
+# LOCAL mode only. In remote mode hooks call `cube notify --hook` on the
+# host instead and the cockpit tails state/events.jsonl.
+#
+# Usage:
+#   Claude Code settings:  "command": "/path/to/cube-emacs-hook"
+#   Codex config.toml:     notify = ["/path/to/cube-emacs-hook", "codex"]
+#
+# Environment:
+#   CUBE_SESSION       session name (set by the cockpit); falls back to the
+#                      agent's own session id
+#   CUBE_EMACSCLIENT   emacsclient binary (default: emacsclient)
+#   CUBE_EMACS_SERVER  server name (default: cube)
+#   CUBE_TMPDIR        where message bodies are written (default: ~/tmp)
+#
+# Always exits 0 so a missing Emacs never blocks the agent.
+
+set -u
+trap 'exit 0' ERR
+
+kind="${1:-claude}"
+emacsclient="${CUBE_EMACSCLIENT:-emacsclient}"
+server="${CUBE_EMACS_SERVER:-cube}"
+tmpdir="${CUBE_TMPDIR:-$HOME/tmp}"
+
+if [ "$kind" = codex ]; then
+    payload="${2:-}"
+else
+    payload="$(cat 2>/dev/null || true)"
+fi
+[ -n "$payload" ] || exit 0
+command -v jq >/dev/null 2>&1 || exit 0
+mkdir -p "$tmpdir" 2>/dev/null || tmpdir="${TMPDIR:-/tmp}"
+
+session="${CUBE_SESSION:-}"
+
+if [ "$kind" = codex ]; then
+    # Codex: {"type":"agent-turn-complete","thread-id":..,"last-assistant-message":..}
+    read -r event title sid body_json < <(printf '%s' "$payload" | jq -r '
+        (.type // "agent-turn-complete") as $t
+        | (if $t == "agent-turn-complete" then "stop" else ($t | ascii_downcase) end) as $ev
+        | (if $ev == "stop" then "Codex finished its turn" else $t end) as $title
+        | ((."thread-id" // .thread_id // "codex") | tostring) as $sid
+        | ((."last-assistant-message" // .last_assistant_message // "") | @json) as $body
+        | [$ev, ($title | @base64), $sid, ($body | @base64)] | join(" ")')
+    source=codex
+    hook_name=$(printf '%s' "$payload" | jq -r '.type // "agent-turn-complete"')
+else
+    # Claude Code: {"hook_event_name":"Stop","session_id":..,"message":..}
+    read -r event title sid body_json < <(printf '%s' "$payload" | jq -r '
+        (.hook_event_name // "unknown") as $h
+        | ({"SessionStart":"start","UserPromptSubmit":"prompt","Notification":"notification",
+            "Stop":"stop","SubagentStop":"running","SessionEnd":"end",
+            "PreToolUse":"running","PostToolUse":"running"}[$h] // ($h | ascii_downcase)) as $ev
+        | (if $ev == "notification" then (.message // "Claude needs you")
+           elif $ev == "stop" then "Claude finished its turn"
+           elif $ev == "prompt" then ((.prompt // "")[0:60])
+           elif $ev == "start" then ("session " + (.source // "started"))
+           elif $ev == "end" then ("session ended (" + (.reason // "exit") + ")")
+           else "" end) as $title
+        | ((.session_id // "claude") | tostring) as $sid
+        | ((.last_assistant_message // (if $ev == "notification" then .message else "" end) // "") | @json) as $body
+        | [$ev, ($title | @base64), $sid, ($body | @base64)] | join(" ")')
+    source=claude
+    hook_name=$(printf '%s' "$payload" | jq -r '.hook_event_name // "unknown"')
+fi
+
+[ -n "${event:-}" ] || exit 0
+title=$(printf '%s' "$title" | base64 -d 2>/dev/null || true)
+body=$(printf '%s' "$body_json" | base64 -d 2>/dev/null | jq -r '.' 2>/dev/null || true)
+[ -n "$session" ] || session="$sid"
+
+body_file=nil
+if [ -n "$body" ]; then
+    f=$(mktemp "$tmpdir/cube-hook.XXXXXX" 2>/dev/null) || f=""
+    if [ -n "$f" ]; then
+        printf '%s\n' "$body" > "$f"
+        body_file=$(printf '%s' "$f" | jq -R '.')
+    fi
+fi
+
+q() { printf '%s' "$1" | jq -R '.'; }   # JSON string literal doubles as an elisp string
+
+form="(cube-notify $(q "$session") $(q "$event") $(q "$title") $body_file (list :source $(q "$source") :hook $(q "$hook_name") :session-id $(q "$sid") :resume-id $(q "$sid")))"
+
+if command -v timeout >/dev/null 2>&1; then
+    timeout 5 "$emacsclient" -s "$server" --eval "$form" >/dev/null 2>&1 || true
+else
+    "$emacsclient" -s "$server" --eval "$form" >/dev/null 2>&1 || true
+fi
+exit 0

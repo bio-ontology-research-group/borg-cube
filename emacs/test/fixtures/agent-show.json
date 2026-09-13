@@ -1,0 +1,28 @@
+{
+  "name": "coordinator", "kind": "coordinator", "title": "Group coordinator",
+  "topics": ["group planning", "research priorities"], "runtime": "claude",
+  "tier": "plan", "host": "ws", "state": "talking", "session": {"name": "cube/agent-coordinator", "state": "talking"},
+  "yaml": "name: coordinator\nkind: coordinator\ntitle: Group coordinator\nrole: group-leader",
+  "charter_file": "agents/coordinator/charter.md",
+  "charter": "Coordinate research goals and assignments. Robert retains final say over major resources and outbound contact.",
+  "inbox": [
+    {"ts": "2026-09-02T09:00:00+03:00", "from": "robert", "text": "Review the mitochondrial assembly goal.", "read": false},
+    {"ts": "2026-09-02T08:00:00+03:00", "from": "robert", "text": "Prepare the Monday briefing.", "read": true},
+    {"ts": "2026-09-02T09:05:00+03:00", "from": "literature", "text": "I found two relevant papers.", "read": false}
+  ],
+  "requests": [
+    {"id": "cube-601", "kind": "request", "title": "Extract ideas from Robert's email",
+     "state": "answered", "age": 1800, "answer": {"summary": "Three ideas"}}
+  ],
+  "proposals": [
+    {"id": "cube-501", "bead": "cube-501", "kind": "proposal", "title": "Read the new assembly methods", "rationale": "Compare the verified methods papers before the next goal review.", "resources_requested": "ws CPU"}
+  ],
+  "journal": [
+    {"date": "2026-09-02", "summary": "Reviewed goal progress and assigned reading.", "path": "agents/coordinator/memory/journal.md", "line": 1},
+    {"date": "2026-09-01", "summary": "Updated the research priorities.", "path": "agents/coordinator/memory/journal.md", "line": 8}
+  ],
+  "resources": {
+    "allowance": {"node005_gpu_hours_per_day": 4, "ws_cpu": true, "ibex": "approval", "spend_usd_per_day": 0, "runs_per_day": 3},
+    "used_today": {"gpu_hours": 1.5, "runs": 2, "spend_usd": 0}
+  }
+}

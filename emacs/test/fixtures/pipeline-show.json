@@ -1,0 +1,17 @@
+{
+  "epic": "cube-500",
+  "title": "Protein function survey",
+  "status": "active",
+  "stage": "survey",
+  "iteration": 0,
+  "stages": [
+    {"name": "collect", "bead": "cube-501", "status": "closed", "owner": "liaison", "blocked_by": []},
+    {"name": "plan", "bead": "cube-502", "status": "closed", "owner": "group-leader", "blocked_by": []},
+    {"name": "survey", "bead": "cube-503", "status": "open", "owner": "senior", "blocked_by": []},
+    {"name": "replan", "bead": "cube-504", "status": "open", "owner": "group-leader", "blocked_by": ["cube-503"]}
+  ],
+  "experiments": [],
+  "gate": {"n": 0, "bead": null, "verdict": null},
+  "kill": false,
+  "next": "The senior runs the checked literature survey next."
+}

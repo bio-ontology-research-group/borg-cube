@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.decisions ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol decisions timer (every 15 minutes, answer the policy decisions)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@decisions.service
+
+[Install]
+WantedBy=timers.target

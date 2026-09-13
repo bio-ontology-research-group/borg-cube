@@ -1,0 +1,5 @@
+# Explicit additions to the current-student research twins, using roster ids from
+# people.yaml (gitignored as twins.yaml). Students are included automatically;
+# list postdocs or staff who should also get a twin.
+include_members:
+  - alex-example

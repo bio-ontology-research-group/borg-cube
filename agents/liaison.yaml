@@ -1,0 +1,30 @@
+name: liaison
+kind: expert
+title: "Laptop liaison"
+charter: agents/liaison/charter.md
+topics:
+  - personal-context
+# Robert, 2026-09-08 (ADR-0027): the liaison role reads only hosts.laptop.readable
+# on its own (laptop-lookup skill, `cube lookup`); a request that needs mail, ~/pa,
+# ~/org or any other path waits for Robert's yes and then runs as the senior role
+# with the personal-assistant and email-contacts skills.
+role: liaison
+skills: [laptop-lookup, personal-assistant, email-contacts]
+runtime: claude
+# ADR-0030: source and memory privacy is now enforced for every agent run.
+# The local endpoint is reachable from the laptop (HTTP 200, 2026-09-08).
+# Keep the protected Claude tool harness, but never send laptop context to cloud.
+runner: claude@local
+model: qwen3.8-27b
+tier: plan
+host: laptop
+privacy_default: local-only
+memory_dir: agents/liaison/memory
+resources:
+  node005_gpu_hours_per_day: 0
+  ws_cpu: true
+  ibex: approval
+  spend_usd_per_day: 0
+  outbound: none
+workday: {cron: "*/5 * * * *", max_minutes: 5, max_runs: 3}
+reports: weekly

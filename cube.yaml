@@ -1,0 +1,391 @@
+# Shareable configuration. Site-specific values (hosts, project checkouts, roster
+# exceptions, running-system names, Mattermost ids) live in cube.local.yaml, which is
+# gitignored and deep-merged over this file (cube.local.yaml.example shows the shape).
+# Paths are resolved on the orchestration host; the same file works on the laptop
+# when the data repos are cloned at the same paths.
+host: ws
+fleet_enabled: true
+fleet_limits:
+  local_inference_concurrency: 2
+  local_workday_concurrency: 1
+  local_run_timeout_minutes: 45
+  local_max_turns: 6
+  daily_research_runs: null
+  per_agent_daily_research_runs: null
+  concurrent_slurm_jobs: 4
+  job_cpus: 8
+  job_memory_gib: 32
+  job_gpus: 1
+  job_walltime_hours: 4
+  daily_cpu_hours: 128
+  daily_gpu_hours: 8
+  min_free_gib: 20
+  min_free_percent: 10
+  min_free_inodes: 10000
+  daily_cost_usd: 10
+  decision_digest_hours: 12
+  autonomous_interval_hours: 2
+hosts:
+  # Site-specific: the orchestration host and the personal laptop are declared in
+  # cube.local.yaml (gitignored; see cube.local.yaml.example). This default names
+  # one orchestration host reached as `ssh ws` with no laptop and no drop directory.
+  ws: {role: orchestration, ssh: ws}
+paths:
+  pa: ~/pa
+  org: ~/org
+  rkg: ~/Public/software/website/research-knowledge-graph
+  website: ~/Public/software/website/borg-website
+  skills_library: ~/Public/software/skills
+  infra: ~/Public/software/borg-infrastructure
+  papers: ~/Documents/papers
+  hermes_home: ~/.hermes
+  runs: runs
+  state: state
+projects:
+  # Site-specific: project checkouts, runners and sandboxes live in cube.local.yaml
+  # (see cube.local.yaml.example). Each entry: path, runner, sandbox, cwd
+  # (checkout|worktree), env, pre (commands that must exit 0), worktrees_dir,
+  # budget_usd_per_day.
+  {}
+beads:
+  bin: bd
+  prefix: cube
+slots:
+  # Robert, 2026-09-07: the group's own endpoint is free and idle; one plan slot
+  # left 81 ready beads waiting every tick. Reviews and designs run six abreast.
+  plan: 6
+  implement: 3
+  bulk: 4
+  local: 2
+tiers:
+  # Robert, 2026-09-07 (ADR-0021, ADR-0022): everything runs on the group's own
+  # endpoint first, Qwen3.8-27B on unimatrix01 (VLLM_BASE_URL and VLLM_API_KEY in
+  # .env; his own key, never the test key from the channel). Most roles run on Hermes
+  # (hermes@local, profile cube-worker: a 7k-token turn against Claude Code's 35k),
+  # the sysadmin keeps Claude Code for its per-command allowlist and the programmer
+  # keeps Codex for its sandbox. OpenRouter GLM 5.3 Flash is the fallback only: the
+  # router moves on when a local entry fails or backs off.
+  plan:
+    - {runner: hermes, provider: local, model: qwen3.8-27b, profile: cube-worker, not_for: [sysadmin]}
+    - {runner: claude, provider: local, model: qwen3.8-27b}
+    - {runner: codex, provider: local, model: qwen3.8-27b}
+    - {runner: local, model: qwen3.8-27b}
+    - {runner: claude, provider: openrouter, model: z-ai/glm-5.3-flash}
+    - {runner: openrouter, model: z-ai/glm-5.3-flash}
+  implement:
+    - {runner: codex, provider: local, model: qwen3.8-27b}
+    - {runner: hermes, provider: local, model: qwen3.8-27b, profile: cube-worker, not_for: [programmer]}
+    - {runner: claude, provider: local, model: qwen3.8-27b}
+    - {runner: local, model: qwen3.8-27b}
+    - {runner: codex, provider: openrouter, model: z-ai/glm-5.3-flash}
+    - {runner: claude, provider: openrouter, model: z-ai/glm-5.3-flash}
+    - {runner: openrouter, model: z-ai/glm-5.3-flash}
+  bulk:
+    # The free pool (ADR-0018) slots in after the local entries for open-data runs.
+    - {runner: hermes, provider: local, model: qwen3.8-27b, profile: cube-worker}
+    - {runner: local, model: qwen3.8-27b}
+    - {runner: openrouter, model: z-ai/glm-5.3-flash}
+  local:
+    - {runner: hermes, provider: local, model: qwen3.8-27b, profile: cube-student-local}
+    - {runner: claude, provider: local, model: qwen3.8-27b}
+    - {runner: local, model: qwen3.8-27b}
+prices:
+  # Any `:free` OpenRouter model is priced free without an entry here (cube/router/prices.py).
+  default: {input_per_mtok: 3.0, output_per_mtok: 15.0}
+  claude:fable: {input_per_mtok: 3.0, output_per_mtok: 15.0}
+  claude:opus: {input_per_mtok: 15.0, output_per_mtok: 75.0}
+  claude:sonnet: {input_per_mtok: 3.0, output_per_mtok: 15.0}
+  codex: {input_per_mtok: 1.25, output_per_mtok: 10.0}
+  openrouter:qwen/qwen3-coder: {input_per_mtok: 0.2, output_per_mtok: 0.8}
+  openrouter:z-ai/glm-5.3-flash: {input_per_mtok: 0.075, output_per_mtok: 0.25}
+  claude@openrouter:z-ai/glm-5.3: {input_per_mtok: 1.4, output_per_mtok: 4.4}
+  claude@openrouter:z-ai/glm-5.3-flash: {input_per_mtok: 0.075, output_per_mtok: 0.25}
+  codex@openrouter:z-ai/glm-5.3-flash: {input_per_mtok: 0.075, output_per_mtok: 0.25}
+  openrouter:xiaomi/mimo-v2.5: {input_per_mtok: 0.14, output_per_mtok: 0.28}
+  openrouter:tencent/hy3: {input_per_mtok: 0.083, output_per_mtok: 0.33}
+  openrouter:tencent/hy4-preview: {input_per_mtok: 0.83, output_per_mtok: 2.5}
+  local: {input_per_mtok: 0.0, output_per_mtok: 0.0}
+  claude@local: {input_per_mtok: 0.0, output_per_mtok: 0.0}
+  codex@local: {input_per_mtok: 0.0, output_per_mtok: 0.0}
+  hermes@local: {input_per_mtok: 0.0, output_per_mtok: 0.0}
+  stub: {input_per_mtok: 0.0, output_per_mtok: 0.0}
+budget:
+  plan_runs_per_day: null
+  implement_runs_per_day: null
+  plan_cost_usd_per_day: null
+  implement_cost_usd_per_day: null
+  bulk_cost_usd_per_day: null
+  local_cost_usd_per_day: 0
+  equivalent_cap_usd_per_day: {}
+  daily_total_usd: 10
+  weekly_total_usd: null
+  soft_cap_pct: 85
+  windows:
+    claude: {hours: 5, tokens: null}
+    codex: {hours: 5, tokens: null}
+  openrouter_credits_floor_usd: 5.0
+privacy:
+  local_only_requires: local
+  # Robert, 2026-09-07: the OpenRouter account allows free endpoints, which may log,
+  # publish or train on prompts. Only these agents or roles run as open-data runs:
+  # their chat requests say provider.data_collection=allow and try the daily
+  # discovered free pool first. Every other run says deny, which makes OpenRouter
+  # drop every endpoint that logs or trains, and never sees a free model (ADR-0018).
+  # The literature agent reads public preprints and writes summaries; it carries no
+  # student, personnel, manuscript or infrastructure detail.
+  open_endpoints_for: [literature]
+contact:
+  # Robert 2026-09-04: agents work 24/7; real people are contacted only in these hours.
+  # Approved messages to people outside the window wait; cube patrol deliveries sends them.
+  hours: {start: "07:00", end: "19:00", tz: Asia/Riyadh, days: [Sun, Mon, Tue, Wed, Thu]}
+pipeline:
+  max_iterations: 3
+  max_team: 6
+  stale_hours: 24
+  budget_usd_per_epic: null
+  autonomy:
+    # Robert, 2026-09-07: the coordinator recruits agents and roles itself; a
+    # person on a team is a contact and stays behind the contact policy.
+    recruit: coordinator
+coordination:
+  # Robert, 2026-09-07: the coordinator distributes the work and makes sure it is
+  # being done. Every four hours it reviews projects, assignments and stale work;
+  # a bead without a run for a day is chased; a project quiet for two weeks gets
+  # a literature, plan or improvement bead.
+  review_every_hours: 4
+  stale_hours: 24
+  project_gap_days: 14
+group:
+  experts:
+    # Robert 2026-09-04: ontology and machine learning are separate experts (they may
+    # need to talk to each other; that goes through cube pipeline ask).
+    ontology:
+      topics: [applied-ontology, ontology-engineering-and-semantic-interoperability, semantic-similarity]
+      gpu_hours: 2
+      skills: [kaust-compute]
+    machine-learning:
+      topics: [neuro-symbolic-ai]
+      gpu_hours: 4
+      skills: [kaust-compute]
+    protein-function:
+      topics: [protein-function-prediction, metagenomics-and-microbial-function]
+      gpu_hours: 4
+      skills: [kaust-compute]
+    genomics:
+      topics: [genomics]
+      gpu_hours: 2
+      skills: [kaust-compute, reproducibility-check]
+    rare-disease:
+      topics: [rare-disease-diagnostic-support, phenotype-informatics]
+      gpu_hours: 2
+    biomedical-informatics:
+      topics: [biomedical-informatics]
+      gpu_hours: 1
+    drug-mechanisms:
+      topics: [drug-mechanisms-and-systems-biology]
+      gpu_hours: 2
+    bioengineering:
+      topics: [bioengineering]
+      gpu_hours: 0
+  functional:
+    research-software:
+      role: senior
+      topics: [neuro-symbolic-ai]
+      skills: [software-release, code-audit, reproducibility-check]
+      title: "Research software and reproducibility lead"
+    editor:
+      role: editor
+      topics: [applied-ontology]
+      skills: [paper-writing, response-to-reviewers]
+      title: "Manuscript editor"
+    teaching:
+      role: lecturer
+      topics: [neuro-symbolic-ai, applied-ontology]
+      skills: [course-design, lecture-design, talk-design]
+      title: "Teaching and courses lead"
+    # Robert 2026-09-04: one agent reads the new arXiv and bioRxiv submissions every
+    # day and relates them to students, projects and goals. Bulk tier, free models first.
+    literature:
+      role: scribe
+      topics: [applied-ontology, ontology-engineering-and-semantic-interoperability, semantic-similarity, neuro-symbolic-ai, protein-function-prediction, metagenomics-and-microbial-function, genomics, rare-disease-diagnostic-support, phenotype-informatics, biomedical-informatics, drug-mechanisms-and-systems-biology, bioengineering]
+      skills: [literature-review]
+      title: "Literature watch"
+literature_watch:
+  arxiv:
+    # Robert 2026-09-08: selected tracks esp. AI, Logic (cs.LO), and q-bio
+    categories: [cs.AI, cs.LG, cs.LO, cs.CL, cs.DB, q-bio.QM, q-bio.GN, q-bio.MN, q-bio.TO]
+    max_per_day: 400
+  biorxiv:
+    categories: [bioinformatics, genomics, systems biology, synthetic biology, pharmacology and toxicology, cancer biology]
+    max_per_day: 400
+  medrxiv:
+    categories: [pharmacology and toxicology, health informatics, oncology]
+    max_per_day: 400
+  keywords: [ontology, "knowledge graph", "description logic", "neuro-symbolic", "neurosymbolic", "knowledge-enhanced", "knowledge enhanced", "knowledge-based machine learning", "knowledge injection", embedding, "protein function", "function prediction", "gene ontology", phenotype, "rare disease", "drug response", "drug sensitivity", organoid, "colorectal cancer", "colorectal", "causal discovery", "causal machine learning", "causal representation", "causal reasoning", "causal inference", "physiology", "sign of variation", "qualitative reasoning", "semantic similarity", "large language model", metagenom, bioengineering]
+  per_topic_keywords:
+    knowledge-enhanced-learning: ["knowledge-enhanced", "knowledge enhanced", "knowledge injection", "knowledge graph embedding", "knowledge-based machine learning", "biology", "biomedicine", "biomedical"]
+    protein-function-prediction: ["protein function", "function prediction", "gene ontology", "enzyme function", "function representation", "ontology-based"]
+    drug-response-organoids: ["drug response", "drug sensitivity", "organoid", "colorectal cancer", "patient-derived", "pharmacogenomic", "drug screening"]
+    causal-machine-learning: ["causal discovery", "causal machine learning", "causal reasoning", "causal inference", "causal representation learning", "physiology", "causal map", "qualitative"]
+    neuro-symbolic-ai: ["neuro-symbolic", "neurosymbolic", "description logic", "learning and reasoning", "ontology reasoning", "symbolic", "logic"]
+  max_summaries_per_day: 25
+  digest_dir: briefings/literature
+  # Robert 2026-09-08: the literature agent may route relevant items to the
+  # owning expert agent or project team; deliver as inbox messages, never as
+  # direct contact with people outside the fleet.
+roster:
+  authority: website # membership and role
+  fields_from:
+    program: [website, staff_org]
+    start: [staff_org]
+    org_file: [people_yaml, staff_org]
+  decided_by: "the group leader, ADR-0012"
+  # membership_exceptions (roster id -> former|current) belong in cube.local.yaml
+patrols:
+  milestones: "07:00"
+  papers: "07:10"
+  literature_watch: "06:30"
+  deadlines: "07:20"
+  calendar: "17:00"
+  student_digest: "Thu 12:00"
+  repos: "Mon 06:00"
+  infra_hygiene: "04:00"
+  data_pull: "hourly"
+  leases: "15min"
+  pipeline: "10min"
+  deliveries: "hourly"
+  decisions: "15min"
+  goals: "15min"
+  triage: "15min"
+decisions:
+  # Robert, 2026-09-08 (ADR-0027): he approves two things: a change to one of the
+  # running systems below, and a laptop read outside hosts.laptop.readable. Robert
+  # named borg-server, ontolinator and leechuck.de; unimatrix01 and ws stay on the
+  # list because CLAUDE.md still gates every restart, deletion and config edit and
+  # nobody else executes a change there. Strike a name to hand that host to the
+  # coordinator. Matched as a whole word in a bead's title and body, or an
+  # approval's summary, subject and target paths (not its diff).
+  systems: []   # names of running systems (hosts, services) are site-specific: cube.local.yaml
+  # Robert 2026-09-04: most pending decisions he approves anyway. These rules answer those
+  # at the next decisions patrol tick; everything not listed still waits for him, and the
+  # never_automatic guards below can never be overridden by a rule.
+  policy:
+    # kind and matcher -> automatic answer; everything not listed waits for Robert
+    - {kind: permission, match: {resource_class: [ws_cpu, gpu], within_budget: true}, answer: yes, note: "compute inside the declared allowances and the global budget"}
+    - {kind: recruit, match: {member_kind: [agent, role]}, answer: yes, note: "agents and roles may join a team; people never automatically"}
+    - {kind: proposal, match: {from: [agent:coordinator], title_prefix: "Review coordinator goal decomposition"}, answer: accept, note: "goal review proposals are advisory"}
+    - {kind: approval, match: {approval_kind: [file_change], target_within: [runs/, briefings/, state/]}, answer: approve, note: "writes under runtime directories are reversible"}
+    - {kind: finding, match: {labels_all: [blocked]}, answer: reject, note: "routed to the group, not a decision"}
+    # Robert, 2026-09-08 (ADR-0027): a file change in a checkout on ws is a git change
+    # behind the review gate; it never touches a running system. Deletions still trip
+    # the never_automatic guard.
+    - {kind: approval, match: {approval_kind: [file_change], names_system: false}, answer: approve, note: "a reversible git change on ws; the review gate stays (ADR-0027)"}
+    # Robert, 2026-09-08 (ADR-0027): a message to Robert himself is not contact with a
+    # person; the outbound guard exempts him. Status belongs in goal reports, so the
+    # charters tell agents to DM him only for something he must act on.
+    - {kind: approval, match: {approval_kind: [mattermost_dm], recipient: [robert]}, answer: approve, note: "a DM to Robert is not outbound contact (ADR-0027)"}
+    # Robert, 2026-09-08 (ADR-0027): a sysadmin proposal that names none of the running
+    # systems is the coordinator's; the triage rules route the bead there first, this
+    # answers what slipped through.
+    - {kind: proposal, match: {from: [agent:sysadmin, role:sysadmin], names_system: false}, answer: accept, note: "names no running system; the coordinator and sysadmin carry it (ADR-0027)"}
+  never_automatic: [outbound, people, integrity, conflict, question, deletion, spend_over_budget]
+  digest: daily
+triage:
+  # Robert, 2026-09-07: Robert sees decisions, not a queue (ADR-0019). Every fifteen
+  # minutes these rules run over the open beads, in order, first match wins. What no
+  # rule names stays as it is: questions, conflicts, approvals, external incidents,
+  # deadlines inside two weeks, milestones inside 30 days, and an escalation that
+  # really asks for a decision.
+  rules:
+    - name: infrastructure state is the sysadmin's work
+      match: {kind: finding, from: [sysadmin], title_regex: "disk|filesystem|upgrade|down|unreachable|mount|vllm|endpoint|timed out|timer|nvml|driver"}
+      action: route
+      to: agent:sysadmin
+      note: "diagnose and, for any change, file an approval bead with the commands quoted"
+    - name: harness and tooling gaps are borg-cube engineering
+      match: {kind: finding, title_regex: "sandbox|allowlist|on PATH|dolt|ledger|permission mode|don't-ask|journal|workday|runner|credential|fleet drill|answer bead|verbatim|cannot be verified|not retrievable|uncheckable|ibex"}
+      action: route
+      to: agent:research-software
+      note: "a tool, permission or harness gap; fix it or file the fix as a task"
+    - name: hygiene disk and upgrade findings on cube hosts
+      match: {kind: finding, src: [infra_hygiene, hermes-infra], title_regex: "^(Disk |Pending upgrades|vLLM endpoint)"}
+      action: route
+      to: agent:sysadmin
+      note: "routine hygiene; propose the cleanup or upgrade as an approval bead"
+    - name: monitoring warnings are information
+      match: {kind: finding, src: [hermes-infra], title_regex: "^WARN:", priority_min: 3}
+      action: close
+      note: "hermes-infra keeps the live state and alerts the infrastructure owner; a warning is not a decision"
+    - name: answers to a role reach the agent that plays it
+      match: {kind: request, labels_all: [answer:robert]}
+      action: deliver
+      note: "Robert's answer belongs in the agent's inbox, not in the ready queue"
+    - name: far-off milestones wait
+      match: {kind: finding, src: [kaust_rules], title_regex: "due in ([3-9][0-9]|[1-9][0-9][0-9]) day"}
+      action: defer
+      note: "a milestone more than 30 days away is information until it is not"
+    # Robert, 2026-09-07 (doctrine 7a): he decides only security-critical and
+    # privacy-critical matters. An escalation that carries neither flag, and is
+    # not about a person or suspected fabrication, is the coordinator's to settle.
+    # Robert, 2026-09-08 (ADR-0027): unless it names one of decisions.systems.
+    - name: escalations without a critical flag are the coordinator's
+      match: {kind: finding, needs_robert: true, names_system: false, title_regex: "^Escalation from", labels_none: [people, integrity, critical:security, critical:privacy, kind:approval]}
+      action: route
+      to: agent:coordinator
+      note: "not security or privacy critical; the coordinator decides and files the follow-up"
+    - name: permission asks without a critical flag are the coordinator's
+      match: {kind: request, needs_robert: true, names_system: false, title_regex: "^Escalation from", labels_none: [people, integrity, critical:security, critical:privacy]}
+      action: route
+      to: agent:coordinator
+      note: "compute and inputs inside the budget are the coordinator's to grant"
+    - name: source conflicts are settled by the coordinator
+      match: {kind: conflict, needs_robert: true, names_system: false, labels_none: [people, integrity, critical:security, critical:privacy]}
+      action: route
+      to: agent:coordinator
+      note: "pick the source of record, record why on the bead, and file the correction"
+    # Robert, 2026-09-08 (ADR-0027): he approves a change to a running system and a
+    # laptop read outside the readable directories, nothing else. A question,
+    # finding, request, proposal or approval that names no running system, carries
+    # no critical flag and is not a laptop read is the coordinator's. A routed bead
+    # that comes back with needs:robert is routed once more; a third ask stays.
+    - name: questions without a critical flag are the coordinator's
+      match: {kind: question, needs_robert: true, labels_none: [people, integrity, critical:security, critical:privacy]}
+      action: route
+      to: agent:coordinator
+      note: "not security or privacy critical; the coordinator answers on the bead and tells the asker (ADR-0027)"
+    - name: findings that name no running system are the coordinator's
+      match: {kind: finding, needs_robert: true, names_system: false, labels_none: [people, integrity, critical:security, critical:privacy, src:deadlines.md, src:kaust_rules]}
+      action: route
+      to: agent:coordinator
+      note: "no running system named; the coordinator settles it and files the follow-up (ADR-0027)"
+    - name: requests that name no running system and are not laptop reads are the coordinator's
+      match: {kind: request, needs_robert: true, names_system: false, labels_none: [people, integrity, critical:security, critical:privacy, laptop-read:approval, host:laptop]}
+      action: route
+      to: agent:coordinator
+      note: "compute, inputs and probes are the coordinator's to grant (ADR-0027)"
+    - name: proposals and prepared changes that name no running system are the coordinator's
+      match: {kind: proposal, needs_robert: true, names_system: false, labels_none: [people, integrity, critical:security, critical:privacy]}
+      action: route
+      to: agent:coordinator
+      note: "no running system named; the coordinator decides and the agent carries it out (ADR-0027)"
+    - name: prepared changes that name no running system are the coordinator's
+      match: {kind: approval, needs_robert: true, names_system: false, labels_none: [people, integrity, critical:security, critical:privacy]}
+      action: route
+      to: agent:coordinator
+      note: "no running system named; the coordinator decides and the agent carries it out (ADR-0027)"
+    - name: overdue and near deadlines are digest lines, not decisions
+      match: {kind: finding, needs_robert: true, src: [deadlines.md]}
+      action: defer
+      note: "Robert reads deadlines in the daily digest and the weekly overdue digest, not as decisions (ADR-0027)"
+
+mattermost:
+  team: borg
+  # infra_alerts_channel: <channel id>   (cube.local.yaml)
+hermes:
+  # Bot names and home channels are site-specific (cube.local.yaml). Keys are the
+  # profile names rendered by `cube hermes render <profile>`.
+  profiles:
+    advisor:   {bot: null, home_channel: null}
+    concierge: {bot: null, home_channel: null}
+    scribe:    {bot: null, home_channel: null}
+    hermes-ws: {bot: null, home_channel: null}

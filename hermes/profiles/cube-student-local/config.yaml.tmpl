@@ -1,0 +1,27 @@
+# Dedicated local-only profile. No gateway or auxiliary cloud inference.
+model:
+  default: qwen3.8-27b
+  provider: local
+  context_length: 131072
+  max_tokens: 8192
+providers:
+  local:
+    type: openai
+    base_url: {{VLLM_BASE_URL}}
+    api_key_env: VLLM_API_KEY
+    model: qwen3.8-27b
+fallback_providers: []
+fallback_model: null
+compression: {enabled: false}
+auxiliary:
+  title_generation: {enabled: false}
+  background_review: {enabled: false}
+memory:
+  memory_enabled: false
+  user_profile_enabled: false
+plugins: {enabled: []}
+approvals:
+  mode: manual
+  single_query_mode: deny
+  cron_mode: deny
+provider_routing: {data_collection: deny}

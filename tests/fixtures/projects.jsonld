@@ -1,0 +1,20 @@
+{
+ "@context": {"schema": "https://schema.org/", "foaf": "http://xmlns.com/foaf/0.1/", "borg": "https://borg.kaust.edu.sa/kg/ns/", "borg-id": "https://borg.kaust.edu.sa/kg/"},
+ "@graph": [
+  {"@id": "borg-id:person/alex-example", "@type": "foaf:Person", "foaf:name": "Alex Example",
+   "borg:position": "PhD (current)", "borg:program": "Bioengineering", "borg:startYear": 2025,
+   "borg:onProject": [{"@id": "borg-id:project/test-project"}]},
+  {"@id": "borg-id:person/fay-former", "@type": "foaf:Person", "foaf:name": "Fay Former",
+   "borg:position": "MSc (former member)", "borg:program": "Computer Science", "borg:startYear": 2023,
+   "borg:endYear": 2025, "borg:thesisDefenseDate": "2025-05-03"},
+  {"@id": "borg-id:project/test-project", "@type": "borg:Project", "schema:name": "Test project",
+   "borg:startYear": 2025, "borg:hasMember": [{"@id": "borg-id:person/alex-example", "borg:roleOnProject": "student"}],
+   "borg:producedSW": [{"@id": "borg-id:software/mowl"}], "borg:producedPub": []},
+  {"@id": "borg-id:software/mowl", "@type": "schema:SoftwareApplication", "schema:name": "mOWL",
+   "schema:codeRepository": "https://github.com/bio-ontology-research-group/mowl",
+   "borg:fromProject": [{"@id": "borg-id:project/test-project"}]},
+  {"@id": "borg-id:course/krr-2026", "@type": "borg:Course", "schema:name": "Knowledge Representation and Reasoning",
+   "borg:courseCode": "CS 213", "borg:year": 2026, "borg:role": "Instructor", "borg:program": "Computer Science"},
+  {"@id": "borg-id:pub/x2026", "@type": "schema:ScholarlyArticle", "schema:name": "A paper"}
+ ]
+}

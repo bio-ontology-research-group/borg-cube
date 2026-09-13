@@ -1,0 +1,43 @@
+# Copy only requirements transcribed from the current call. Replace every
+# example value with the call source and retrieval date. Text drafts cannot
+# prove PDF pagination or fonts, so record checked evidence markers in draft.
+title: Example funding call
+source:
+  locator: path-or-url-of-current-call
+  retrieved_on: 2026-09-02
+requirements:
+  page_limits:
+    - id: specific-aims
+      max_pages: 1
+      marker: "pages: specific-aims"
+      mandatory: true
+      fix: Render the final document, count pages, then update the marker.
+  sections:
+    - id: specific-aims
+      heading: Specific aims
+      mandatory: true
+  fonts:
+    - id: body
+      allowed: [Arial 11 pt]
+      marker: "font: body"
+      mandatory: true
+      fix: Check the rendered submission file against the call, then update the marker.
+  annexes:
+    - id: cv
+      path: annexes/cv.pdf
+      mandatory: true
+  deadlines:
+    - id: submission
+      date: 2099-12-31
+      marker: "deadline: submission"
+      mandatory: true
+  eligibility:
+    - id: principal-investigator
+      marker: "eligibility: principal-investigator"
+      mandatory: true
+
+# Example draft evidence markers, placed only after a person has checked them:
+# <!-- pages: specific-aims: 1 -->
+# <!-- font: body: Arial 11 pt -->
+# <!-- deadline: submission: 2099-12-31 -->
+# <!-- eligibility: principal-investigator: confirmed-by-Robert -->

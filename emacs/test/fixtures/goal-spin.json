@@ -1,0 +1,1 @@
+{"goal":"cube-400","bead":"cube-403","applied":false,"commands":["cube assign cube-403 --role programmer","cube run programmer --bead cube-403"],"diff":"--- bead\n+++ assigned\n+role: programmer\n"}

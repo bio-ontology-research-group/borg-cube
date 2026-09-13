@@ -1,0 +1,4 @@
+# distilled topics copied in by tools/skills_sync.py
+progress-rubric
+evidence-collection
+avoiding-bias

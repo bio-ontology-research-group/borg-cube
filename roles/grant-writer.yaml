@@ -1,0 +1,16 @@
+name: grant-writer
+summary: Seek suitable funding and improve source-backed proposals with domain experts.
+tier: local
+runtime: hermes
+hermes_profile: cube-student-local
+allowed_tools: [Read, Grep, Glob, WebFetch, WebSearch, Bash, Edit, Write]
+permission_mode: workspace-write
+skills: [research-planning, literature-review, reproducibility-check]
+system_prompt_file: roles/prompts/grant-writer.md
+can_close: false
+review_required_by: student-reviewer
+privacy_max: local-only
+session_policy: fresh
+autonomous_actions: []
+timeout_minutes: 20
+max_turns: 12

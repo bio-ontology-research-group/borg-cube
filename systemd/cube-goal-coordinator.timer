@@ -1,0 +1,10 @@
+[Unit]
+Description=Retry queued BORG goal handoffs without polling Mattermost
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=5min
+Unit=cube-goal-coordinator.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,45 @@
+# Hermes config.yaml template for profile {{PROFILE}} (meeting scribe, drafts only, no gateway).
+# Rendered by `cube hermes render scribe` into ~/.hermes/profiles/{{PROFILE}}/config.yaml on ws.
+# Placeholders: {{PROFILE}} {{CUBE_ROOT}} {{VLLM_BASE_URL}} {{MATTERMOST_URL}} {{MATTERMOST_ALLOWED_USERS}} {{MATTERMOST_HOME_CHANNEL}}
+# Invoked headless by cube run scribe (hermes -p scribe chat -q ...). Check-in transcripts are privacy:local-only and are routed by cube
+# to the local runner directly, not through this profile (ADR-0007).
+
+model:
+  default: z-ai/glm-5.3-flash
+  provider: openrouter
+
+providers:
+  openrouter:
+    api_key_env: OPENROUTER_API_KEY
+  local:
+    type: openai
+    base_url: {{VLLM_BASE_URL}}
+    api_key_env: VLLM_API_KEY
+    model: local
+
+fallback_providers:
+  - local
+
+gateway:
+  platforms:
+    mattermost:
+      enabled: false                           # the scribe never sends; {{MATTERMOST_URL}} {{MATTERMOST_ALLOWED_USERS}} {{MATTERMOST_HOME_CHANNEL}} unused
+  require_mention: true
+
+hooks:
+  pre_prompt: []
+
+skills:
+  dirs:
+    - ~/.hermes/profiles/{{PROFILE}}/skills   # meeting-scribe
+  disabled:
+    - email
+    - google-workspace
+
+tools:
+  file:
+    write_roots:
+      - {{CUBE_ROOT}}/runs                     # drafts only; org files are written by cube approve through scripts/org_append.py
+
+logging:
+  transcripts: ~/.hermes/profiles/{{PROFILE}}/transcripts

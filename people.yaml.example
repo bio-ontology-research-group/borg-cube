@@ -1,0 +1,19 @@
+# Roster of record (gitignored as people.yaml; see doc/student-guide.md and ADR-0012).
+# One entry per person, keyed by roster id. `cube roster` reconciles this file against
+# the website and the staff org file; the fields below are the ones the code reads.
+people:
+  alex-example:
+    name: Alex Example
+    role: phd            # phd | ms | postdoc | staff | pi | former
+    program: PhD-CS
+    start: 2024-09-01
+    expected_graduation: 2028-08-31
+    org_file: alex.org
+    mattermost: alexexample
+    mattermost_id: <mattermost-user-id>
+    cosupervisor: null
+  sam-sample:
+    name: Sam Sample
+    role: former
+    program: MS-CS
+    start: 2022-09-01

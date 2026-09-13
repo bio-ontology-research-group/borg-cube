@@ -1,0 +1,22 @@
+# Figure to run mapping, read by figure_provenance.py. One entry per figure or
+# panel in the manuscript. The mapping is explicit on purpose: a figure whose
+# origin has to be guessed is reported as untraceable.
+#
+# `figure` is the path as the manuscript refers to it, `run` is a run_id from
+# the manifest, and `output` is the artifact inside that run the figure came from.
+
+figures:
+  - figure: figures/fig2-roc.png
+    run: 2026-09-02-baseline-01
+    output: figures/roc.png
+    claim: Baseline separates the two classes above chance on the v3 validation split.
+
+  - figure: figures/fig3-ablation.pdf
+    run: 2026-09-03-ablation-04
+    output: figures/ablation.pdf
+    claim: Removing the graph features costs 4 points of macro F1.
+
+  # A panel assembled from several runs gets one entry per panel.
+  - figure: figures/fig4a-scaling.pdf
+    run: 2026-09-04-scaling-01
+    output: figures/scaling.pdf

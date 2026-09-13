@@ -1,0 +1,9 @@
+{
+  "session_id": "8f1c2a7e-3b1d-4c55-9c1e-1d2f3a4b5c6d",
+  "transcript_path": "/home/robert/.claude/projects/-home-robert-Public-software-borg-cube/8f1c2a7e.jsonl",
+  "cwd": "/home/robert/Public/software/borg-cube",
+  "hook_event_name": "Notification",
+  "message": "Claude needs your permission to use Bash",
+  "notification_type": "permission_prompt",
+  "title": "Claude Code"
+}

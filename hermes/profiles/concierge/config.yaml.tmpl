@@ -1,0 +1,65 @@
+# Hermes config.yaml template for profile {{PROFILE}} (Robert-only remote control, Yegge's Seneschal).
+# Rendered by `cube hermes render concierge` into ~/.hermes/profiles/{{PROFILE}}/config.yaml on ws.
+# Placeholders: {{PROFILE}} {{CUBE_ROOT}} {{VLLM_BASE_URL}} {{MATTERMOST_URL}} {{MATTERMOST_ALLOWED_USERS}} {{MATTERMOST_HOME_CHANNEL}}
+# Key names follow the Hermes version pinned on ws; run `hermes config validate` after rendering.
+
+model:
+  default: z-ai/glm-5.3-flash        # OpenRouter; Codex OAuth may replace it if the pinned Hermes supports it; never Anthropic OAuth
+  provider: openrouter
+
+providers:
+  openrouter:
+    api_key_env: OPENROUTER_API_KEY
+  local:
+    type: openai
+    base_url: {{VLLM_BASE_URL}}
+    api_key_env: VLLM_API_KEY
+    model: local
+
+fallback_providers:
+  - local
+
+group_sessions_per_user: true
+
+gateway:
+  platforms:
+    mattermost:
+      enabled: true
+      url_env: MATTERMOST_URL                        # {{MATTERMOST_URL}}
+      token_env: MATTERMOST_CONCIERGE_TOKEN
+      allowed_users: "{{MATTERMOST_ALLOWED_USERS}}"  # rendered as Robert's Mattermost user only; cube hermes render refuses anything else
+      home_channel: "{{MATTERMOST_HOME_CHANNEL}}"    # Robert's DM
+      require_mention: false
+  require_mention: true
+
+hooks:
+  pre_prompt: []
+
+skills:
+  dirs:
+    - ~/.hermes/profiles/{{PROFILE}}/skills   # group-monitor, personal-assistant (read paths)
+  disabled:
+    - email
+    - google-workspace
+
+tools:
+  terminal:
+    allowed_commands:                          # the concierge drives cube; nothing else
+      - {{CUBE_ROOT}}/.venv/bin/cube attention --json
+      - {{CUBE_ROOT}}/.venv/bin/cube approvals --json
+      - {{CUBE_ROOT}}/.venv/bin/cube status --json
+      - {{CUBE_ROOT}}/.venv/bin/cube approve
+      - {{CUBE_ROOT}}/.venv/bin/cube reject
+      - {{CUBE_ROOT}}/.venv/bin/cube run
+      - {{CUBE_ROOT}}/.venv/bin/cube brief
+
+cron:
+  timezone: Asia/Riyadh
+  jobs:
+    - name: concierge-morning-brief
+      schedule: "45 7 * * *"                   # after hermes-ws infra-morning-report (07:30)
+      script: {{CUBE_ROOT}}/.venv/bin/cube brief --json
+      deliver: home_channel
+
+logging:
+  transcripts: ~/.hermes/profiles/{{PROFILE}}/transcripts

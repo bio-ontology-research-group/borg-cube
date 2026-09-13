@@ -1,0 +1,26 @@
+{
+  "generated": "2026-09-04T06:45:00+03:00",
+  "date": "2026-09-04",
+  "counts": {"fetched": 812, "matched": 9, "summarised": 2, "pending": 0},
+  "path": "briefings/literature/2026-09-04.md",
+  "json_path": "briefings/literature/2026-09-04.json",
+  "digest_exists": true,
+  "entries": [
+    {"id": "arxiv:2609.01234v1", "source": "arxiv",
+     "url": "https://arxiv.org/abs/2609.01234v1",
+     "title": "Temporal knowledge graph embeddings for phenotype trajectories",
+     "one_paragraph_summary": "The authors extend a knowledge graph embedding model with a temporal component and evaluate it on phenotype trajectories.",
+     "relevance": [
+       {"kind": "project", "ref": "nih-temporal-kg", "why": "the paper targets the same temporal knowledge graph setting as the project title."},
+       {"kind": "student", "ref": "gus-student", "why": "matched term 'knowledge graph' is the core of their thesis work."}],
+     "priority": "high", "doi": null, "matched": ["knowledge graph", "phenotype"]},
+    {"id": "biorxiv:10.1101/2026.09.03.611222", "source": "biorxiv",
+     "url": "https://www.biorxiv.org/content/10.1101/2026.09.03.611222v1",
+     "title": "A protein function benchmark for metagenome-assembled genomes",
+     "one_paragraph_summary": "A benchmark that pairs metagenome-assembled genomes with curated protein function annotations.",
+     "relevance": [
+       {"kind": "topic", "ref": "protein-function-prediction", "why": "matched term 'protein function' names the topic directly."}],
+     "priority": "normal", "doi": "10.1101/2026.09.03.611222",
+     "matched": ["protein function", "metagenom"]}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "repos": [
+    {"name": "gapsmith", "path": "~/Public/software/gapsmith",
+     "url": "https://github.com/bio-ontology-research-group/gapsmith", "branch": "main",
+     "dirty": false, "ahead": 0, "behind": 2, "open_prs": 1, "ci": "passing",
+     "last_commit": "2026-09-01T18:40:00+03:00", "audit_bead": null},
+    {"name": "borg-website", "path": "~/Public/software/website/borg-website",
+     "url": "https://github.com/bio-ontology-research-group/borg-website", "branch": "main",
+     "dirty": true, "ahead": 1, "behind": 0, "open_prs": 0, "ci": null,
+     "last_commit": "2026-08-29T09:10:00+03:00", "audit_bead": "cube-171"}
+  ]
+}

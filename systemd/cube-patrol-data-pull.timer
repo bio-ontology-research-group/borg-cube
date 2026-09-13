@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.data_pull ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol data-pull timer (hourly git pull of ~/org ~/pa and the KGs)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@data-pull.service
+
+[Install]
+WantedBy=timers.target

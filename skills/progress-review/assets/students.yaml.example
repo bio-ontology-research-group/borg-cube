@@ -1,0 +1,28 @@
+# Mapping from student id to the artefacts progress-review may read.
+# Copy to state/students.yaml (gitignored) and fill in real paths. Nothing
+# here should point at grades, contracts, visa or HR material.
+students:
+  alex:
+    name: Alex Example
+    programme: PhD-CS          # as in skills/phd-milestones/assets/programs.yaml
+    start: 2025-01-01          # from the admission letter or staff.org, never inferred
+    org: ~/org/alex.org        # the person's org file; dated headings are meeting evidence
+    git_authors:               # names or emails used to filter git log --author
+      - Alex Example
+      - alex.example@example.org
+    repos:
+      - ~/src/alex-project
+      - ~/src/shared-pipeline  # shared repos are filtered by git_authors
+    drafts:
+      - ~/papers/alex-benchmark/main.tex
+      - ~/papers/alex-thesis/chapters/*.tex
+  bea:
+    name: Bea Sample
+    programme: MS-CS
+    start: 2025-08-24
+    org: ~/org/bea.org
+    git_authors: [Bea Sample]
+    repos:
+      - ~/src/bea-thesis
+    drafts:
+      - ~/papers/bea-thesis/thesis.tex

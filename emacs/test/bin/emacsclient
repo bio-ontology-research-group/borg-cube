@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Fake emacsclient for tests: record the arguments, one per line, in
+# $CUBE_FAKE_OUT (default stdout).
+printf '%s\n' "$@" >> "${CUBE_FAKE_OUT:-/dev/stdout}"

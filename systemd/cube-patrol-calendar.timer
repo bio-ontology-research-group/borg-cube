@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.calendar ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol calendar timer (daily 17:00, tomorrow's group meetings to prep beads)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*-*-* 17:00:00
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@calendar.service
+
+[Install]
+WantedBy=timers.target

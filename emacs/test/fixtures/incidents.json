@@ -1,0 +1,6 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "open": [{"id": "cube-410", "title": "Codex runner exhausted", "severity": "p0",
+             "host": "ws", "service": "codex", "since": "2026-09-02T09:14:00+03:00", "age_hours": 0.02}],
+  "banner": {"severity": "p0", "text": "Codex runner exhausted", "count": 1, "bead": "cube-410"}
+}

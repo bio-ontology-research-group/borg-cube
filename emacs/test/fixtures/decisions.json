@@ -1,0 +1,184 @@
+{
+ "generated": "2026-09-04T09:00:00+03:00",
+ "decisions": [
+  {
+   "id": "cube-401",
+   "source": "bead",
+   "kind": "permission",
+   "from": "agent:ontology",
+   "title": "Approve the ontology expert resource step: run the IBEX benchmark",
+   "question": "Approve the ontology expert resource step: run the IBEX benchmark",
+   "options": [
+    "yes",
+    "no"
+   ],
+   "context": {
+    "bead": "cube-401",
+    "epic": null,
+    "run_id": null,
+    "evidence": [
+     "agents/ontology.yaml#resources"
+    ],
+    "host": "ws",
+    "labels": [
+     "agent:ontology",
+     "needs:robert",
+     "resource:approval"
+    ],
+    "resource_class": "gpu",
+    "member_kind": null,
+    "spend_usd": 0.0,
+    "approval_kind": null,
+    "targets": [],
+    "deletes": false
+   },
+   "since": "2026-09-04T07:40:00+03:00",
+   "age": 4800,
+   "answer_command": [
+    "decide",
+    "cube-401",
+    "--choice",
+    "yes"
+   ],
+   "body": "Rationale: the benchmark needs IBEX.\nResources requested: 4 node hours.\nExpected outcome: a comparison table.\nKill criterion: stop if the baseline is not beaten.",
+   "duplicates": [
+    "cube-999"
+   ],
+   "summary": "Rationale: the benchmark needs IBEX.\nResources requested: 4 node hours.",
+   "policy_preview": {
+    "rule": 0,
+    "by": "policy:0",
+    "kind": "permission",
+    "answer": "yes",
+    "note": "compute inside the declared allowances and the global budget"
+   }
+  },
+  {
+   "id": "cube-402",
+   "source": "bead",
+   "kind": "question",
+   "from": "agent:liaison",
+   "title": "Question from agent:liaison: which mailbox?",
+   "question": "Which mailbox should I read for the ISWC thread?",
+   "options": [
+    "free"
+   ],
+   "context": {
+    "bead": "cube-402",
+    "epic": null,
+    "run_id": "r-77",
+    "evidence": [
+     "runs/r-77#result.json"
+    ],
+    "host": "laptop",
+    "labels": [],
+    "resource_class": null,
+    "member_kind": null,
+    "spend_usd": 0.0,
+    "approval_kind": null,
+    "targets": [],
+    "deletes": false
+   },
+   "since": "2026-09-04T08:30:00+03:00",
+   "age": 1800,
+   "answer_command": [
+    "decide",
+    "cube-402",
+    "--text",
+    "<your answer>"
+   ],
+   "policy_preview": null
+  },
+  {
+   "id": "cube-403",
+   "source": "bead",
+   "kind": "proposal",
+   "from": "agent:machine-learning",
+   "title": "Use the new embedding model",
+   "question": "Use the new embedding model",
+   "options": [
+    "accept",
+    "reject",
+    "free"
+   ],
+   "context": {
+    "bead": "cube-403",
+    "epic": "cube-400",
+    "run_id": null,
+    "evidence": [
+     "agents/machine-learning/memory/journal.md#latest entry"
+    ],
+    "host": "ws",
+    "labels": [],
+    "resource_class": null,
+    "member_kind": null,
+    "spend_usd": 0.0,
+    "approval_kind": null,
+    "targets": [],
+    "deletes": false
+   },
+   "since": "2026-09-04T08:45:00+03:00",
+   "age": 900,
+   "answer_command": [
+    "decide",
+    "cube-403",
+    "--choice",
+    "accept"
+   ],
+   "policy_preview": null
+  },
+  {
+   "id": "apr-20260904-085500-ab",
+   "source": "approval",
+   "kind": "approval",
+   "from": "role:advisor",
+   "title": "email to alex-example: Milestone reminder",
+   "question": "Approve this email: email to alex-example: Milestone reminder?",
+   "options": [
+    "approve",
+    "reject"
+   ],
+   "context": {
+    "bead": "cube-301",
+    "epic": null,
+    "run_id": "r-9",
+    "evidence": [
+     "state/drafts/cube-301.md"
+    ],
+    "host": null,
+    "labels": [],
+    "resource_class": null,
+    "member_kind": null,
+    "spend_usd": 0.0,
+    "approval_kind": "email",
+    "targets": [],
+    "deletes": false
+   },
+   "since": "2026-09-04T08:55:00+03:00",
+   "age": 300,
+   "answer_command": [
+    "decide",
+    "apr-20260904-085500-ab",
+    "--choice",
+    "approve"
+   ],
+   "policy_preview": null
+  }
+ ],
+ "answered": [
+  {
+   "id": "cube-390",
+   "choice": "yes",
+   "text": null,
+   "ts": "2026-09-03T17:12:00+03:00",
+   "by": "policy:0"
+  },
+  {
+   "id": "cube-391",
+   "choice": null,
+   "text": "Use the 2026 release.",
+   "ts": "2026-09-03T18:02:00+03:00",
+   "by": "robert"
+  }
+ ]
+}

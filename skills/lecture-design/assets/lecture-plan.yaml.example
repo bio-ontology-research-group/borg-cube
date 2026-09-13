@@ -1,0 +1,142 @@
+# Lecture plan for one session. Checked by scripts/outcome_lint.py and
+# scripts/timebox.py. Copy to plans/<course>-<session>.yaml and edit.
+#
+# This example is a real-shaped graduate computer science session: 90 minutes,
+# flipped, on leakage in machine learning evaluation for biological data.
+course: CS 249 Machine learning for computational biology
+session: 8
+title: Leakage and honest evaluation on biological data
+date: 2026-10-14
+start: "10:00"
+length_minutes: 90
+room: Building 1, level 3, seminar room 3119
+audience: 18 MS and PhD students; all have taken the ML core course, about half have used scikit-learn on their own data
+prerequisites:
+  - cross-validation and the train, validation, test split (session 3)
+  - sequence similarity and clustering (session 6)
+
+# First exposure happens before class, and each item names the in-class check
+# that makes it count.
+pre_class:
+  - id: p1
+    kind: reading
+    what: "Kapoor and Narayanan 2023, sections on leakage taxonomy and on illegitimate features; write one sentence on the leak type you expect in your own project"
+    minutes: 40
+    check: s1
+  - id: p2
+    kind: notebook
+    what: "Run the provided baseline notebook on the protein family dataset and record the reported accuracy"
+    minutes: 20
+    check: s3
+
+# An outcome is an observable verb plus a noun plus a context, with its Bloom
+# level and knowledge type. The verb table is scripts/outcome_lint.py --verbs.
+outcomes:
+  - id: o1
+    statement: "Explain how information leaks from a validation split when the dataset has related records"
+    verb: explain
+    level: understand
+    knowledge: conceptual
+  - id: o2
+    statement: "Diagnose the leak in an evaluation pipeline and name the split it needs instead"
+    verb: diagnose
+    level: analyze
+    knowledge: procedural
+  - id: o3
+    statement: "Implement a grouped cross-validation split for a sequence dataset at a stated identity threshold"
+    verb: implement
+    level: apply
+    knowledge: procedural
+  - id: o4
+    statement: "Justify the evaluation protocol of a published model against the structure of its data"
+    verb: justify
+    level: evaluate
+    knowledge: conceptual
+
+# The timeline. kind decides what a segment counts as: direct instruction
+# (lecture, demo, worked-example, recap), activity, formative check, or break.
+# Activities that serve an outcome state the verb or the level they demand.
+segments:
+  - id: s1
+    kind: retrieval
+    minutes: 6
+    what: "In pairs, summarize from the reading how a leak inflates a reported score, then two pairs report; collects the pre-class sentences"
+    outcomes: [o1]
+    verb: summarize
+  - id: s2
+    kind: lecture
+    minutes: 12
+    what: "Leakage taxonomy: no test set, test set contaminated by preprocessing, illegitimate features, non-independence of records. One biological example each"
+  - id: s3
+    kind: peer-instruction
+    minutes: 10
+    what: "Four pipelines on the protein family dataset; vote on which one reports an honest number, discuss in threes, vote again"
+    outcomes: [o2]
+    verb: diagnose
+    misconception: "a random split is fair because it is random; students do not see that homologous sequences put near-copies on both sides of the split"
+    on_split_vote: "if the second vote is still split, walk the class through pipeline C line by line"
+  - id: s4
+    kind: lecture
+    minutes: 7
+    what: "Grouped, clustered and temporal splits, and what each one protects against"
+  - id: s5
+    kind: prediction
+    minutes: 3
+    what: "Cards A to D: predict the accuracy of the same model under a random split and under a 30 percent identity clustered split"
+    outcomes: [o2]
+    verb: predict
+  - id: s6
+    kind: demo
+    minutes: 5
+    what: "Run both splits live on the family dataset and put the two numbers next to the predictions"
+  - id: s7
+    kind: poll
+    minutes: 4
+    what: "Vote on which of three explanations accounts for the gap, then name the one the run rules out"
+    outcomes: [o2]
+    verb: differentiate
+    misconception: "the drop means the clustered split is too hard, rather than the random split being wrong"
+  - id: s8
+    kind: break
+    minutes: 5
+  - id: s9
+    kind: live-coding
+    minutes: 12
+    what: "From the prepared skeleton, build a grouped split from the cluster assignment file and wire it into cross_val_score"
+    outcomes: [o3]
+    verb: implement
+  - id: s10
+    kind: code-check
+    minutes: 5
+    what: "Pairs run the assertion cell on their own split and report pass or fail with the leaked group they found"
+    outcomes: [o3]
+    verb: execute
+  - id: s11
+    kind: exercise
+    minutes: 10
+    what: "Pairs fix the leaky split in the notebook from p2, driver and navigator swapping halfway, and record the honest number"
+    outcomes: [o3]
+    verb: implement
+  - id: s12
+    kind: discussion
+    minutes: 5
+    what: "Two paper abstracts on screen; groups say which evaluation they would trust and what they would ask the authors for"
+    outcomes: [o4]
+    verb: justify
+  - id: s13
+    kind: muddiest-point
+    minutes: 6
+    what: "Write the muddiest point and name one protocol from your own project you would now question"
+    outcomes: [o4]
+    verb: assess
+
+# The segment to drop when the session runs late. Never a check, never the
+# closing.
+contingency: "drop s12 and put the two abstracts on the discussion forum; keep s13"
+
+materials:
+  - "skeleton notebook and cluster assignment file in the course repository, session-08/"
+  - "finished notebook published after class"
+after:
+  - "read the s13 cards and open session 9 with the two commonest muddiest points"
+  - "note in the teaching diary whether the s3 second vote converged"

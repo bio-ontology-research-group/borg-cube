@@ -1,0 +1,13 @@
+# Standing agents run through their bounded workday command, one timer per configured policy.
+[Unit]
+Description=borg-cube standing-agent workday (fair local dispatch; agent cron still applies)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*:0/5
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@agent-workday.service
+
+[Install]
+WantedBy=timers.target

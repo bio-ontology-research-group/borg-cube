@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# cube-codex-notify: Codex `notify` hook for the orchestration host (remote mode).
+# Codex calls it with the event JSON as the last argument; this turns it into
+# `cube notify` so the event lands in state/events.jsonl, which the cockpit tails.
+#
+#   ~/.codex/config.toml:  notify = ["/path/to/emacs/bin/cube-codex-notify"]
+#
+# Always exits 0 so a broken hook never blocks the agent.
+set -u
+trap 'exit 0' ERR
+payload="${!#:-}"
+[ -n "$payload" ] || exit 0
+command -v jq >/dev/null 2>&1 || exit 0
+root="${CUBE_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
+cube="${CUBE_PROGRAM:-$root/.venv/bin/cube}"
+[ -x "$cube" ] || cube="cube"
+type_=$(printf '%s' "$payload" | jq -r '.type // "agent-turn-complete"')
+case "$type_" in
+    agent-turn-complete) kind=stop; title="Codex finished its turn" ;;
+    *) kind=notification; title="$type_" ;;
+esac
+sid=$(printf '%s' "$payload" | jq -r '(."thread-id" // .thread_id // "codex") | tostring')
+body=$(printf '%s' "$payload" | jq -r '(."last-assistant-message" // .last_assistant_message // "") | tostring' | head -c 2000)
+cwd=$(printf '%s' "$payload" | jq -r '.cwd // ""')
+session="${CUBE_SESSION:-}"
+if [ -z "$session" ] && [ -n "$cwd" ] && command -v tmux >/dev/null 2>&1; then
+    # the cube/<name> tmux session whose pane runs in the same directory, if any
+    session=$(tmux list-panes -a -F '#{session_name} #{pane_current_path}' 2>/dev/null \
+        | awk -v d="$cwd" '$2==d && $1 ~ /^cube\// {print $1; exit}')
+fi
+[ -n "$session" ] || session="codex:$sid"
+"$cube" --root "$root" notify --kind "$kind" --session "$session" --title "$title" --body "$body" >/dev/null 2>&1 || true
+exit 0

@@ -1,0 +1,22 @@
+{
+  "id": "cube-142",
+  "title": "Implement mt-aware reassembly filter",
+  "description": "```yaml\nxid: experiment:alex-example:mt-reassembly\nprovenance:\n  - source: ~/org/alex.org::*Meeting 20 November 2023\ndeadline: null\n```\n\nFilter contigs that fuse ATP6/COX3 before polishing.\n\n- compare against the reference mitogenome\n- report the 269 nt artifact",
+  "status": "open",
+  "priority": 2,
+  "issue_type": "task",
+  "owner": "robert",
+  "assignee": null,
+  "role": "programmer",
+  "resume_id": "0198e1c0-kobayashi-session",
+  "created_at": "2026-08-30T10:00:00Z",
+  "updated_at": "2026-09-01T16:20:00Z",
+  "labels": ["stage:implement", "student:alex-example", "kind:experiment"],
+  "parent": "cube-100",
+  "dependencies": [{"id": "cube-141", "title": "Extract mt reads", "status": "closed"}],
+  "dependents": [{"id": "cube-143", "title": "Polish and annotate", "status": "open"}],
+  "comments": [
+    {"author": "programmer", "created_at": "2026-09-01T16:20:00Z",
+     "text": "Started in worktree .cube/wt/cube-142."}
+  ]
+}

@@ -1,0 +1,96 @@
+# Local KAUST defense-planning snapshot.
+# All KAUST entries name their source and the date on which this snapshot was
+# verified. Calendar dates are deliberately absent because they change.
+version: 1
+verified_on: "2026-09-02"
+programmes:
+  phd:
+    aliases: [phd, phd-cs, phd-bioeng]
+    committee:
+      minimum: 4
+      maximum: 5
+      source: kaust-registrar-program-guide
+      verified_on: "2026-09-02"
+      rule: "The dissertation defense committee has four to five members and requires Dean approval."
+    official_steps:
+      - id: petition
+        label: "Petition and committee record ready for the Registrar deadline"
+        timing: months_before
+        value: 2
+        source: kaust-registrar-program-guide
+        verified_on: "2026-09-02"
+        rule: "Required defense documents are due by the Academic Calendar deadline and at least two months before the defense."
+      - id: committee-copy
+        label: "Final dissertation delivered to committee and external examiner"
+        timing: days_before
+        value: 42
+        source: kaust-graduate-affairs-thesis-policy
+        verified_on: "2026-09-02"
+        rule: "Deliver the dissertation to the committee at least six weeks before the defense."
+      - id: announcement
+        label: "Defense announcement materials ready"
+        timing: days_before
+        value: 14
+        source: kaust-cemse-milestones
+        verified_on: "2026-09-02"
+        rule: "Defense announcement materials are due at least two weeks before the scheduled PhD defense."
+      - id: registrar-result
+        label: "Defense result recorded with the Registrar"
+        timing: days_after
+        value: 2
+        source: kaust-registrar-program-guide
+        verified_on: "2026-09-02"
+        rule: "The defense evaluation form is due within two days of the defense."
+      - id: archive
+        label: "Final dissertation archived"
+        timing: days_after
+        value: 14
+        source: kaust-registrar-program-guide
+        verified_on: "2026-09-02"
+        rule: "Archive within two weeks of the defense and no later than the Academic Calendar deadline."
+  ms-thesis:
+    aliases: [ms-thesis, ms-cs, ms-bioeng]
+    committee:
+      minimum: 3
+      maximum: 4
+      source: kaust-registrar-program-guide
+      verified_on: "2026-09-02"
+      rule: "The MS thesis defense committee has three to four members and requires Dean approval."
+    official_steps:
+      - id: committee-copy
+        label: "Final thesis delivered to committee"
+        timing: days_before
+        value: 42
+        source: kaust-graduate-affairs-thesis-policy
+        verified_on: "2026-09-02"
+        rule: "Deliver the thesis to the committee at least six weeks before the defense."
+      - id: registrar-result
+        label: "Thesis defense result recorded with the Registrar"
+        timing: days_after
+        value: 2
+        source: kaust-registrar-program-guide
+        verified_on: "2026-09-02"
+        rule: "The thesis defense evaluation form is due within two days of the defense."
+      - id: archive
+        label: "Final thesis archived"
+        timing: days_after
+        value: 14
+        source: kaust-registrar-program-guide
+        verified_on: "2026-09-02"
+        rule: "Archive within two weeks of the defense and no later than the Academic Calendar deadline."
+internal_steps:
+  - id: chapter-drafts
+    label: "Complete chapter drafts"
+    days_before: 98
+  - id: full-draft
+    label: "Complete full thesis draft"
+    days_before: 84
+  - id: revision-round-one
+    label: "Finish first supervisor revision round"
+    days_before: 70
+  - id: formatting-check
+    label: "Check current KAUST template, front matter, references, figures, and accessibility"
+    days_before: 49
+  - id: committee-ready
+    label: "Freeze the committee version after final supervisor check"
+    days_before: 43

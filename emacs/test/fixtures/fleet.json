@@ -1,0 +1,16 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "sessions": [
+    {"name": "cube/kobayashi-marust-codex", "tmux": "cube/kobayashi-marust-codex",
+     "kind": "codex", "role": "programmer", "bead": "cube-142",
+     "state": "running", "started": "2026-09-02T08:45:00+03:00",
+     "last_event_ts": "2026-09-02T09:12:00+03:00",
+     "project": "kobayashi-marust", "resume_id": "0198e1c0-kobayashi-session",
+     "cwd": "~/Public/software/kobayashi-marust", "adopted": true},
+    {"name": "cube/alex-plan", "tmux": "cube/alex-plan", "kind": "claude",
+     "role": "advisor", "bead": null, "state": "idle",
+     "started": "2026-09-02T08:40:00+03:00", "last_event_ts": "2026-09-02T09:10:30+03:00",
+     "project": null, "resume_id": "8f1c2a7e-3b1d-4c55-9c1e-1d2f3a4b5c6d",
+     "cwd": "~/org", "adopted": false}
+  ]
+}

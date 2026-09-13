@@ -1,0 +1,12 @@
+# Deterministic research pipeline transitions every ten minutes.
+[Unit]
+Description=borg-cube research pipeline patrol timer
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*:0/10
+Persistent=true
+Unit=cube-patrol@pipeline.service
+
+[Install]
+WantedBy=timers.target

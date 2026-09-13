@@ -1,0 +1,12 @@
+# Replace every value with repository evidence. A value is a path, URL, or
+# release identifier to inspect, not a statement that the practice is proven.
+license: CC-BY-4.0
+version_iri: https://example.org/ontology/releases/2026-09-02/ontology.owl
+identifier_pattern: '^EXAMPLE:\\d{7}$'
+imports: []
+scope: README.md#scope
+users: docs/users.md
+collaboration: CONTRIBUTING.md
+authority: docs/governance.md#contact
+naming_conventions: docs/naming.md
+maintenance: docs/release-policy.md

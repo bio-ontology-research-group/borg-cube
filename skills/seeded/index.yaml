@@ -1,0 +1,165 @@
+generated_by: tools/skills_lint.py --spec-only (report mode) over the paths below; roles assigned by hand
+skills:
+- path: ~/Public/software/borg-infrastructure/hermes-infra/skills/infra-monitor
+  origin: hermes-infra
+  role: infra
+  name: infra-monitor
+  exists: true
+  description: Monitor and operate the BORG group infrastructure from ws, service registry, uptime checks,
+    alerts to Mattermost ~infra-alerts and email, the read-only dashboard at https://bio2vec.net/borg-admin/dashboard/,
+    registeri...
+  agentskills_compliant: true
+  lint: []
+- path: ~/Public/software/borg-infrastructure/hermes-infra/skills/semantic-web
+  origin: hermes-infra
+  role: researcher
+  name: semantic-web
+  exists: true
+  description: Semantic Web / Linked Data know-how for the BORG stack, testing SPARQL endpoints (Virtuoso,
+    Jena Fuseki), RDF content negotiation, OWL/ontology APIs (AberOWL, PAVS, Rub al-Khali KB, DeepGO),
+    writing and debugging SPAR...
+  agentskills_compliant: true
+  lint: []
+- path: ~/Public/software/borg-infrastructure/hermes-infra/skills/kaust-compute
+  origin: hermes-infra
+  role: infra
+  name: kaust-compute
+  exists: true
+  description: Operations on KAUST compute infrastructure from the office workstation (ws).
+  agentskills_compliant: true
+  lint: []
+- path: ~/Public/software/borg-infrastructure/skills/datawaha-backup
+  origin: borg-infrastructure
+  role: infra
+  name: datawaha-backup
+  exists: true
+  description: null
+  agentskills_compliant: false
+  lint:
+  - 'spec.frontmatter: no YAML frontmatter'
+- path: ~/Public/software/skills/local/bcl-email-backup
+  origin: skills/local
+  role: infra
+  name: BCL Sequencing Email Backup
+  exists: true
+  description: Use when the user forwards or pastes a BCL/BioCore Lab "Your NovaSeq run data are available"
+    email from KAUST (sent by the sequencing core's notification address).
+  agentskills_compliant: false
+  lint:
+  - 'spec.keys: unknown frontmatter keys: [''dependencies'', ''type'']'
+  - 'spec.name: name ''BCL Sequencing Email Backup'' != directory ''bcl-email-backup'''
+  - 'spec.name: name must be lowercase letters, digits and single hyphens'
+- path: ~/Public/software/skills/local/datawaha-backup
+  origin: skills/local
+  role: infra
+  name: datawaha-backup
+  exists: true
+  description: null
+  agentskills_compliant: false
+  lint:
+  - 'spec.frontmatter: no YAML frontmatter'
+- path: ~/Public/software/skills/local/email-contacts
+  origin: skills/local
+  role: admin
+  name: email-contacts
+  exists: true
+  description: null
+  agentskills_compliant: false
+  lint:
+  - 'spec.frontmatter: invalid YAML frontmatter: mapping values are not allowed here'
+- path: ~/Public/software/skills/local/new-paper
+  origin: skills/local
+  role: lead
+  name: new-paper
+  exists: true
+  description: 'Run the full "new paper is out" workflow for Robert Hoehndorf: announce it on social media,
+    add it to the CV/publication BibTeX files, update the research knowledge graph, and update both websites
+    (leechuck.de and the...'
+  agentskills_compliant: true
+  lint: []
+- path: ~/Public/software/skills/local/new-talk
+  origin: skills/local
+  role: lecturer
+  name: new-talk
+  exists: true
+  description: Generate a Beamer (LaTeX) slide deck for one of Robert Hoehndorf's talks by reusing content
+    and figures from his existing talk corpus.
+  agentskills_compliant: false
+  lint:
+  - 'spec.keys: unknown frontmatter keys: [''type'']'
+- path: ~/Public/software/skills/local/presentation
+  origin: skills/local
+  role: lecturer
+  name: presentation
+  exists: true
+  description: Create, restructure, or review slide decks and conference talks (Beamer or otherwise) to
+    Robert Hoehndorf's standards.
+  agentskills_compliant: true
+  lint: []
+- path: ~/Public/software/skills/local/remote-connect
+  origin: skills/local
+  role: infra
+  name: remote-connect
+  exists: true
+  description: Use this skill when interacting with, submitting jobs to, managing data on, or archiving
+    from any remote server at KAUST or otherwise accessible.
+  agentskills_compliant: false
+  lint:
+  - 'spec.keys: unknown frontmatter keys: [''dependencies'']'
+- path: ~/Public/software/skills/claw/showboat
+  origin: skills/claw
+  role: auditor
+  name: showboat
+  exists: true
+  description: Build executable demo documents that prove an agent's work.
+  agentskills_compliant: false
+  lint:
+  - 'spec.keys: unknown frontmatter keys: [''dependencies'', ''homepage'']'
+- path: ~/Public/software/skills/claw/workout-planning
+  origin: skills/claw
+  role: personal
+  name: garmin-trainer
+  exists: true
+  description: Adaptive 12-week training plan generator using Garmin Connect data.
+  agentskills_compliant: false
+  lint:
+  - 'spec.keys: unknown frontmatter keys: [''homepage'']'
+  - 'spec.name: name ''garmin-trainer'' != directory ''workout-planning'''
+- path: ~/.codex/skills/write-edit-scientific-paper
+  origin: codex
+  role: researcher
+  name: write-edit-scientific-paper
+  exists: true
+  description: Write, rewrite, or structurally edit scientific papers and manuscript sections, including
+    abstracts, introductions, methods, results, discussions, and supplements.
+  agentskills_compliant: true
+  lint: []
+- path: ~/.claude/skills/write-paper-review
+  origin: claude
+  role: researcher
+  name: write-paper-review
+  exists: true
+  description: Write a referee report / peer review of a scientific paper in Robert Hoehndorf's voice
+    and format.
+  agentskills_compliant: true
+  lint: []
+- path: ~/pa/skill
+  origin: pa
+  role: admin
+  name: personal-assistant
+  exists: true
+  description: Robert Hoehndorf's personal assistant over his mail, calendar, and contacts.
+  agentskills_compliant: false
+  lint:
+  - 'spec.keys: unknown frontmatter keys: [''dependencies'']'
+  - 'spec.name: name ''personal-assistant'' != directory ''skill'''
+- path: ~/Public/software/social-agent/social-media-agent
+  origin: social-agent
+  role: lead
+  name: social-media-agent
+  exists: true
+  description: null
+  agentskills_compliant: false
+  lint:
+  - 'spec.frontmatter: invalid YAML frontmatter: mapping values are not allowed here'
+

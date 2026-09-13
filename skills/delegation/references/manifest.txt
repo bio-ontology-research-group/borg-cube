@@ -1,0 +1,4 @@
+# distilled topics copied in by tools/skills_sync.py
+agent-orchestration
+task-decomposition
+code-review-practice

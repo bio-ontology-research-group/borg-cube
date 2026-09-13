@@ -1,0 +1,31 @@
+# Synthetic join table for the engine tests (mirrors the shape `cube roster sync`
+# produces). Eleven current students, three staff counterparts, one pending
+# member and a former block; every person is fictional.
+people:
+  alex-example: {name: Alex Example, role: student, program: PhD-Bioeng, start: '2024-09-01', org_file: alex.org, source: fixture}
+  bea-sample: {name: Bea Sample, role: student, program: PhD-CS, start: '2022-08-25', org_file: bea.org, source: fixture}
+  dan-doe: {name: Dan Doe, role: student, program: PhD-Bioeng, start: '2026-06-01', previous_program: PhD-CS, source: fixture}
+  eve-sample: {name: Eve Sample, role: student, program: MS-CS, start: '2026-01-15', source: fixture}
+  gus-student: {name: Gus Student, role: student, program: MS-CS, org_file: gus.org, source: fixture}
+  hal-trainee: {name: Hal Trainee, role: student, program: PhD-Bioeng, start: '2025-01-01', org_file: hal.org, source: fixture}
+  ida-learner: {name: Ida Learner, role: student, program: PhD-Bioeng, org_file: ida.org, source: fixture}
+  jem-candidate: {name: Jem Candidate, role: student, program: PhD-Bioeng, org_file: jem.org, cosupervisor: Prof. Cosupervisor, source: fixture}
+  kit-scholar: {name: Kit Scholar, role: student, program: MS-Bioeng, source: fixture}
+  mia-novice: {name: Mia Novice, role: student, program: MS-Bioeng, source: fixture}
+  ned-pupil: {name: Ned Pupil, role: student, program: MS-Bioeng, source: fixture}
+  vic-visitor: {name: Vic Visitor, role: visiting-faculty, source: fixture}
+  carla-staff: {name: Carla Staff, role: staff, title: Scientific Curator / lab manager, org_file: carla.org, mattermost: cstaff, source: fixture}
+  fin-fellow: {name: Fin Fellow, role: postdoc, org_file: fin.org, mattermost: finfellow, source: fixture}
+  gia-scientist: {name: Gia Scientist, role: research-scientist, org_file: gia.org, source: fixture}
+  otto-researcher: {name: Otto Researcher, role: research-scientist, source: fixture}
+  robert-hoehndorf: {name: Robert Hoehndorf, role: pi, mattermost: roberthoehndorf, source: fixture}
+  uma-postdoc: {name: Uma Postdoc, role: postdoc, pending: not on roster of record, source: fixture}
+  wen-student: {name: Wen Student, role: student, program: MS, pending: not on roster of record, source: fixture}
+former:
+  fay-former: {name: Fay Former, role: student, org_file: fay.org, left: absent from roster of record 2026-09-02, source: fixture}
+  pat-postdoc: {name: Pat Postdoc, role: postdoc, left: staff.org Alumni section, source: fixture}
+  quinn-specialist: {name: Quinn Specialist, role: staff, title: Research Specialist, left: staff.org Alumni section, source: fixture}
+  ron-engineer: {name: Ron Engineer, role: staff, title: Software Engineer, left: staff.org Alumni section, source: fixture}
+  xia-alumna: {name: Xia Alumna, role: student, left: staff.org Alumni section, source: fixture}
+conflicts:
+  - {person: dan-doe, field: program, a: 'people_yaml: PhD-Bioeng', b: 'roster_md: PhD-CS; website: PhD-Bioeng', noted: '2026-09-02'}

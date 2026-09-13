@@ -1,0 +1,22 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "sources": {
+    "staff_org": {"path": "~/org/staff.org", "section": "Staff", "read": "2026-09-02T09:00:00+03:00"},
+    "website": {"url": "https://borg.kaust.edu.sa/people", "fetched": "2026-09-02T09:01:00+03:00", "cached": true},
+    "roster_md": {"path": "brain/roster.md"},
+    "kg": {"path": "people.yaml"}
+  },
+  "people": [
+    {"slug": "alex-example", "name": "Alex Example", "role": "student", "program": "cube-100",
+     "in": {"staff_org": true, "website": true, "roster_md": true, "kg": true, "people_yaml": true},
+     "status": "agree", "conflicts": []},
+    {"slug": "gus-student", "name": "Gus Student", "role": "student", "program": "cube-110",
+     "in": {"staff_org": true, "website": true, "roster_md": false, "kg": true, "people_yaml": true},
+     "status": "conflict",
+     "conflicts": [{"field": "name", "values": {"staff_org": "Gus Student", "website": "Gus S. Student", "kg": "Gus Student"}}]},
+    {"slug": "old-researcher", "name": "Old Researcher", "role": "alumni", "program": null,
+     "in": {"staff_org": true, "website": false, "roster_md": true, "kg": false, "people_yaml": true},
+     "status": "alumni", "conflicts": []}
+  ],
+  "summary": {"agree": 1, "only_in": 0, "conflict": 1, "alumni_still_listed": 1}
+}

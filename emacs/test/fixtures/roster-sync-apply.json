@@ -1,0 +1,1 @@
+{"file": "people.yaml", "action": "sync", "diff": "--- a/people.yaml\n+++ b/people.yaml\n@@ -1 +1,2 @@\n+alex-example:\n", "applied": true}

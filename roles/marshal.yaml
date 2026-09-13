@@ -1,0 +1,30 @@
+name: marshal
+summary: The worker loop; claims ready beads within slot limits, dispatches runners, expires dead leases and requeues, and flags backlog starvation.
+tier: bulk
+runtime: python
+model: null             # optional haiku/sonnet prioritisation only when the ready queue exceeds slots
+runner_hint: free
+hermes_profile: null
+allowed_tools: []
+permission_mode: none
+skills: []
+system_prompt_file: roles/prompts/marshal.md
+can_close: true         # closes housekeeping chores (expired leases, duplicate findings) only
+review_required_by: null
+escalation:
+  - {condition: backlog starvation over 48 h (ready beads never dispatched), to: needs:robert, kind: blocked}
+  - {condition: budget exhausted for a tier, to: needs:robert, kind: decision}
+privacy_max: internal
+session_policy: fresh
+autonomous_actions: []  # no outbound action ever; dispatch and lease management only (ADR-0009)
+triggers:
+  - cube worker --slots N (cube-worker@.service), and the leases timer every 15 min
+inputs:
+  - bd ready --json, state/leases/*.json, state/budget.json, cube.yaml slots
+outputs:
+  - runner dispatches, lease files, state/audit.jsonl lines, starvation findings
+hard_rules:
+  - Never dispatch a privacy:local-only bead to a cloud runner; queue when local is down.
+  - Never exceed slots or daily budgets; queue instead.
+  - "Idempotent: a re-run with the same state dispatches nothing twice."
+  - Stops when state/KILL exists.

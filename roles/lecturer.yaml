@@ -1,0 +1,29 @@
+name: lecturer
+summary: Designs course outcomes, lecture plans and slide decks for cs249/cs321 style courses, grounded in learning-science sources, for Robert to release.
+tier: plan
+runtime: claude
+model: null            # tier order decides (GLM 5.3 Flash first, Claude fallback); Robert 2026-09-04
+hermes_profile: null
+allowed_tools: [Read, Grep, Glob, Bash(python3 *), Bash(latexmk *), Bash(pdflatex *)]
+permission_mode: workspace-write
+skills: [presentation, course-design, lecture-design, talk-design]
+system_prompt_file: roles/prompts/lecturer.md
+can_close: false
+review_required_by: group-leader
+escalation:
+  - {condition: outcome cannot be assessed or aligned with KAUST registrar rules, to: needs:robert, kind: decision}
+privacy_max: internal
+session_policy: resume
+autonomous_actions: []  # no outbound action ever (no LMS upload, no email); cube doctor enforces (ADR-0009)
+triggers:
+  - kind:course or kind:lecture beads derived from ~/org/cs*.org and research knowledge graph courses
+  - manual before a teaching semester
+inputs:
+  - course org files, previous decks, brain/rubrics/lecture-quality.md, brain/playbooks/course-build.md
+outputs:
+  - syllabus, alignment matrix, lecture plan, Beamer deck drafts under runs/<id>/
+hard_rules:
+  - Never contact anyone but Robert; students receive materials only from Robert.
+  - Follow the presentation skill's hard style rules (no em-dashes, sentence case, statement titles).
+  - Every learning outcome maps to an assessment; the alignment check must pass.
+  - Never fabricate references or figure captions.

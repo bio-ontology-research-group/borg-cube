@@ -1,0 +1,76 @@
+# Thresholds for the group monitor. The literature (corpus/distilled/signals.md)
+# says what to watch; every number here is Robert's setting and has no
+# external source. Change a value only in this file, in a commit.
+version: 2026-09-02
+rationale: corpus/distilled/signals.md
+
+papers:
+  submitted_max_days:
+    value: 120
+    unit: days
+    rule: signals-5
+    message: paper in SUBMITTED for more than 120 days; ask the journal or the first author
+  revising_idle_days:
+    value: 30
+    unit: days
+    rule: signals-5
+    message: paper in REVISING with no timestamp or commit for 30 days
+  ready_idle_days:
+    value: 14
+    unit: days
+    rule: signals-5
+    message: paper READY_TO_SUBMIT for more than 14 days without submission
+
+repos:
+  idle_days_with_open_issues:
+    value: 90
+    unit: days
+    rule: signals-6
+    message: repository has open issues and no commit for 90 days
+  release_lag_days:
+    value: 365
+    unit: days
+    rule: signals-6
+    message: last release is more than a year older than the last commit
+  ci_failing:
+    value: true
+    rule: signals-6
+    message: CI failing on the default branch
+
+students:
+  meeting_gap_days:
+    value: 21
+    unit: days
+    rule: signals-7
+    message: no dated meeting entry in the org file for 21 days
+  milestone_window_days:
+    value: 60
+    unit: days
+    rule: signals-7
+    message: milestone within 60 days without an artifact
+  final_year_plan_months:
+    value: 12
+    unit: months
+    rule: signals-8
+    message: no final-year plan on file 12 months before the expected defense
+  new_member_factor:
+    value: 0.5
+    rule: signals-14
+    message: windows are multiplied by this factor during a member's first semester
+
+services:
+  stale_factor:
+    value: 2
+    rule: signals-9
+    message: status file older than twice its own reporting interval
+
+teaching:
+  deadline_window_days:
+    value: 14
+    unit: days
+    rule: signals-10
+    message: course deadline within 14 days without a linked artifact
+
+briefing:
+  attention_max_items: 5
+  max_lines: 60

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://borg-cube.local/schemas/bead.json",
+  "title": "borg-cube work bead",
+  "description": "A work item produced by the delegation skill. acceptance_criteria and provenance are mandatory; a bead without a testable criterion is rejected by scripts/beads_from_plan.py.",
+  "type": "object",
+  "required": ["id", "title", "kind", "owner_role", "acceptance_criteria", "provenance", "privacy", "output"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+    "title": {"type": "string", "minLength": 3, "maxLength": 120},
+    "kind": {"type": "string", "enum": ["design", "implement", "review", "audit", "research", "writing", "approval", "outbound", "conflict", "meeting-note", "finding"]},
+    "owner_role": {"type": "string", "enum": ["group-leader", "senior", "programmer", "auditor", "editor", "lecturer", "scribe", "advisor", "sysadmin", "secretary", "sentinel", "marshal", "concierge", "robert"]},
+    "stage": {"type": "string", "enum": ["design", "implement", "review", "done"], "default": "design"},
+    "objective": {"type": "string", "description": "One paragraph: what the worker is to achieve and why; defaults to the title"},
+    "output": {"type": "string", "description": "Format and location of the deliverable, for example 'Markdown report at runs/<id>/report.md with a Findings section'"},
+    "acceptance_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["check"],
+        "properties": {
+          "check": {"type": "string", "minLength": 8, "description": "A pass/fail check someone other than the owner can run: a command, a file and its expected content, a number"},
+          "how": {"type": "string", "enum": ["command", "file", "review", "test", "metric"], "description": "How the check is performed"}
+        }
+      }
+    },
+    "depends_on": {"type": "array", "items": {"type": "string"}, "default": []},
+    "sources": {"type": "array", "items": {"type": "string"}, "description": "Paths, references or beads the worker may read; nothing else is in scope"},
+    "out_of_scope": {"type": "string", "description": "What the worker must not do and which neighbouring bead owns it"},
+    "provenance": {"type": "array", "minItems": 1, "items": {"type": "string"}, "description": "Where the need came from: path plus locator, Message-ID, Mattermost permalink, bead id"},
+    "privacy": {"type": "string", "enum": ["public", "internal", "local-only"]},
+    "effort": {"type": "string", "description": "Budget: approximate tool calls or wall time, for example '20 calls' or '2h'"},
+    "deadline": {"type": ["string", "null"], "format": "date"},
+    "review_by": {"type": "string", "description": "Role that reviews; must be a tier at least as strong as the owner"},
+    "escalation": {"type": "string", "description": "When to stop and hand back; defaults to assets/escalation-rules.md"},
+    "xid": {"type": ["string", "null"], "description": "External id once created with bd"}
+  }
+}

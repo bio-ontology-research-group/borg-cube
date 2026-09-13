@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# argparse-shaped backend failure used by the command-table ERT coverage.
+set -euo pipefail
+if [ -n "${CUBE_FAKE_OUT:-}" ]; then
+  printf '%s\n' "$*" >> "$CUBE_FAKE_OUT"
+fi
+printf "usage: cube [-h] {status,attention,ready} ...\n" >&2
+printf "cube: error: argument cmd: invalid choice: '%s'\n" "${1:-}" >&2
+exit 2

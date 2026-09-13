@@ -1,0 +1,56 @@
+# Run descriptor. One per run directory, written before the run starts and
+# completed when it ends. runs_manifest.py reads it; `runs_manifest.py --example`
+# prints a minimal copy. Paths are relative to the run directory.
+#
+# Fields left empty become findings, not silent gaps. Fill what is true and
+# leave the rest empty rather than guessing.
+
+run_id: 2026-09-02-baseline-01     # stable, sortable, unique; never reused
+command: python train.py --config config.yaml --seed 20260902
+
+# Provenance of the code
+repo: ../../..                     # git checkout the command ran from
+commit: 0000000000000000000000000000000000000000
+dirty: false                       # true means the tree had uncommitted changes
+
+# Every source of randomness, named
+seeds:
+  global: 20260902
+  data_split: 7
+  init: 20260902
+
+# Configuration; hashed into config_hash
+config: config.yaml
+
+# Input data. A hash or a version is required; a path alone is not a data version.
+inputs:
+  - path: ../../data/train-v3.parquet
+    version: v3
+    sha256:                        # fill when known; the collector computes it otherwise
+  - path: ../../data/valid-v3.parquet
+    version: v3
+
+environment:
+  python: '3.12.4'
+  lock: ../../requirements.txt     # or environment.yml, uv.lock, poetry.lock
+  hardware: 1x A100 40GB, node005  # free text; helps readers judge the budget
+  slurm_job: ''                    # scheduler id when the run was submitted
+
+started: '2026-09-02T09:14:03'
+ended: '2026-09-02T11:47:55'
+exit_status: 0
+
+# Artifacts this run produced. Listed explicitly so the collector does not have
+# to guess which files are results and which are scratch.
+outputs:
+  - metrics.json
+  - figures/roc.png
+  - checkpoints/best.pt
+
+# Free text: what this run was testing and what it showed. One or two sentences.
+notes: >-
+  Baseline logistic regression on the v3 split, single seed, no tuning.
+  Reference point for the ablation runs.
+
+# Set when a later run replaces this one. The old run is never deleted.
+superseded_by: ''

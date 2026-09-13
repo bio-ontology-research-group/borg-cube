@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.triage ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol triage timer (every 15 minutes, route findings to agents; Robert keeps decisions)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@triage.service
+
+[Install]
+WantedBy=timers.target

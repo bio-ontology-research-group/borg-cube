@@ -1,0 +1,37 @@
+#+TODO: READY_TO_SUBMIT SUBMITTED REVISING PAUSED TODO | PUBLISHED CANCELED
+
+* In preparation
+
+** Metabolic reconstruction
+- Alex
+- submit to ISMB
+
+** Empty Quarter                                                    :eq:
+- Bea, Alex
+
+*** Enzymes
+- Lead: Alex, Bea
+- Deadline: after Eid, June
+
+* Ready to submit or submitted
+
+** SUBMITTED Adverse Event Prediction
+- Bea
+- submit to ISMB?
+
+** REVISING Inductive GDA
+:PROPERTIES:
+:VENUE: Bioinformatics
+:END:
+- Dan
+
+* Published 2025
+
+** PUBLISHED Nanobodies
+CLOSED: [2025-10-23 Thu 07:21]
+- Eve, Carla
+
+* Abandoned papers
+** CANCELED FPDL
+CLOSED: [2024-05-12 Sun 10:03]
+- Fay

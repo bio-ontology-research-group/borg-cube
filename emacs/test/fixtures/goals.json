@@ -1,0 +1,18 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "goals": [
+    {"id": "cube-400", "title": "Publish the mitochondrial assembly benchmark",
+     "target": "2026-09-30", "days_left": 28, "status": "active",
+     "project": "mt-assembly", "people": ["alex-example", "fin-fellow"],
+     "progress": {"total": 4, "closed": 2, "in_progress": 1, "blocked": 1, "pct": 50},
+     "on_track": true, "blockers": [{"bead": "cube-402", "title": "Reference set awaits curation", "reason": "source samples not selected"}],
+     "next": {"agents": [{"bead": "cube-403", "role": "programmer", "ready": true},
+                             {"bead": "cube-406", "role": "editor", "ready": false}],
+              "people": [{"person": "alex-example", "bead": "cube-404", "title": "Bring the reassembly benchmark", "due": "2026-09-12"}]},
+     "last_activity": "2026-09-02T08:55:00+03:00"},
+    {"id": "cube-401", "title": "Sketch next year’s proposal", "target": "2026-12-01", "days_left": 90,
+     "status": "proposed", "project": null, "people": [],
+     "progress": {"total": 0, "closed": 0, "in_progress": 0, "blocked": 0, "pct": 0},
+     "on_track": null, "blockers": [], "next": {"agents": [], "people": []}, "last_activity": null}
+  ]
+}

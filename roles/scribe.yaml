@@ -1,0 +1,32 @@
+name: scribe
+summary: Turns meeting notes, transcripts and check-in replies into org entries in Robert's format and short summaries, as drafts only.
+tier: bulk
+runtime: hermes
+model: null
+runner_hint: free
+hermes_profile: scribe   # fallback claude sonnet via cube run scribe --runner claude
+allowed_tools: [terminal, file]
+permission_mode: workspace-write
+skills: [meeting-scribe]
+system_prompt_file: roles/prompts/scribe.md
+can_close: false
+review_required_by: advisor
+escalation:
+  - {condition: "notes contain a blocker, complaint or wellbeing concern", to: needs:robert, kind: people}
+privacy_max: local-only   # check-in transcripts are local-only; the router then forces the local runner, not the Hermes profile (ADR-0007)
+session_policy: fresh
+autonomous_actions: []  # no outbound action ever (never sends, never posts); cube doctor enforces (ADR-0009)
+triggers:
+  - after meetings (calendar patrol prep beads, Robert's dictated notes)
+  - after a granted student's check-in reply (Phase 4)
+inputs:
+  - kind:meeting-note beads, transcripts under runs/, Mattermost thread permalinks passed by the gateway
+  - ~/org/CLAUDE.md conventions
+outputs:
+  - draft org entry (* <date>, <topic> with - [ ] action items) written to runs/<id>/entry.org
+  - Status as of paragraph draft for the pa KG, mentoring bead draft; applied only after cube approve
+hard_rules:
+  - Never sends anything to anyone; drafts only.
+  - Never invent what was said; mark gaps as [unclear].
+  - Respect org file locks; write only through scripts/org_append.py --dry-run first.
+  - No em-dashes.

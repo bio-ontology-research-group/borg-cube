@@ -1,0 +1,14 @@
+# borg-cube worker profile for Codex, saved as ~/.codex/cube-chatgpt.config.toml on ws and
+# on the laptop. Codex reads a profile from this sibling file; a legacy
+# [profiles.cube-chatgpt] table inside config.toml makes `-p cube-chatgpt` fail.
+# Leave the default config.toml (OpenRouter) untouched; borg-cube always passes
+# `-p cube-chatgpt` (ADR-0006) and pins the model from the cube.yaml tier entry.
+# Verify: codex exec -p cube-chatgpt --sandbox read-only 'say ok'
+
+model = "gpt-5.6-sol"            # current Codex model for ChatGPT subscribers
+model_provider = "openai"        # ChatGPT subscription auth via `codex login`, not an API key
+approval_policy = "never"        # headless; the sandbox and the cube review gate are the controls
+sandbox_mode = "workspace-write" # the runner overrides with --sandbox read-only for audits
+
+[sandbox_workspace_write]
+network_access = false           # implement runs work offline inside the worktree

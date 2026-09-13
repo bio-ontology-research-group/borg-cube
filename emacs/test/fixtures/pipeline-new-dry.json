@@ -1,0 +1,11 @@
+{
+  "epic": "cube-500",
+  "stages": {
+    "collect": "cube-501",
+    "plan": "cube-502",
+    "survey": "cube-503",
+    "replan": "cube-504"
+  },
+  "dry_run": true,
+  "commands": ["bd create Protein function survey"]
+}

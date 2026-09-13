@@ -1,0 +1,5 @@
+{"id": "cube-142", "title": "Implement mt-aware reassembly filter", "status": "open",
+ "priority": 2, "kind": "experiment", "stage": "implement",
+ "labels": ["project:mt-assembly", "role:programmer", "person:alex-example"],
+ "assignee": "alex-example", "deadline": "2026-09-20",
+ "description": "Assigned by the cockpit."}

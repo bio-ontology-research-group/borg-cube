@@ -1,0 +1,4 @@
+# Outbound-contact grants. EMPTY BY DEFAULT: borg-cube contacts nobody but Robert.
+# A grant is per person, per channel, per action class, with date, grantor, scope,
+# optional expiry and an evidence permalink. Edit only via `cube contact grant`.
+grants: {}

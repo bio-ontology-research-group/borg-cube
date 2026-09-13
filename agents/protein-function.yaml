@@ -1,0 +1,28 @@
+name: protein-function
+kind: expert
+title: Protein function expert
+charter: agents/protein-function/charter.md
+topics:
+- protein-function-prediction
+- metagenomics-and-microbial-function
+role: senior
+skills:
+- literature-review
+- research-planning
+- kaust-compute
+runtime: claude
+tier: plan
+host: ws
+memory_dir: agents/protein-function/memory
+resources:
+  node005_gpu_hours_per_day: 4
+  ws_cpu: true
+  ibex: approval
+  spend_usd_per_day: 0
+  outbound: none
+workday:
+  cron: hourly  # 24/7: every tick checks inbox and assigned beads; Robert 2026-09-04
+  max_minutes: 30
+  max_runs: 24
+  max_runs_per_tick: 1
+reports: weekly

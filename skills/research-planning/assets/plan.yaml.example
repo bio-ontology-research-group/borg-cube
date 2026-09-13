@@ -1,0 +1,155 @@
+# Example research plan for scripts/plan_to_beads.py.
+# Copy to runs/<id>/plan.yaml and edit. Every experiment needs a baseline, a
+# success threshold and a kill criterion, or the script refuses the plan.
+
+plan: orphan-function-phenotype        # slug; every xid starts with it
+question: >-
+  Does adding phenotype-based ontology embeddings to a sequence model improve
+  Gene Ontology function prediction for proteins with no close homolog?
+privacy: internal
+owner: programmer
+deadline: 2027-02-26
+provenance:
+  - ~/org/papers.org::Orphan function transfer
+  - bead cube-214
+  - corpus/distilled/ml-rigor.md::rules 1 to 5
+reporting_guideline: DOME plus the venue checklist
+confirmatory: true
+
+hypotheses:
+  - id: h1
+    statement: >-
+      Phenotype similarity carries function signal that sequence similarity
+      does not, so adding phenotype embeddings improves prediction for proteins
+      without a close homolog.
+    predicts: >-
+      Fmax rises for the low-identity evaluation subset while staying flat for
+      the high-identity subset.
+  - id: h2
+    statement: >-
+      The gain of published phenotype-augmented models comes from the extra
+      parameters and tuning budget, not from the phenotype information.
+    predicts: >-
+      A sequence-only model with the same parameter count and the same search
+      budget matches the augmented model on every subset.
+  - id: h3
+    statement: >-
+      Any measured gain comes from annotation leakage: phenotype annotations of
+      the evaluation proteins were derived from the same publications as their
+      GO labels.
+    predicts: >-
+      The gain disappears when phenotype annotations with a shared source
+      publication are removed before training.
+
+experiments:
+  - id: e1
+    title: Build the leakage-controlled split and the baseline table
+    tests: [h1, h2]
+    owner: programmer
+    data: >-
+      UniProt-GOA release 2026_03, MGI and HPO phenotype annotations, split by
+      50% sequence identity clusters and by annotation date, no protein in two
+      splits.
+    baselines:
+      - naive frequency predictor over GO terms
+      - BLAST nearest-neighbor label transfer
+      - published sequence-only model retrained on this split
+    metric: Fmax per GO branch, with 1000-sample bootstrap intervals
+    success_threshold: >-
+      all three baselines reproduce within 0.02 Fmax of their published numbers
+      on the published split, and the new split shows no cluster shared between
+      train and test
+    kill_criterion: >-
+      the published numbers cannot be reproduced within 0.05 Fmax after two
+      weeks of work; then the comparison target changes and the plan is rewritten
+    excludes: none; this experiment builds the ground the others stand on
+    effort: 10 working days
+    out_of_scope: training the phenotype model (experiment e2 owns it)
+    deadline: 2026-10-30
+    acceptance:
+      - runs/orphan/splits.json reports 0 clusters shared between train and test
+      - the baseline table lists Fmax with a bootstrap interval for all 3 baselines
+
+  - id: e2
+    title: Train the phenotype-augmented model under a matched budget
+    tests: [h1, h2]
+    depends_on: [e1]
+    owner: programmer
+    data: same split as e1; phenotype embeddings from the ontology axioms
+    baselines:
+      - sequence-only model with matched parameter count
+      - BLAST nearest-neighbor label transfer
+    metric: Fmax on the low-identity subset
+    success_threshold: >-
+      Fmax on the low-identity subset improves by at least 0.03 over the best
+      baseline, with non-overlapping bootstrap intervals, at an equal search
+      budget of 40 trials per model
+    kill_criterion: >-
+      the improvement is below 0.01 Fmax at a matched budget, or the sequence-only
+      model matches it; then h1 is rejected and the line of work stops
+    excludes: h1 if the augmented model does not beat the matched sequence model
+    effort: 15 working days
+    deadline: 2026-12-18
+    acceptance:
+      - runs/orphan/search.json lists the budget and selected hyperparameters for all 3 models
+      - the results table reports mean and standard deviation over 5 seeds
+
+  - id: e3
+    title: Remove shared-source phenotype annotations and rerun
+    tests: [h1, h3]
+    depends_on: [e2]
+    owner: senior
+    data: e2 training set minus phenotype annotations sharing a PubMed id with a GO label
+    baselines:
+      - the e2 augmented model on the full annotation set
+      - sequence-only model with matched parameter count
+    metric: Fmax on the low-identity subset, and the drop against e2
+    success_threshold: >-
+      at least half of the e2 gain survives the removal, which supports h1 over h3
+    kill_criterion: >-
+      more than 80% of the gain disappears; then h3 explains the result, the
+      finding is written up as a leakage report and the model work stops
+    excludes: h3 if the gain survives; h1 if it does not
+    effort: 6 working days
+    deadline: 2027-01-29
+    acceptance:
+      - runs/orphan/removed.tsv lists every removed annotation with its PubMed id
+
+risks:
+  - id: r1
+    risk: The phenotype annotations for the evaluation proteins are too sparse to train on.
+    likelihood: medium
+    impact: high
+    mitigation: >-
+      Count annotated proteins per split before e2; if fewer than 2000 proteins
+      carry a phenotype annotation, fall back to the ortholog-propagated set and
+      state the propagation in the paper.
+    check: runs/orphan/coverage.json reports the annotated protein count per split
+    owner: programmer
+    deadline: 2026-10-16
+  - id: r2
+    risk: GPU queue time on the cluster delays e2 past the checkpoint.
+    likelihood: medium
+    impact: medium
+    mitigation: Reserve the budget in advance and reduce the seed count from 5 to 3.
+    check: the job log shows the 40 trials finished before the December checkpoint
+    owner: sysadmin
+  - id: r3
+    risk: A competing group publishes the same comparison first.
+    likelihood: low
+    impact: medium
+    mitigation: Preprint the leakage-controlled split and the baseline table after e1.
+
+checkpoints:
+  - id: c1
+    date: 2026-10-30
+    measure: the baseline table and the split report from e1
+    decision: continue to e2 only if all three baselines reproduced within 0.02 Fmax
+    experiments: [e1]
+    owner: senior
+  - id: c2
+    date: 2026-12-18
+    measure: matched-budget comparison from e2 with intervals over 5 seeds
+    decision: continue to e3 if the gain is at least 0.01 Fmax, otherwise stop and write up
+    experiments: [e2]
+    owner: senior

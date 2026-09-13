@@ -1,0 +1,23 @@
+# Monthly corpus DOI verification. Failures append an error event for the Emacs cockpit.
+[Unit]
+Description=borg-cube corpus DOI verification
+Documentation=file:%h/Public/software/borg-cube/systemd/README.md
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+# systemd user services have no login PATH; bd, uv, claude and codex live in ~/.local/bin.
+Environment=PATH=%h/.local/bin:%h/.cargo/bin:/usr/local/bin:/usr/bin:/bin
+Type=oneshot
+WorkingDirectory=%h/Public/software/borg-cube
+EnvironmentFile=-%h/Public/software/borg-cube/.env
+Environment=UV_CACHE_DIR=%h/Public/software/borg-cube/state/uv-cache
+ExecStart=/bin/sh -c 'if ! %h/.local/bin/uv run python tools/corpus_verify.py; then %h/.local/bin/uv run cube notify --kind error --title "Corpus DOI verification failed"; exit 1; fi'
+TimeoutStartSec=2h
+Nice=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/Public/software/borg-cube/corpus/raw %h/Public/software/borg-cube/state

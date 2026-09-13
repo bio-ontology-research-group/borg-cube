@@ -1,0 +1,35 @@
+# Schema for roles/<role>.yaml. Loaded by cube/roles/loader.py (pydantic, strict).
+# Every key below is required unless marked optional. Values in <> are enums.
+name: <string, equals the file stem>
+summary: <one sentence, what the role produces and for whom>
+tier: <plan|implement|bulk|local|none>        # router tier for the role's main run (ADR-0005)
+runtime: <claude|codex|hermes|python|gastown>  # primary runtime; router may fall back within the tier
+model: <string, optional>                      # alias from cube.yaml tiers (fable|opus|sonnet|...) or null
+runner_hint: <free, optional>                  # prefer explicitly free entries for routine bulk work
+hermes_profile: <string, optional>             # Hermes profile name under ~/.hermes/profiles/, or null
+allowed_tools: [<string>]                      # runner-specific tool names passed to the runtime
+permission_mode: <read-only|workspace-write|browser|none>
+  # read-only        claude: tools limited to Read/Grep/Glob/WebFetch, no edits; codex: --sandbox read-only
+  # workspace-write  claude: edits accepted inside the run's worktree only; codex: --sandbox workspace-write
+  # browser          claude with a browser MCP against a session Robert logged in to; edits inside runs/<id> only
+  # none             python runtime, no LLM, no tool permissions to grant
+skills: [<string>]                             # skill names; existing library skills allowed by name
+system_prompt_file: roles/prompts/<role>.md
+can_close: <bool>                              # may the role close beads it worked on (still subject to review gate)
+review_required_by: <role name|null>           # role that must review before close; null only when can_close is false or runtime is python
+escalation:                                    # ordered list
+  - {condition: <string>, to: <role name|needs:robert>, kind: <escalation kind>}
+  # kind decides who sees it: decision (a choice that changes scope, money, people or the
+  # plan), permission (a resource), integrity (suspected fabrication), people (anything
+  # about a person), conflict (a source conflict), blocked (a tooling or input gap the
+  # group fixes, never Robert), note (information, closed on arrival). Default: decision.
+privacy_max: <public|internal|local-only>      # strictest class this role may be given (ADR-0007)
+session_policy: <fresh|resume>                 # fresh session per run, or resume the bead's stored session id
+autonomous_actions: []                         # actions the role may take without an approval bead.
+  # MUST contain no outbound action (message, email, DM, post, PR, comment, form submit, signature)
+  # for any role in any phase. cube doctor fails otherwise (ADR-0009). Only local, reversible actions
+  # such as writing under runs/ or adding a bead comment may ever appear here.
+triggers: [<string>]                           # cron / event / manual descriptions, human readable
+inputs: [<string>]                             # what the role reads (paths, bead kinds, labels)
+outputs: [<string>]                            # what the role produces (bead kinds, files under runs/ or briefings/)
+hard_rules: [<string>]                         # non-negotiable rules, repeated in the prompt file

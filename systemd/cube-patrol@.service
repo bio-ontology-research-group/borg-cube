@@ -1,0 +1,19 @@
+# systemd user unit on ws. Instance name = patrol name (milestones, papers, deadlines, calendar,
+# student-digest, repos, infra-hygiene, data-pull, leases). Started by cube-patrol-<name>.timer.
+# Install: cube systemd install (copies to ~/.config/systemd/user, daemon-reload, enables timers).
+[Unit]
+Description=borg-cube patrol %i (deterministic, no LLM)
+Documentation=file:%h/Public/software/borg-cube/systemd/README.md
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+After=network-online.target
+
+[Service]
+# systemd user services have no login PATH; bd, uv, claude and codex live in ~/.local/bin.
+Environment=PATH=%h/.local/bin:%h/.cargo/bin:/usr/local/bin:/usr/bin:/bin
+Type=oneshot
+WorkingDirectory=%h/Public/software/borg-cube
+EnvironmentFile=-%h/Public/software/borg-cube/.env
+Environment=CUBE_PATROL=%i
+ExecStart=%h/Public/software/borg-cube/.venv/bin/cube patrol %i --apply
+TimeoutStartSec=20min
+Nice=10

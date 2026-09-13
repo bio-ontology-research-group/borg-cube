@@ -1,0 +1,47 @@
+.env
+*.token
+*credentials*.json
+.claude/settings.local.json
+__pycache__/
+*.pyc
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+runs/
+state/
+.cube/
+corpus/raw/
+corpus/text/
+*~
+\#*\#
+.#*
+*.elc
+emacs/eln-cache/
+signature/
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+.beads/proxieddb/
+
+# briefings are runtime data (student digests are local-only)
+briefings/
+
+# agent runtime data: inboxes and memories are written by runs on the host
+# where the agent lives; they never travel through git (Robert 2026-09-07)
+agents/*/inbox.jsonl
+agents/*/inbox.jsonl.lock
+agents/*/memory/
+# Beads passive exports; the ledger itself syncs through the Dolt remote
+.beads/interactions.jsonl
+
+# Site-specific data (Robert, 2026-09-13): the code is shareable, the group is not.
+# Templates: cube.local.yaml.example, people.yaml.example, twins.yaml.example.
+cube.local.yaml
+people.yaml
+twins.yaml
+agents/twin-*
+brain/facts/*.yaml
+skills/seeded/discovered.yaml

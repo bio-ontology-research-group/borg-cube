@@ -1,0 +1,14 @@
+{
+  "id": "cube-400", "title": "Publish the mitochondrial assembly benchmark",
+  "target": "2026-09-30", "days_left": 28, "status": "active", "project": "mt-assembly",
+  "people": ["alex-example", "fin-fellow"],
+  "success": ["Benchmark data and code are archived", "Manuscript passes the reproducibility review"],
+  "progress": {"total": 4, "closed": 2, "in_progress": 1, "blocked": 1, "pct": 50},
+  "on_track": true,
+  "blockers": [{"bead": "cube-402", "title": "Reference set awaits curation", "reason": "source samples not selected"}],
+  "next": {"agents": [{"bead": "cube-403", "role": "programmer", "ready": true},
+                          {"bead": "cube-406", "role": "editor", "ready": false}],
+           "people": [{"person": "alex-example", "bead": "cube-404", "title": "Bring the reassembly benchmark", "due": "2026-09-12"}]},
+  "children": [{"id": "cube-402"}, {"id": "cube-403"}, {"id": "cube-404"}],
+  "last_activity": "2026-09-02T08:55:00+03:00"
+}

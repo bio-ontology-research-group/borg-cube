@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.literature_watch ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol literature-watch timer (daily 06:30, new arXiv and bioRxiv submissions)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*-*-* 06:30:00
+Persistent=true
+RandomizedDelaySec=120
+Unit=cube-patrol@literature-watch.service
+
+[Install]
+WantedBy=timers.target

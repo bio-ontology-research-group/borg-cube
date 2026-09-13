@@ -1,0 +1,22 @@
+# Hermes gateway for the concierge profile (Robert-only DM). Phase 1.
+[Unit]
+Description=borg-cube Hermes gateway, concierge profile (Robert-only)
+Documentation=file:%h/Public/software/borg-cube/hermes/README.md
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+ConditionPathExists=%h/.hermes/profiles/concierge/config.yaml
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Environment=PATH=%h/.local/bin:%h/.cargo/bin:/usr/local/bin:/usr/bin:/bin
+Type=simple
+WorkingDirectory=%h/.hermes/profiles/concierge
+Environment=HERMES_HOME=%h/.hermes/profiles/concierge
+EnvironmentFile=-%h/.hermes/profiles/concierge/.env
+ExecStart=%h/.hermes/hermes-agent/venv/bin/hermes -p concierge gateway run
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=default.target

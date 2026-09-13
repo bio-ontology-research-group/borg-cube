@@ -1,0 +1,188 @@
+# KAUST programme rules used by scripts/milestones.py.
+#
+# Every rule names the manifest id it comes from (corpus/sources.yaml) and the
+# date it was verified against the fetched text (corpus/text/<id>.txt). A rule
+# with verified_on: null is printed with an "unverified" marker. Semester
+# boundaries are approximations; the Registrar's academic calendar has the
+# exact dates and Robert should refresh them every year.
+#
+# Two rule sets exist. KAUST applies the "current" set to students who started
+# in Fall 2023 or later and the "pre-fall-2023" set to earlier starters
+# (kaust-cemse-milestones). Under "current" a semester means Fall or Spring;
+# under "pre-fall-2023" it means Fall, Spring or Summer.
+
+version: 2026-09-02
+rule_set_boundary: 2023-08-01   # start on or after this date -> current rules
+
+calendar:
+  # month-day of approximate term starts and ends; source: approximation from the
+  # KAUST academic calendar pattern, not a fetched document (verified_on: null)
+  fall:   {starts: "08-20", ends: "12-15"}
+  spring: {starts: "01-15", ends: "05-20"}
+  summer: {starts: "06-01", ends: "08-10"}
+
+aliases:
+  # people.yaml programme labels -> programme keys below
+  PhD-CS: phd-cs
+  PhD-Bioeng: phd-bioeng
+  MS-CS: ms-cs
+  MS-Bioeng: ms-bioeng
+
+programs:
+  phd-cs:
+    degree: PhD
+    program_name: Computer Science (CEMSE)
+    qualifier_form: course-based qualifier (three eligible courses, three areas, three faculty; one A- or A, two B+ or better)
+    proposal_length: 10 pages suggested length
+    seminar: CS 398, Satisfactory for two semesters
+    coursework: at least two 300-level courses (6 credits), one of them a CS course; WEP once; 72 credits total; GPA 3.0
+    sources: [kaust-registrar-program-guide]
+    verified_on: 2026-09-02
+  phd-bioeng:
+    degree: PhD
+    program_name: Bioengineering (BESE)
+    qualifier_form: Pre-Proposal Committee Meeting (research update; advisor, one programme faculty, one outside faculty)
+    proposal_length: under 30 pages or 12,000 words excluding references
+    seminar: BioE 398, Satisfactory for five semesters
+    coursework: at least two 300-level courses (6 credits); WEP once; 72 credits total; GPA 3.0
+    sources: [kaust-registrar-program-guide]
+    verified_on: 2026-09-02
+  ms-cs:
+    degree: MS
+    program_name: Computer Science (CEMSE)
+    thesis_research: CS 297, 12 credits (thesis track)
+    coursework: 36 credits, 12 core, GPA 3.0; CS 398 for two semesters; WEP once
+    sources: [kaust-registrar-program-guide]
+    verified_on: 2026-09-02
+  ms-bioeng:
+    degree: MS
+    program_name: Bioengineering (BESE)
+    thesis_research: BioE 297, 12 credits (thesis track)
+    coursework: 36 credits, 12 core, GPA 3.0; BioE 398 for two semesters; WEP once
+    sources: [kaust-registrar-program-guide]
+    verified_on: 2026-09-02
+
+# Milestone rules. "semesters" counts Fall/Spring terms (current) or all terms
+# (pre-fall-2023) starting with the first term after or containing the start
+# date; "years" counts calendar years from the start date; "terms" counts every
+# term including summers.
+milestones:
+  PhD:
+    current:
+      consequence: Failure to meet any milestone on time results in immediate dismissal, with the option to appeal to the APC
+      rules:
+      - id: qualifier
+        label: Qualifying exam
+        deadline: {semesters: 3}
+        note: CS phrases the same limit as three Semesters and one Summer Session; MS/PhD students may complete it during the MS phase
+        sources: [kaust-cemse-milestones, kaust-registrar-program-guide]
+        verified_on: 2026-09-02
+      - id: proposal
+        label: Dissertation proposal defense (candidacy)
+        deadline: {semesters: 5}
+        sources: [kaust-cemse-milestones, kaust-registrar-program-guide]
+        verified_on: 2026-09-02
+      - id: defense
+        label: Dissertation defense and final approval
+        deadline: {terms: 12}   # 8 semesters and 4 summer sessions
+        note: extension up to 1 year; one approved extension equals one semester or summer session; up to three extensions, each with a statement of remaining scope
+        sources: [kaust-cemse-milestones, kaust-registrar-program-guide]
+        verified_on: 2026-09-02
+    pre-fall-2023:
+      consequence: Missing a milestone deadline places the student on probation for one semester; failure to complete it during probation results in dismissal with appeal to the APC
+      rules:
+      - id: qualifier
+        label: Qualifying exam
+        deadline: {semesters: 4}
+        note: MS/PhD students, 7 semesters
+        sources: [kaust-cemse-milestones]
+        verified_on: 2026-09-02
+      - id: proposal
+        label: Dissertation proposal defense (candidacy)
+        deadline: {semesters: 7}
+        note: MS/PhD students, 11 semesters
+        sources: [kaust-cemse-milestones]
+        verified_on: 2026-09-02
+      - id: defense
+        label: Dissertation defense and final approval
+        deadline: {years: 5}
+        note: extension up to 2 years; MS/PhD students both degrees within 6 years with up to 1 year extension
+        sources: [kaust-cemse-milestones]
+        verified_on: 2026-09-02
+  MS:
+    current:
+      consequence: MS students may request one extension; failure to complete within the extension period results in a dismissal notice with appeal to the APC
+      rules:
+      - id: thesis-application
+        label: Thesis application approved by the Program Chair
+        deadline: {semesters: 3, at: start, offset_days: 7}   # end of week one of the 3rd semester
+        track: thesis
+        sources: [kaust-cemse-milestones, kaust-registrar-program-guide]
+        verified_on: 2026-09-02
+      - id: drop-thesis-option
+        label: Last chance to drop the thesis for the non-thesis track
+        deadline: {semesters: 3}
+        track: thesis
+        sources: [kaust-cemse-milestones, kaust-registrar-program-guide]
+        verified_on: 2026-09-02
+      - id: thesis-defense
+        label: Thesis defense and final approval
+        deadline: {semesters: 4}
+        spring_start: {semesters: 3, plus_summers: 1}
+        track: thesis
+        note: Fall start 4 semesters and 1 summer; Spring start 3 semesters and 2 summers; one extension (semester or summer) may be requested
+        sources: [kaust-cemse-milestones, kaust-registrar-program-guide]
+        verified_on: 2026-09-02
+      - id: degree-completion
+        label: Degree completion (non-thesis)
+        deadline: {semesters: 3}
+        track: non-thesis
+        note: three semesters and one summer; the summer falls inside the three-semester span for both Fall and Spring starts
+        sources: [kaust-cemse-milestones, kaust-registrar-program-guide]
+        verified_on: 2026-09-02
+    pre-fall-2023:
+      consequence: null
+      rules:
+      - id: thesis-defense
+        label: Thesis defense and final approval
+        deadline: {semesters: 4}
+        spring_start: {semesters: 3, plus_summers: 1}
+        track: thesis
+        note: pre-Fall-2023 MS rules were not fetched; this mirrors the current rule and is unverified
+        sources: [kaust-cemse-milestones]
+        verified_on: null
+      - id: degree-completion
+        label: Degree completion (non-thesis)
+        deadline: {semesters: 3}
+        track: non-thesis
+        sources: [kaust-cemse-milestones]
+        verified_on: null
+
+# Preparation steps around each defense, as day offsets from the event date
+# (negative = before). Used for the "prepare" lines of the plan.
+preparation:
+  proposal:
+    - {id: petition, label: Petition and committee list to the GPSA, days: -14, sources: [kaust-cemse-milestones], verified_on: 2026-09-02}
+    - {id: document, label: Written proposal to the committee, days: -10, sources: [kaust-cemse-milestones, kaust-registrar-program-guide], verified_on: 2026-09-02}
+    - {id: result-form, label: Result form to the GPSA, days: 2, sources: [kaust-registrar-program-guide], verified_on: 2026-09-02, note: CEMSE page says three calendar days; two working days is the stricter reading}
+  defense:
+    - {id: petition, label: Defense petition by the academic-calendar deadline (BioE also at least two months before), days: -60, sources: [kaust-registrar-program-guide], verified_on: 2026-09-02}
+    - {id: dissertation-to-committee, label: Dissertation to the committee and external examiner, days: -42, sources: [kaust-graduate-affairs-thesis-policy], verified_on: null, note: six-week expectation from knowledge of KAUST guidance, not in the fetched texts}
+    - {id: announcement, label: Defense announcement to cemse@kaust.edu.sa, days: -14, sources: [kaust-cemse-milestones], verified_on: 2026-09-02}
+    - {id: result-form, label: Result form to the GPSA, days: 2, sources: [kaust-cemse-milestones, kaust-registrar-program-guide], verified_on: 2026-09-02}
+    - {id: archive, label: Archive in the KAUST Repository, days: 14, sources: [kaust-cemse-milestones, kaust-registrar-program-guide], verified_on: 2026-09-02}
+  thesis-defense:
+    - {id: petition, label: Thesis defense petition by the academic-calendar deadline, days: -30, sources: [kaust-cemse-milestones], verified_on: 2026-09-02, note: the calendar date governs; 30 days is a planning default}
+    - {id: thesis-to-committee, label: Thesis to all committee members, days: -21, sources: [kaust-cemse-milestones], verified_on: 2026-09-02}
+    - {id: result-form, label: Result form to the GPSA, days: 3, sources: [kaust-cemse-milestones], verified_on: 2026-09-02}
+    - {id: archive, label: Archive in the KAUST Repository, days: 15, sources: [kaust-cemse-milestones], verified_on: 2026-09-02}
+
+committees:
+  proposal: {min: 3, max: 4, pattern: "1 and 2 faculty in programme, 3 faculty outside programme, 4 optional faculty or research scientist", sources: [kaust-cemse-milestones, kaust-registrar-program-guide], verified_on: 2026-09-02}
+  defense: {min: 4, max: 5, pattern: "1 to 3 as proposal, 4 external examiner outside KAUST (not a visiting professor), 5 optional", sources: [kaust-cemse-milestones, kaust-registrar-program-guide], verified_on: 2026-09-02}
+  thesis-defense: {min: 3, max: 4, pattern: "as proposal committee", sources: [kaust-cemse-milestones], verified_on: 2026-09-02}
+
+# Group-level flags (Robert's choices, no KAUST source; see corpus/distilled/signals.md)
+flags:
+  artefact_window_days: 60
+  final_year_plan_months: 12

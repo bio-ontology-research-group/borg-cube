@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.repos ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol repos timer (Monday 06:00, GitHub org scan, max 3 audit candidates per week)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=Mon *-*-* 06:00:00
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@repos.service
+
+[Install]
+WantedBy=timers.target

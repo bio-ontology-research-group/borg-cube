@@ -1,0 +1,3 @@
+* TODO <text of the follow-up that belongs to Robert, not to one person>
+DEADLINE: <YYYY-MM-DD Day>
+- from: <person file>.org, entry "<D Month YYYY>, <topic>"

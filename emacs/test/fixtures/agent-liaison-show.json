@@ -1,0 +1,14 @@
+{
+  "name": "liaison", "kind": "expert", "title": "Personal-context liaison",
+  "host": "laptop", "topics": ["mail", "deadlines", "personal context"],
+  "runtime": "claude", "tier": "local", "state": "idle", "session": null,
+  "charter": "Read Robert's local personal context without sending mail or storing mail bodies in Beads.",
+  "inbox": [],
+  "requests": [
+    {"id": "cube-612", "kind": "request", "title": "Extract ideas from the email I just sent",
+     "state": "open", "age": 3600, "agent": "liaison", "host": "laptop"}
+  ],
+  "proposals": [], "journal": [],
+  "resources": {"allowance": {"spend_usd_per_day": 0},
+                "used_today": {"gpu_hours": 0, "runs": 0, "spend_usd": 0}}
+}

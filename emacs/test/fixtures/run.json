@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "run_id": "r-20260902-0930-p2",
+  "role": "programmer",
+  "bead": "cube-142",
+  "runner": "codex",
+  "project": "kobayashi-marust",
+  "cwd": "~/Public/software/kobayashi-marust",
+  "runner_profile": {"path": "~/Public/software/kobayashi-marust", "runner": "codex",
+                     "sandbox": "danger-full-access",
+                     "effective_cwd": "~/Public/software/kobayashi-marust",
+                     "pre": ["./tools/workspace-preflight.sh"]},
+  "pre_steps": ["./tools/workspace-preflight.sh"],
+  "model": "gpt-5-codex",
+  "pid": 41873,
+  "log": "runs/r-20260902-0930-p2/log.jsonl",
+  "tmux": "cube/run-r-20260902-0930-p2",
+  "started": "2026-09-02T09:30:02+03:00"
+}

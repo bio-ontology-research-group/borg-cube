@@ -1,0 +1,30 @@
+{
+  "slug": "alex-example",
+  "name": "Alex Example",
+  "role": "phd",
+  "org_file": "~/org/alex.org",
+  "program": {"bead": "cube-100", "title": "PhD program: Alex Example", "started": "2024-09-01",
+              "expected_end": "2028-08-31"},
+  "milestones": [
+    {"bead": "cube-101", "name": "coursework", "due": "2025-05-31", "state": "done"},
+    {"bead": "cube-102", "name": "qualifying exam", "due": "2025-12-15", "state": "done"},
+    {"bead": "cube-103", "name": "proposal defense", "due": "2026-11-15", "state": "open",
+     "days": 74, "artefact": null}
+  ],
+  "evidence": {
+    "commits_7d": 14,
+    "repos": ["alex/mt-assembly"],
+    "drafts": [{"path": "~/Documents/papers/alex-mt/main.tex", "modified": "2026-08-30"}],
+    "org_notes_last": "2026-08-28",
+    "checkins": []
+  },
+  "agenda_draft": [
+    "Proposal outline: which two chapters are drafted?",
+    "Reassembly artifact (269 nt fusion): status of the mt-aware run",
+    "Committee availability for mid November"
+  ],
+  "beads": ["cube-142", "cube-233"],
+  "advisor_run": {"run_id": "r-20260901-0700-k1", "ts": "2026-09-01T07:04:31+03:00",
+                  "notes_file": "runs/r-20260901-0700-k1/notes.md"},
+  "concerns": []
+}

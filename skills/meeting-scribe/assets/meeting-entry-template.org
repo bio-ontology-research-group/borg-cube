@@ -1,0 +1,8 @@
+* <D Month YYYY>, <topic>
+- source: <transcript path, Mattermost permalink or Message-ID>
+- summary: <two or three sentences in plain words; what was discussed and where things stand>
+- [ ] <action item> (<owner>) <YYYY-MM-DD Day>
+- [ ] <action item without an agreed date> (<owner>)
+- Decided: <decision>; decided by <who>; inform <who>
+- Open: <question left open>
+- [unclear] <anything the scribe could not hear or read; never guessed>

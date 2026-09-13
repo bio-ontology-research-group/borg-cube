@@ -1,0 +1,13 @@
+# Monthly persistent verification of DOI metadata in corpus/sources.yaml.
+[Unit]
+Description=borg-cube monthly corpus DOI verification timer
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=monthly
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-corpus-verify.service
+
+[Install]
+WantedBy=timers.target

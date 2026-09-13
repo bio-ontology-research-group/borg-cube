@@ -1,0 +1,13 @@
+# Schedule from cube.yaml patrols.leases ; ws clock is Asia/Riyadh.
+[Unit]
+Description=borg-cube patrol leases timer (every 15 minutes, expire dead leases and requeue)
+ConditionPathExists=!%h/Public/software/borg-cube/state/KILL
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+RandomizedDelaySec=60
+Unit=cube-patrol@leases.service
+
+[Install]
+WantedBy=timers.target

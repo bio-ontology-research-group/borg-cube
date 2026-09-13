@@ -1,0 +1,39 @@
+{
+ "generated": "2026-09-04T09:12:00+00:00",
+ "agents": [
+  {"name": "coordinator", "kind": "coordinator", "host": "ws", "cron": "hourly",
+   "state": "running",
+   "current": {"bead": "cube-pjr.4", "title": "Final plan v1", "run_id": "r-20260904-0912-c1",
+               "since": "2026-09-04T09:09:00+00:00", "runner": "openrouter",
+               "model": "z-ai/glm-5.3-flash"},
+   "assigned": [{"bead": "cube-pjr.4", "title": "Final plan v1", "status": "in_progress",
+                 "stage": "plan1:final", "epic": "cube-pjr"}],
+   "inbox_unread": 2, "last_workday": "2026-09-04T08:00:00+00:00", "next_tick": "hourly",
+   "today": {"runs": 1, "spend_usd": 0.42}},
+  {"name": "literature", "kind": "expert", "host": "ws", "cron": "07:00",
+   "state": "not-due", "current": null,
+   "assigned": [{"bead": "cube-171", "title": "Read the new benchmark", "status": "open",
+                 "stage": null, "epic": null}],
+   "inbox_unread": 0, "last_workday": "2026-09-04T07:00:00+00:00", "next_tick": "07:00",
+   "today": {"runs": 0, "spend_usd": 0.0}},
+  {"name": "liaison", "kind": "functional", "host": "laptop", "cron": "*/5 * * * *",
+   "state": "idle", "current": null, "assigned": [],
+   "inbox_unread": 1, "last_workday": null, "next_tick": "*/5 * * * *",
+   "today": {"runs": 0, "spend_usd": 0.0}}
+ ],
+ "tasks": [
+  {"bead": "cube-pjr.4", "title": "Final plan v1", "status": "in_progress",
+   "owner": "agent:coordinator", "epic": "cube-pjr", "stage": "plan1:final", "kind": "design",
+   "deadline": "2026-09-10", "running": true},
+  {"bead": "cube-171", "title": "Read the new benchmark", "status": "open",
+   "owner": "agent:literature", "epic": null, "stage": null, "kind": "review",
+   "deadline": "2026-09-06", "running": false},
+  {"bead": "cube-180", "title": "Survey the literature", "status": "open",
+   "owner": "role:senior", "epic": "cube-pjr", "stage": "survey", "kind": "goal",
+   "deadline": null, "running": false}
+ ],
+ "epics": [
+  {"bead": "cube-pjr", "title": "Protein function pipeline", "stage": "plan1:final",
+   "next": "The group-leader handles the plan1:final stage next.", "open": 7, "done": 3}
+ ]
+}

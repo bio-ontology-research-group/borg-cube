@@ -1,0 +1,19 @@
+{
+  "run_id": "r-20260901-0700-k1",
+  "role": "advisor",
+  "bead": "cube-103",
+  "runner": "claude",
+  "model": "claude-opus",
+  "state": "finished",
+  "started": "2026-09-01T07:00:02+03:00",
+  "finished": "2026-09-01T07:04:31+03:00",
+  "exit": 0,
+  "log": "runs/r-20260901-0700-k1/log.jsonl",
+  "notes_file": "runs/r-20260901-0700-k1/notes.md",
+  "summary": "Weekly progress note for Alex Example drafted; two agenda items.",
+  "notes": "# Progress note: Alex Example\n\n## Evidence\n\n- 14 commits in alex/mt-assembly over 7 days\n- Draft `main.tex` touched 2026-08-30\n\n## Suggested agenda\n\n1. Proposal outline: which two chapters are drafted?\n2. Reassembly artifact (269 nt fusion): **status** of the mt-aware run\n\nSee [the milestone](bead:cube-103) and the notes in `~/org/alex.org`.\n\n```sh\ncube student alex-example --json\n```\n",
+  "log_tail": [
+    "{\"ts\": \"2026-09-01T07:04:30+03:00\", \"type\": \"result\", \"text\": \"notes written\"}",
+    "{\"ts\": \"2026-09-01T07:04:31+03:00\", \"type\": \"exit\", \"code\": 0}"
+  ]
+}

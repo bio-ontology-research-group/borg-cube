@@ -1,0 +1,306 @@
+# Course design record for the course-design skill (references/course-yaml.md).
+# Copy to state/courses/<code>.yaml (gitignored) and edit. Every id is unique
+# across outcomes, assessments and activities. Bloom levels: remember,
+# understand, apply, analyze, evaluate, create.
+#
+# This example is a realistic KAUST graduate course in the group's area.
+# Course number, meeting pattern and the grading scale must be confirmed
+# against the registrar and the program before the syllabus is published.
+
+course:
+  code: CS 3XX            # confirm the number with the CS program
+  title: Bio-ontologies and knowledge graphs for biology
+  credits: 3
+  level: 300              # 200- or 300-level; 300-level grades can count toward the CS qualifier
+  semester: Fall 2026
+  weeks: 14
+  meetings: Two 75-minute sessions per week plus a weekly 2-hour lab
+  location: To be assigned by the registrar
+  instructor:
+    name: Robert Hoehndorf
+    email: robert.hoehndorf@kaust.edu.sa
+    office: Building 1, level 4 (confirm room)
+    office_hours: Tuesday 14:00 to 15:30, or by appointment
+  teaching_assistants: []
+  prerequisites:
+    - Programming in Python at the level of CS 201 or equivalent
+    - Basic molecular biology or willingness to read a primer in week 1
+    - Familiarity with first-order logic notation is helpful, not required
+  target_audience: >
+    MS and PhD students in computer science, bioengineering and bioscience who
+    will build or use biomedical knowledge graphs, ontologies or semantic data
+    integration in their research.
+  description: >
+    Biological knowledge is scattered across databases that use different
+    identifiers, vocabularies and assumptions. This course teaches how
+    ontologies and knowledge graphs make that knowledge computable: the
+    logic behind OWL, the design principles of the OBO Foundry, how
+    ontologies are built, evaluated and reasoned over, how they anchor
+    knowledge graphs, and how knowledge graph embeddings and ontology-aware
+    machine learning use them for prediction. Students build and release a
+    small FAIR ontology and knowledge graph on a biological problem of their
+    choice.
+  not_covered:
+    - Wet-lab data generation and sequencing pipelines
+    - Deep learning theory beyond what the embedding methods need
+    - Clinical terminologies (SNOMED CT, ICD) in depth
+  essential_questions:
+    - When does a formal definition help a biologist, and when does it get in the way?
+    - What does it mean for a prediction from a knowledge graph to be wrong, and how would we know?
+    - Which parts of biological knowledge can be made computable at all?
+  materials:
+    - Lecture notes and lab notebooks in the course repository (CC-BY-4.0)
+    - OBO Foundry principles and the MIRO reporting guideline (open access)
+    - Selected papers, one per week, listed in the week plan
+    - Software: Protege, ROBOT, a Python environment with owlready2 and mowl; installed in lab 1
+  policies:
+    attendance: Attendance at labs is expected; a missed lab is made up with the TA within one week.
+    integrity: Work is individual unless the task says otherwise. Sources, code and AI assistance are acknowledged in every submission. The KAUST academic integrity policy applies.
+    late_work: Each student has three tokens. A token buys a 48-hour extension or one resubmission of a specification-graded item. No extensions without a token except for documented emergencies.
+    accommodation: Students who need adjustments contact the instructor or Student Affairs in the first two weeks; materials are provided in editable formats on request.
+    ai_use: Generative AI may be used for code and prose if the prompt and the tool are cited and the student can explain every line they submit; exams are closed.
+    communication: Questions go to the course channel so everyone benefits; the instructor answers within two working days.
+  grading:
+    scheme: hybrid            # specifications for projects and labs, points for exams
+    minimum_for_credit: B-    # KAUST program guide, confirm each year
+    scale:                    # placeholder letter scale; confirm against the registrar's grading policy
+      - {grade: A, min: 93}
+      - {grade: A-, min: 90}
+      - {grade: B+, min: 87}
+      - {grade: B, min: 83}
+      - {grade: B-, min: 80}
+      - {grade: C+, min: 77}
+      - {grade: C, min: 73}
+      - {grade: F, min: 0}
+    bundles:
+      - grade: A
+        requires: All specification items passed, project with FAIR release and evaluation section, exams averaging 90 or above
+      - grade: B
+        requires: All labs and the critique report passed, project passed without the extension items, exams averaging 80 or above
+      - grade: C
+        requires: At least five labs and the project core passed, exams averaging 70 or above
+  evaluation_plan:
+    - Week 1 background knowledge probe (ungraded, anonymous)
+    - Minute paper or muddiest point at the end of every lab
+    - Week 7 mid-semester feedback form, discussed in week 8
+    - KAUST end-of-semester evaluation, read alongside the assessment evidence
+  fair:
+    license: CC-BY-4.0
+    repository: https://github.com/bio-ontology-research-group/course-bio-ontologies   # placeholder
+    citation: Hoehndorf R (2026) Bio-ontologies and knowledge graphs for biology, course materials, version Fall 2026
+    identifier: DOI to be minted on Zenodo at release
+    keywords: [ontology, knowledge graph, OWL, OBO, machine learning, EDAM:topic_0089]
+    last_revision: 2026-09-02
+
+outcomes:
+  - id: O1
+    text: Explain how OWL description logic axioms encode biological knowledge and what a reasoner can and cannot infer from them
+    level: understand
+    knowledge: conceptual
+    kind: foundational
+  - id: O2
+    text: Build a small ontology that follows the OBO Foundry principles, with definitions, provenance and a release pipeline
+    level: create
+    knowledge: procedural
+    kind: application
+  - id: O3
+    text: Evaluate an existing bio-ontology or knowledge graph against published quality criteria and report the defects with evidence
+    level: evaluate
+    knowledge: conceptual
+    kind: application
+  - id: O4
+    text: Integrate heterogeneous biological data sources into a knowledge graph using shared identifiers and ontology annotations
+    level: apply
+    knowledge: procedural
+    kind: integration
+  - id: O5
+    text: Analyze the assumptions and failure modes of knowledge graph embedding and ontology-aware machine learning methods on a biological prediction task
+    level: analyze
+    knowledge: conceptual
+    kind: application
+  - id: O6
+    text: Release course artefacts following the FAIR principles and reflect on how another researcher would reuse them
+    level: apply
+    knowledge: metacognitive
+    kind: learning-how-to-learn
+
+assessments:
+  - id: E1
+    title: Weekly reading and concept quizzes
+    kind: quiz
+    level: understand
+    tests: [O1]
+    weight: 10
+    week: 2
+    grading: points
+    notes: Ten short quizzes, lowest two dropped; cumulative questions from week 4.
+  - id: E2
+    title: Lab notebooks
+    kind: lab
+    level: create
+    tests: [O2]
+    weight: 20
+    week: 3
+    grading: specifications
+    specification:
+      - Notebook runs end to end from a clean environment
+      - Every external resource cited with version and access date
+      - Reasoner output interpreted in one paragraph
+  - id: E3
+    title: Ontology critique report
+    kind: report
+    level: evaluate
+    tests: [O3]
+    weight: 15
+    week: 8
+    grading: specifications
+    specification:
+      - At least five defects, each with the axiom or term id as evidence
+      - Each defect mapped to an OBO principle or MIRO item
+      - A prioritised fix list an ontology maintainer could act on
+  - id: E4
+    title: Midterm exam
+    kind: exam
+    level: analyze
+    tests: [O1, O4]
+    weight: 15
+    week: 8
+    grading: points
+  - id: E5
+    title: Project, FAIR ontology and knowledge graph on a biological question
+    kind: project
+    level: create
+    tests: [O2, O4, O5, O6]
+    weight: 30
+    week: 14
+    grading: specifications
+    specification:
+      - Ontology passes ROBOT report with no errors
+      - Knowledge graph built by a script from named sources
+      - One prediction experiment with a baseline and an error analysis
+      - Release with license, citation, README and a persistent identifier
+      - Reuse statement describing how a stranger would run it
+  - id: E6
+    title: Project presentation and peer review
+    kind: presentation
+    level: evaluate
+    tests: [O3, O6]
+    weight: 10
+    week: 14
+    grading: specifications
+    specification:
+      - Twelve-minute talk with an assertion-evidence structure
+      - Written review of two other projects against the project specification
+
+activities:
+  - id: T1
+    title: Pre-class reading with warm-up questions
+    kind: reading
+    level: understand
+    serves: [O1]
+    weeks: [1, 2, 3, 4, 5, 6, 9, 10, 11]
+    setting: out-of-class
+  - id: T2
+    title: Peer instruction on OWL semantics and reasoning
+    kind: peer-instruction
+    level: understand
+    serves: [O1]
+    weeks: [1, 2, 3]
+    setting: in-class
+  - id: T3
+    title: Ontology building labs with Protege and ROBOT
+    kind: lab
+    level: create
+    serves: [O2]
+    weeks: [2, 3, 4, 5]
+    setting: lab
+  - id: T4
+    title: Guided critique of a released ontology in pairs
+    kind: workshop
+    level: evaluate
+    serves: [O3]
+    weeks: [6, 7]
+    setting: in-class
+  - id: T5
+    title: Knowledge graph construction labs
+    kind: lab
+    level: apply
+    serves: [O4]
+    weeks: [6, 7, 9]
+    setting: lab
+  - id: T6
+    title: Prediction-before-run experiments with embedding methods
+    kind: lab
+    level: analyze
+    serves: [O5]
+    weeks: [10, 11, 12]
+    setting: lab
+  - id: T7
+    title: Project clinics with specification self-check
+    kind: clinic
+    level: create
+    serves: [O2, O4, O5, O6]
+    weeks: [9, 11, 12, 13]
+    setting: in-class
+  - id: T8
+    title: FAIR release workshop and reuse reflection
+    kind: workshop
+    level: apply
+    serves: [O6]
+    weeks: [12, 13]
+    setting: in-class
+  - id: T9
+    title: Paper discussion on failure modes of knowledge graph prediction
+    kind: discussion
+    level: analyze
+    serves: [O5]
+    weeks: [10, 11]
+    setting: in-class
+
+weeks:
+  - week: 1
+    topic: Why biological knowledge needs ontologies; background probe
+    activities: [T1, T2]
+    reading: OBO Foundry principles overview
+  - week: 2
+    topic: OWL, description logic and reasoning
+    activities: [T1, T2, T3]
+    due: [E1]
+    reading: Introduction to OWL 2 for biologists (course notes)
+  - week: 3
+    topic: Building an ontology, definitions and design patterns
+    activities: [T1, T2, T3]
+    due: [E2]
+  - week: 4
+    topic: Release pipelines, ROBOT, versioning and provenance
+    activities: [T1, T3]
+  - week: 5
+    topic: Ontology quality, MIRO and common defects
+    activities: [T1, T3]
+  - week: 6
+    topic: Critiquing ontologies; identifiers and mappings
+    activities: [T1, T4, T5]
+  - week: 7
+    topic: Knowledge graph construction; mid-semester feedback
+    activities: [T4, T5]
+  - week: 8
+    topic: Midterm exam and critique report
+    due: [E3, E4]
+  - week: 9
+    topic: Data integration case study; project scoping clinic
+    activities: [T1, T5, T7]
+  - week: 10
+    topic: Knowledge graph embeddings
+    activities: [T1, T6, T9]
+  - week: 11
+    topic: Ontology-aware machine learning and evaluation pitfalls
+    activities: [T1, T6, T7, T9]
+  - week: 12
+    topic: Error analysis; FAIR release of research artefacts
+    activities: [T6, T7, T8]
+  - week: 13
+    topic: Project clinic and rehearsal
+    activities: [T7, T8]
+  - week: 14
+    topic: Project presentations and peer review
+    due: [E5, E6]

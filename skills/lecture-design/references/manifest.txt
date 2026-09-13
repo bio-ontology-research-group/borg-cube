@@ -1,0 +1,5 @@
+# distilled topics copied in by tools/skills_sync.py
+lecture-delivery
+learning-science
+teaching-practice
+course-design

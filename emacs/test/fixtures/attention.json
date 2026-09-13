@@ -1,0 +1,20 @@
+{
+  "generated": "2026-09-02T09:15:00+03:00",
+  "items": [
+    {"id": "att-cube-301", "kind": "approval", "severity": "high",
+     "title": "Outbound email to Alex: milestone reminder",
+     "since": "2026-09-02T08:55:00+03:00", "age": 1200,
+     "target": {"type": "approval", "id": "cube-301"},
+     "actions": ["approve", "reject", "open"]},
+    {"id": "att-session-alex-plan", "kind": "session", "severity": "normal",
+     "title": "alex-plan: Claude finished its turn",
+     "since": "2026-09-02T09:10:30+03:00", "age": 270,
+     "target": {"type": "session", "id": "alex-plan", "tmux": "cube/alex-plan"},
+     "actions": ["attach"]},
+    {"id": "att-cube-233", "kind": "needs_robert", "severity": "normal",
+     "title": "Milestone < 90 days without artefact: Gus proposal",
+     "since": "2026-09-02T07:00:12+03:00", "age": 8100,
+     "target": {"type": "bead", "id": "cube-233"},
+     "actions": ["open", "close"]}
+  ]
+}

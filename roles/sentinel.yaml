@@ -1,0 +1,28 @@
+name: sentinel
+summary: Deterministic patrols with no LLM that compare sources against rules and thresholds and create finding beads.
+tier: none
+runtime: python
+model: null
+hermes_profile: null
+allowed_tools: []
+permission_mode: none
+skills: []
+system_prompt_file: roles/prompts/sentinel.md
+can_close: true         # closes its own finding beads when the condition clears
+review_required_by: null
+escalation:
+  - {condition: "threshold crossed (milestone risk, stale status, expiry, disk, dead lease storm)", to: needs:robert, kind: decision}
+privacy_max: internal
+session_policy: fresh
+autonomous_actions: []  # no outbound action ever; patrols write beads and events only (ADR-0009)
+triggers:
+  - systemd timers from cube.yaml patrols (milestones 07:00, papers 07:10, deadlines 07:20, calendar 17:00, student-digest Thu 12:00, repos Mon 06:00, infra-hygiene 04:00, data-pull hourly, leases every 15 min)
+inputs:
+  - staff.org, roster, people.yaml, deadlines.md, papers.org, calendar ICS, GitHub org, hermes-infra state, vLLM /v1/models
+outputs:
+  - kind:finding and kind:conflict beads, state/events.jsonl, state/attention.json, briefings/students/ digests
+hard_rules:
+  - Zero tokens; pure Python.
+  - Never poll Mattermost on a schedule.
+  - Never create a second bead for an existing xid.
+  - Stops when state/KILL exists.

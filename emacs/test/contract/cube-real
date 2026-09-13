@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Real cube entry point used only by emacs/cube-contract-test.el.
+set -euo pipefail
+: "${CUBE_CONTRACT_REPO:?CUBE_CONTRACT_REPO is required}"
+: "${CUBE_CONTRACT_ROOT:?CUBE_CONTRACT_ROOT is required}"
+export PYTHONPATH="$CUBE_CONTRACT_REPO${PYTHONPATH:+:$PYTHONPATH}"
+exec "$CUBE_CONTRACT_REPO/.venv/bin/python" -m cube.cli --root "$CUBE_CONTRACT_ROOT" "$@"

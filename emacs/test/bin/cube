@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+# Fake `cube` for the Emacs tests: prints the fixture for a subcommand.
+# Usage: cube <subcommand> [args...] --json
+# Set CUBE_FAKE_OUT to record every invocation (one argv per line).
+set -u
+here="$(cd "$(dirname "$0")" && pwd)"
+fixtures="$here/../fixtures"
+if [ -n "${CUBE_FAKE_OUT:-}" ]; then printf 'cube %s\n' "$*" >> "$CUBE_FAKE_OUT"; fi
+sub="${1:-}"
+shift || true
+case "$sub" in
+    goals)
+        cat "$fixtures/goals.json" ;;
+    goal)
+        case "${1:-}" in
+            show) cat "$fixtures/goal-show.json" ;;
+            new|update) cat "$fixtures/goal-new.json" ;;
+            spin)
+                if [[ " $* " == *" --apply "* ]]; then cat "$fixtures/goal-spin-apply.json";
+                else cat "$fixtures/goal-spin.json"; fi ;;
+            decompose) cat "$fixtures/goal-decompose.json" ;;
+            *) printf '{"error":"unknown goal subcommand %s"}\n' "${1:-}" >&2; exit 2 ;;
+        esac ;;
+    pipeline)
+        case "${1:-}" in
+            status)
+                if [[ " $* " == *" cube-500 "* ]]; then cat "$fixtures/pipeline-show.json"
+                else cat "$fixtures/pipeline-status.json"; fi ;;
+            new|advance) cat "$fixtures/pipeline-new-dry.json" ;;
+            rehearse) printf '{"exit_code":0,"transitions":[],"status":{}}\n' ;;
+            *) printf '{"error":"unknown pipeline subcommand %s"}\n' "${1:-}" >&2; exit 2 ;;
+        esac ;;
+    decisions)
+        if [ "${1:-}" = "apply-policy" ]; then cat "$fixtures/decisions-policy.json"
+        else cat "$fixtures/decisions.json"; fi ;;
+    status|attention|ready|people|papers|literature|repos|doctor|brief|incidents|projects|fleet|work)
+        cat "$fixtures/$sub.json" ;;
+    adopt)
+        if [[ " $* " == *" --apply "* ]]; then cat "$fixtures/adopt-apply.json"
+        else cat "$fixtures/adopt.json"; fi ;;
+    roster)
+        if [ "${1:-}" = "sync" ]; then
+            if [[ " $* " == *" --apply "* ]]; then
+                cat "$fixtures/roster-sync-apply.json"
+            else
+                cat "$fixtures/roster-sync.json"
+            fi
+        else
+            cat "$fixtures/roster.json"
+        fi ;;
+    assign)
+        cat "$fixtures/assign.json" ;;
+    create)
+        cat "$fixtures/create.json" ;;
+    org)
+        case "${1:-}" in
+            append)
+                if [[ " $* " == *" --apply "* ]]; then cat "$fixtures/org-append-apply.json";
+                else cat "$fixtures/org-append.json"; fi ;;
+            todo)
+                if [[ " $* " == *" --apply "* ]]; then cat "$fixtures/org-todo-apply.json";
+                else cat "$fixtures/org-todo.json"; fi ;;
+            property)
+                if [[ " $* " == *" --apply "* ]]; then cat "$fixtures/org-property-apply.json";
+                else cat "$fixtures/org-property.json"; fi ;;
+            status) cat "$fixtures/org-status.json" ;;
+            *) printf '{"error":"unknown org subcommand %s"}\n' "${1:-}" >&2; exit 2 ;;
+        esac ;;
+    budget)
+        cat "$fixtures/budget.json" ;;
+    agent)
+        case "${1:-}" in
+            list) cat "$fixtures/agents.json" ;;
+            show)
+                if [ "${2:-}" = "liaison" ]; then cat "$fixtures/agent-liaison-show.json"
+                else cat "$fixtures/agent-show.json"; fi ;;
+            talk)
+                name="${2:-coordinator}"
+                printf '{"ok":true,"name":"%s","session":"cube/agent-%s","tmux":"cube/agent-%s","command":["cube","agent","talk","%s"]}\n' "$name" "$name" "$name" "$name" ;;
+            tell)
+                printf '{"ok":true,"name":"%s","result":"queued"}\n' "${2:-coordinator}" ;;
+            inbox)
+                printf '{"agent":"%s","host":"ws","unread":1,"messages":[],"workday":{"state":"finished","runs":[],"blocked":[]}}\n' "${2:-coordinator}" ;;
+            workday|report|pause|resume|new)
+                printf '{"ok":true,"result":"queued","command":"agent %s"}\n' "${1:-}" ;;
+            *) printf '{"error":"unknown agent subcommand %s"}\n' "${1:-}" >&2; exit 2 ;;
+        esac ;;
+    tier)
+        case "${1:-}" in
+            disable|enable|prefer|reset)
+                if [[ " $* " == *" --dry-run "* ]]; then
+                    cat "$fixtures/tier-plan.json"
+                else
+                    cat "$fixtures/tier-apply.json"
+                fi ;;
+            show|*) cat "$fixtures/tier.json" ;;
+        esac ;;
+    approvals)
+        if [ "${1:-}" = "show" ]; then cat "$fixtures/approval-show.json"
+        else cat "$fixtures/approvals.json"; fi ;;
+    beads)
+        if [ "${1:-}" = "show" ]; then cat "$fixtures/bead-show.json"
+        else printf '{"error":"unknown beads subcommand %s"}\n' "${1:-}" >&2; exit 2; fi ;;
+    runs)
+        if [ "${1:-}" = "show" ]; then cat "$fixtures/run-show.json"
+        else printf '{"error":"unknown runs subcommand %s"}\n' "${1:-}" >&2; exit 2; fi ;;
+    student)
+        slug="${1:-alex}"
+        f="$fixtures/student-${slug%%-*}.json"
+        if [ -f "$f" ]; then cat "$f"; else
+            printf '{"error":"unknown student %s"}\n' "$slug" >&2; exit 3; fi ;;
+    decide)
+        # exit 3 is the relay convention: the answer is recorded here, delivery
+        # happens on the agent's own host.
+        if [ -n "${CUBE_FAKE_RELAY:-}" ]; then
+            printf '{"id":"%s","relay":"%s","command":["cube","agent","tell"]}\n' \
+                   "${1:-?}" "$CUBE_FAKE_RELAY"
+            exit 3
+        fi
+        printf '{"ok":true,"id":"%s","kind":"question","from":"agent:ontology","answer":"fake"}\n' "${1:-?}" ;;
+    question)
+        printf '{"created":true,"bead":"cube-500","xid":"question:agent:ontology:deadbeef"}\n' ;;
+    approve|reject)
+        printf '{"ok":true,"id":"%s","action":"%s","result":"queued","message":"fake"}\n' "${1:-?}" "$sub" ;;
+    run)
+        cat "$fixtures/run.json" ;;
+    worker)
+        printf '{"ok":true,"result":"finished","host":"laptop"}\n' ;;
+    notify)
+        # `cube notify --hook` reads the hook JSON from stdin; the fake just
+        # acknowledges it (and records it when CUBE_FAKE_EVENTS is set).
+        payload="$(cat)"
+        if [ -n "${CUBE_FAKE_EVENTS:-}" ]; then printf '%s\n' "$payload" >> "$CUBE_FAKE_EVENTS"; fi
+        printf '{"ok":true}\n' ;;
+    fail)
+        echo "fake failure" >&2; exit 7 ;;
+    *)
+        printf '{"error":"unknown subcommand %s"}\n' "$sub" >&2; exit 2 ;;
+esac
